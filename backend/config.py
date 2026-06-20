@@ -1,6 +1,5 @@
 """
 CreBot Backend — Configuration
-Loads environment variables and exposes them as typed settings.
 """
 
 import os
@@ -10,8 +9,6 @@ load_dotenv()
 
 
 class Settings:
-    """Application-wide settings sourced from environment variables."""
-
     # Supabase
     SUPABASE_URL: str = os.getenv("SUPABASE_URL", "")
     SUPABASE_SERVICE_KEY: str = os.getenv("SUPABASE_SERVICE_KEY", "")
@@ -20,16 +17,15 @@ class Settings:
     GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
     GROQ_MODEL: str = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
 
-    # HuggingFace embedding model (loaded locally)
-    EMBEDDING_MODEL: str = os.getenv(
-        "EMBEDDING_MODEL", "all-MiniLM-L6-v2"
-    )
+    # HuggingFace API (free, for embeddings)
+    HF_API_TOKEN: str = os.getenv("HF_API_TOKEN", "")
+    EMBEDDING_MODEL: str = os.getenv("EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
 
-    # Retrieval settings
+    # Retrieval
     SIMILARITY_THRESHOLD: float = float(os.getenv("SIMILARITY_THRESHOLD", "0.35"))
     TOP_K_CHUNKS: int = int(os.getenv("TOP_K_CHUNKS", "5"))
 
-    # CORS — dashboard origin(s)
+    # CORS
     FRONTEND_URL: str = os.getenv("FRONTEND_URL", "http://localhost:3000")
 
     # Rate limiting

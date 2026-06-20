@@ -1,7 +1,5 @@
 """
 CreBot Backend — Groq Answer Generation Service
-Uses Groq's Llama 3 model to generate a natural-language answer
-from retrieved FAQ chunks.
 """
 
 from groq import Groq
@@ -11,7 +9,6 @@ _client: Groq | None = None
 
 
 def _get_client() -> Groq:
-    """Lazy-initialize the Groq client."""
     global _client
     if _client is None:
         _client = Groq(api_key=settings.GROQ_API_KEY)
@@ -31,19 +28,9 @@ IMPORTANT RULES:
 
 
 def generate_answer(question: str, context_chunks: list[str]) -> str:
-    """
-    Send the question + retrieved context to Groq and return the answer.
-
-    Args:
-        question:        The visitor's question.
-        context_chunks:  List of relevant FAQ text chunks.
-
-    Returns:
-        The generated answer string.
-    """
+    """Send the question + retrieved context to Groq and return the answer."""
     client = _get_client()
 
-    # Build the context block
     context = "\n\n---\n\n".join(context_chunks)
 
     user_message = f"""FAQ Context:
@@ -65,14 +52,13 @@ Please answer the customer's question based only on the FAQ context provided abo
             top_p=0.9,
         )
         return chat_completion.choices[0].message.content.strip()
-
     except Exception as e:
         print(f"[Groq Error] {e}")
         raise
 
 
 def generate_fallback_answer() -> str:
-    """Return the standard 'I don't know' response without calling Groq."""
+    """Return the standard fallback without calling Groq."""
     return (
         "I'm sorry, I don't have information about that in our FAQ. "
         "Please contact our support team for further assistance."

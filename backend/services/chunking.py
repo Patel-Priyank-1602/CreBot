@@ -9,20 +9,15 @@ import re
 def chunk_faq_text(raw_text: str, max_chunk_size: int = 500) -> list[str]:
     """
     Split FAQ text into chunks suitable for embedding.
-
-    Strategy:
-    1. First try to split by Q&A pairs (lines starting with Q: / A: patterns).
-    2. If no Q&A pattern is detected, split by double-newline paragraphs.
-    3. If any resulting chunk exceeds max_chunk_size tokens (approx. by chars),
-       further split it at sentence boundaries.
-
-    Returns a list of non-empty text chunks.
+    1. Try Q&A pairs first.
+    2. Fall back to paragraph splitting.
+    3. Break oversized chunks at sentence boundaries.
     """
     raw_text = raw_text.strip()
     if not raw_text:
         return []
 
-    # ── Attempt 1: Split by Q&A pairs ─────────────────────────────────────
+    # Attempt 1: Split by Q&A pairs
     qa_pattern = re.compile(
         r"(?:^|\n)(?:Q[:.\s]|Question[:.\s]|\d+[.)]\s)",
         re.IGNORECASE,
@@ -33,10 +28,10 @@ def chunk_faq_text(raw_text: str, max_chunk_size: int = 500) -> list[str]:
     if len(qa_splits) >= 2:
         chunks = qa_splits
     else:
-        # ── Attempt 2: Split by paragraph blocks ─────────────────────────
+        # Attempt 2: Split by paragraph blocks
         chunks = [p.strip() for p in re.split(r"\n\s*\n", raw_text) if p.strip()]
 
-    # ── Post-process: break any over-sized chunk at sentence boundaries ───
+    # Post-process: break oversized chunks at sentence boundaries
     final_chunks: list[str] = []
     for chunk in chunks:
         if len(chunk) <= max_chunk_size:

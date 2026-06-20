@@ -15,19 +15,14 @@ def retrieve_relevant_chunks(
     threshold: float | None = None,
 ) -> list[dict]:
     """
-    Embed the visitor's question, then run a cosine-similarity search
-    against the stored FAQ chunks for the given bot.
-
-    Returns a list of dicts: [{"chunk_text": str, "similarity": float}, ...]
-    sorted by similarity descending.  Empty list if nothing passes threshold.
+    Embed the visitor's question, then run cosine-similarity search
+    against stored FAQ chunks for the given bot.
     """
     top_k = top_k or settings.TOP_K_CHUNKS
     threshold = threshold or settings.SIMILARITY_THRESHOLD
 
-    # 1. Embed the question
     question_vector = embed_text(question)
 
-    # 2. Call the Supabase RPC function for similarity search
     result = supabase.rpc(
         "match_documents",
         {
