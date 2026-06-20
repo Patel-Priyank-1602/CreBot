@@ -10,6 +10,10 @@
  * </script>
  *
  * Dependency-free. Works on any site. Self-contained styles.
+ *
+ * Enhanced with:
+ * - Chat history for conversational follow-ups
+ * - Sends full conversation context to backend
  */
 (function () {
     "use strict";
@@ -25,6 +29,10 @@
     }
 
     const CHAT_ENDPOINT = `${API_URL}/api/widget/${WIDGET_KEY}/chat`;
+
+    // ── Chat history (kept in memory for the session) ────────────────────
+    const chatHistory = [];
+    const MAX_HISTORY = 20; // Keep the last 20 messages (10 turns)
 
     // ── Styles (injected into head) ──────────────────────────────────────
     const STYLES = `
@@ -279,6 +287,9 @@
         inputEl.value = "";
         sendBtn.disabled = true;
 
+        // Add to chat history
+        chatHistory.push({ role: "user", content: question });
+
         // Show loading indicator
         const loadingMsg = addMessage("Thinking...", "bot loading");
 
@@ -286,14 +297,26 @@
             const res = await fetch(CHAT_ENDPOINT, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ question }),
+                body: JSON.stringify({
+                    question,
+                    chat_history: chatHistory.slice(-MAX_HISTORY),
+                }),
             });
 
             const data = await res.json();
+            const answerText = data.answer || "Sorry, something went wrong.";
 
             // Replace loading message with actual answer
-            loadingMsg.textContent = data.answer || "Sorry, something went wrong.";
+            loadingMsg.textContent = answerText;
             loadingMsg.classList.remove("loading");
+
+            // Add bot response to chat history
+            chatHistory.push({ role: "assistant", content: answerText });
+
+            // Trim history if it gets too long
+            while (chatHistory.length > MAX_HISTORY) {
+                chatHistory.shift();
+            }
 
         } catch (err) {
             loadingMsg.textContent = "I'm temporarily unavailable. Please try again in a moment.";

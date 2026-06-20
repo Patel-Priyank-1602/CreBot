@@ -27,6 +27,6 @@ export const api = {
     getSnippet: (botId: string) => fetchApi(`/bots/${botId}/embed-snippet`),
     getLogs: (botId: string) => fetchApi(`/bots/${botId}/logs`),
   },
-  chat: (widgetKey: string, question: string) =>
-    fetchApi(`/widget/${widgetKey}/chat`, { method: 'POST', body: JSON.stringify({ question }) }),
+  chat: (widgetKey: string, question: string, chat_history: { role: string; content: string }[] = []) =>
+    fetchApi(`/widget/${widgetKey}/chat`, { method: 'POST', body: JSON.stringify({ question, chat_history }) }),
 };

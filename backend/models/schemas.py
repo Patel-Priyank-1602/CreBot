@@ -44,10 +44,17 @@ class QueryLogsResponse(BaseModel):
     total: int
 
 
+class ChatMessage(BaseModel):
+    role: str = Field(..., pattern="^(user|assistant)$")
+    content: str
+
+
 class ChatRequest(BaseModel):
     question: str = Field(..., min_length=1, max_length=2000)
+    chat_history: list[ChatMessage] = Field(default_factory=list)
 
 
 class ChatResponse(BaseModel):
     answer: str
     source_chunks: int
+    source_type: str = "faq"  # "faq", "general", or "hybrid"

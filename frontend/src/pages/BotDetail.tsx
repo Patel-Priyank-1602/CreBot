@@ -70,7 +70,18 @@ export default function BotDetail() {
     setChatLoading(true);
 
     try {
-      const res = await api.chat(widgetKey, question);
+      // Build chat history from existing messages (excluding the initial greeting)
+      const chat_history = messages
+        .filter((_, i) => i > 0) // skip the initial bot greeting
+        .map(m => ({
+          role: m.role === 'bot' ? 'assistant' : 'user',
+          content: m.text,
+        }));
+
+      // Add the current question to history
+      chat_history.push({ role: 'user', content: question });
+
+      const res = await api.chat(widgetKey, question, chat_history);
       setMessages(prev => [...prev, { role: 'bot', text: res.answer }]);
     } catch (err: any) {
       setMessages(prev => [...prev, { role: 'bot', text: 'Error: ' + err.message }]);

@@ -22,8 +22,8 @@ class Settings:
     EMBEDDING_MODEL: str = os.getenv("EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
 
     # Retrieval
-    SIMILARITY_THRESHOLD: float = float(os.getenv("SIMILARITY_THRESHOLD", "0.35"))
-    TOP_K_CHUNKS: int = int(os.getenv("TOP_K_CHUNKS", "5"))
+    SIMILARITY_THRESHOLD: float = float(os.getenv("SIMILARITY_THRESHOLD", "0.20"))
+    TOP_K_CHUNKS: int = int(os.getenv("TOP_K_CHUNKS", "8"))
 
     # CORS
     FRONTEND_URL: str = os.getenv("FRONTEND_URL", "http://localhost:3000")
