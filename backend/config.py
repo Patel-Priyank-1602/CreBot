@@ -31,5 +31,9 @@ class Settings:
     # Rate limiting
     RATE_LIMIT: str = os.getenv("RATE_LIMIT", "30/minute")
 
+    # Clerk Authentication
+    # The Clerk Frontend API domain, e.g. "suitable-rooster-67.clerk.accounts.dev"
+    CLERK_FRONTEND_API: str = os.getenv("CLERK_FRONTEND_API", "")
+
 
 settings = Settings()

@@ -1,10 +1,28 @@
 const API_URL = 'http://localhost:8000/api';
 
+/**
+ * Store the Clerk session token getter.
+ * This is set by the Dashboard/BotDetail pages via useAuth().
+ */
+let _getToken: (() => Promise<string | null>) | null = null;
+
+export function setClerkTokenGetter(getter: () => Promise<string | null>) {
+  _getToken = getter;
+}
+
 async function fetchApi(endpoint: string, options: RequestInit = {}) {
-  const headers = {
+  const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    ...options.headers,
+    ...(options.headers as Record<string, string> || {}),
   };
+
+  // Attach Clerk JWT if available
+  if (_getToken) {
+    const token = await _getToken();
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+  }
 
   const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
