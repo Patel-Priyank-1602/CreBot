@@ -21,14 +21,17 @@
     // ── Configuration ────────────────────────────────────────────────────
     const scriptTag = document.currentScript;
     const WIDGET_KEY = scriptTag?.getAttribute("data-widget-key") || "";
+    const BOT_ID = scriptTag?.getAttribute("data-bot-id") || "";
     const API_URL = scriptTag?.getAttribute("data-api-url") || "";
 
-    if (!WIDGET_KEY || !API_URL) {
-        console.error("[CreBot] Missing data-widget-key or data-api-url on script tag.");
+    if ((!WIDGET_KEY && !BOT_ID) || !API_URL) {
+        console.error("[CreBot] Missing data-widget-key (or data-bot-id) or data-api-url on script tag.");
         return;
     }
 
-    const CHAT_ENDPOINT = `${API_URL}/api/widget/${WIDGET_KEY}/chat`;
+    const CHAT_ENDPOINT = BOT_ID
+        ? `${API_URL}/api/widget/by-bot/${BOT_ID}/chat`
+        : `${API_URL}/api/widget/${WIDGET_KEY}/chat`;
 
     // ── Chat history (kept in memory for the session) ────────────────────
     const chatHistory = [];

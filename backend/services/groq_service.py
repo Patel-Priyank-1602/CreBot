@@ -8,6 +8,7 @@ Enhanced with:
 - General knowledge fallback when FAQ context is insufficient
 """
 
+from __future__ import annotations
 from groq import Groq
 from config import settings
 

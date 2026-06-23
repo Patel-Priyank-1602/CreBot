@@ -29,7 +29,7 @@ limiter = Limiter(key_func=get_remote_address)
 @router.post("/{widget_key}/chat", response_model=ChatResponse)
 @limiter.limit(settings.RATE_LIMIT)
 async def widget_chat(request: Request, widget_key: str, body: ChatRequest):
-    """Public chat endpoint called by the widget JS."""
+    """Public chat endpoint called by the widget JS (using widget_key)."""
 
     # 1. Look up the bot
     bot_result = (
@@ -75,6 +75,50 @@ async def widget_chat(request: Request, widget_key: str, body: ChatRequest):
 
     except Exception as e:
         print(f"[Widget Chat Error] {e}")
+        return ChatResponse(
+            answer="I'm temporarily unavailable. Please try again in a moment.",
+            source_chunks=0,
+            source_type="error",
+        )
+
+
+@router.post("/by-bot/{bot_id}/chat", response_model=ChatResponse)
+@limiter.limit(settings.RATE_LIMIT)
+async def widget_chat_by_bot_id(request: Request, bot_id: str, body: ChatRequest):
+    """Public chat endpoint called by the widget JS (using bot_id directly)."""
+
+    bot_result = (
+        supabase.table("bots")
+        .select("id")
+        .eq("id", bot_id)
+        .single()
+        .execute()
+    )
+    if not bot_result.data:
+        raise HTTPException(status_code=404, detail="Invalid bot ID.")
+
+    history = [
+        {"role": m.role, "content": m.content} for m in body.chat_history
+    ]
+
+    try:
+        standalone_question = reformulate_question(body.question, history)
+        chunks = retrieve_relevant_chunks(bot_id, standalone_question)
+        chunk_texts = [c["chunk_text"] for c in chunks] if chunks else []
+
+        answer, source_type = generate_answer(
+            standalone_question, chunk_texts, history
+        )
+
+        _log_query(bot_id, body.question, answer, standalone_question)
+        return ChatResponse(
+            answer=answer,
+            source_chunks=len(chunks),
+            source_type=source_type,
+        )
+
+    except Exception as e:
+        print(f"[Widget Chat Error] bot_id={bot_id}: {e}")
         return ChatResponse(
             answer="I'm temporarily unavailable. Please try again in a moment.",
             source_chunks=0,

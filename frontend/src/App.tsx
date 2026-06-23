@@ -1,112 +1,105 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/clerk-react';
-import { MessageSquare } from 'lucide-react';
-import LandingPage from './pages/LandingPage';
-import Dashboard from './pages/Dashboard';
-import BotDetail from './pages/BotDetail';
+import { lazy, Suspense } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { SignedIn, SignedOut } from '@clerk/clerk-react';
+import { useTheme } from './context/ThemeContext';
+import DashboardLayout from './components/layout/DashboardLayout';
 
-function Navbar() {
-  const navigate = useNavigate();
-  const { user } = useUser();
+const LandingPage = lazy(() => import('./pages/LandingPage'));
+const SignInPage = lazy(() => import('./pages/SignInPage'));
+const SignUpPage = lazy(() => import('./pages/SignUpPage'));
+const UserProfilePage = lazy(() => import('./pages/UserProfilePage'));
+const DashboardOverview = lazy(() => import('./pages/DashboardOverview'));
+const ChatbotsPage = lazy(() => import('./pages/ChatbotsPage'));
+const ChatbotDetail = lazy(() => import('./pages/ChatbotDetail'));
+const BotDetail = lazy(() => import('./pages/BotDetail'));
+const KnowledgeBasePage = lazy(() => import('./pages/KnowledgeBasePage'));
+const RagChatPage = lazy(() => import('./pages/RagChatPage'));
+const EmbedPage = lazy(() => import('./pages/EmbedPage'));
+const ChatLogsPage = lazy(() => import('./pages/ChatLogsPage'));
+const SettingsPage = lazy(() => import('./pages/SettingsPage'));
+const BillingPage = lazy(() => import('./pages/BillingPage'));
+const AdminPage = lazy(() => import('./pages/AdminPage'));
+
+function AppContent() {
+  const { theme } = useTheme();
 
   return (
-    <nav className="navbar">
-      <a href="/dashboard" className="navbar-brand" onClick={(e) => { e.preventDefault(); navigate('/dashboard'); }}>
-        <span className="navbar-brand-mark">
-          <MessageSquare size={14} color="#fff" />
-        </span>
-        CreBot
-      </a>
-      <div className="navbar-user-area">
-        {user && (
-          <span className="navbar-user-name">
-            {user.firstName || user.emailAddresses[0]?.emailAddress}
-          </span>
-        )}
-        <UserButton
-          afterSignOutUrl="/"
-          appearance={{
-            elements: {
-              avatarBox: { width: 32, height: 32 },
-            },
-          }}
-        />
-      </div>
-    </nav>
-  );
-}
+    <div className={theme}>
+      <Router>
+        <Suspense fallback={
+          <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--body-bg)' }}>
+            <div className="flex flex-col items-center gap-3">
+              <div className="w-8 h-8 rounded-full border-2 border-[var(--border-default)] border-t-[var(--text-primary)] animate-spin" />
+              <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Loading...</p>
+            </div>
+          </div>
+        }>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <SignedOut>
+                    <LandingPage />
+                  </SignedOut>
+                  <SignedIn>
+                    <Navigate to="/dashboard" replace />
+                  </SignedIn>
+                </>
+              }
+            />
 
-function ProtectedLayout() {
-  return (
-    <div className="app-container">
-      <Navbar />
-      <main className="main-content page-enter">
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/bot/:id" element={<BotDetail />} />
-        </Routes>
-      </main>
+            <Route path="/login" element={<SignedOut><SignInPage /></SignedOut>} />
+            <Route path="/signup" element={<SignedOut><SignUpPage /></SignedOut>} />
+
+            <Route
+              path="/dashboard"
+              element={
+                <SignedIn>
+                  <DashboardLayout />
+                </SignedIn>
+              }
+            >
+              <Route index element={<DashboardOverview />} />
+              <Route path="chatbots" element={<ChatbotsPage />} />
+              <Route path="chatbots/:id" element={<ChatbotDetail />} />
+              <Route path="knowledge" element={<KnowledgeBasePage />} />
+              <Route path="rag-chat" element={<RagChatPage />} />
+              <Route path="embed" element={<EmbedPage />} />
+              <Route path="logs" element={<ChatLogsPage />} />
+              <Route path="settings" element={<SettingsPage />} />
+              <Route path="billing" element={<BillingPage />} />
+              <Route path="admin" element={<AdminPage />} />
+            </Route>
+
+            <Route
+              path="/user"
+              element={
+                <SignedIn>
+                  <UserProfilePage />
+                </SignedIn>
+              }
+            />
+
+            <Route
+              path="/bot/:id"
+              element={
+                <SignedIn>
+                  <div className="min-h-screen app-bg">
+                    <BotDetail />
+                  </div>
+                </SignedIn>
+              }
+            />
+
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Suspense>
+      </Router>
     </div>
   );
 }
 
 export default function App() {
-  return (
-    <Router>
-      <Routes>
-        {/* Public landing page */}
-        <Route
-          path="/"
-          element={
-            <>
-              <SignedOut>
-                <LandingPage />
-              </SignedOut>
-              <SignedIn>
-                <Navigate to="/dashboard" replace />
-              </SignedIn>
-            </>
-          }
-        />
-
-        {/* Protected dashboard routes */}
-        <Route
-          path="/dashboard/*"
-          element={
-            <>
-              <SignedIn>
-                <ProtectedLayout />
-              </SignedIn>
-              <SignedOut>
-                <Navigate to="/" replace />
-              </SignedOut>
-            </>
-          }
-        />
-
-        {/* Bot detail — also protected */}
-        <Route
-          path="/bot/:id"
-          element={
-            <>
-              <SignedIn>
-                <div className="app-container">
-                  <Navbar />
-                  <main className="main-content page-enter">
-                    <BotDetail />
-                  </main>
-                </div>
-              </SignedIn>
-              <SignedOut>
-                <Navigate to="/" replace />
-              </SignedOut>
-            </>
-          }
-        />
-
-        {/* Catch-all */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Router>
-  );
+  return <AppContent />;
 }
