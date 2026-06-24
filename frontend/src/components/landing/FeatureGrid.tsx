@@ -5,31 +5,37 @@ import Card from '../common/Card';
 const features = [
   {
     icon: Upload,
+    color: 'text-emerald-500 bg-emerald-500/10 border-emerald-500/20',
     title: 'Upload Knowledge',
     desc: 'Add PDFs, TXT, Markdown, DOCX, and structured files to power your chatbot.',
   },
   {
     icon: MessageSquare,
+    color: 'text-blue-500 bg-blue-500/10 border-blue-500/20',
     title: 'Ask With Context',
     desc: 'Get answers grounded in your uploaded knowledge base.',
   },
   {
     icon: Globe,
+    color: 'text-violet-500 bg-violet-500/10 border-violet-500/20',
     title: 'Embed Anywhere',
     desc: 'Generate an embed snippet and place your chatbot on any website.',
   },
   {
     icon: Lock,
+    color: 'text-amber-500 bg-amber-500/10 border-amber-500/20',
     title: 'Client Isolation',
     desc: 'Keep every user\'s documents and vectors separated securely.',
   },
   {
     icon: FileText,
+    color: 'text-pink-500 bg-pink-500/10 border-pink-500/20',
     title: 'Chat Logs',
     desc: 'Export conversations for review, support, and training.',
   },
   {
     icon: Download,
+    color: 'text-indigo-500 bg-indigo-500/10 border-indigo-500/20',
     title: 'Knowledge Export',
     desc: 'Download the complete knowledge base as a single file.',
   },
@@ -63,7 +69,7 @@ export default function FeatureGrid() {
               transition={{ delay: i * 0.08 }}
             >
               <Card hover className="p-6 h-full">
-                <div className="w-10 h-10 rounded-xl bg-[var(--bg-input)] border border-[var(--border-soft)] flex items-center justify-center text-[var(--text-primary)] mb-4">
+                <div className={`w-10 h-10 rounded-xl border flex items-center justify-center mb-4 ${feature.color}`}>
                   <feature.icon size={20} />
                 </div>
                 <h3 className="text-base font-semibold text-[var(--text-primary)] mb-2">{feature.title}</h3>

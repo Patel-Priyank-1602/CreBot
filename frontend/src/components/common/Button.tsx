@@ -16,7 +16,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           'hover:-translate-y-0.5 active:translate-y-0',
           {
             'bg-[var(--btn-bg)] text-[var(--btn-text)] border-[var(--btn-bg)] hover:bg-[var(--btn-hover)]': variant === 'primary',
-            'bg-transparent text-[var(--text-primary)] border-[var(--border-default)] hover:bg-[var(--btn-dark-hover)] hover:border-[var(--border-default)]': variant === 'secondary',
+            'bg-transparent text-[var(--text-primary)] border-[var(--border-default)] hover:bg-[var(--btn-dark-hover)] hover:border-[var(--btn-bg)] hover:text-[var(--btn-bg)]': variant === 'secondary',
             'bg-transparent text-[var(--text-muted)] border-transparent hover:text-[var(--text-primary)] hover:bg-[var(--hover-bg)]': variant === 'ghost',
             'bg-transparent text-[var(--text-primary)] border-[var(--border-default)] hover:border-red-500/50 hover:text-red-400': variant === 'danger',
             'px-3 py-1.5 text-xs rounded-lg': size === 'sm',

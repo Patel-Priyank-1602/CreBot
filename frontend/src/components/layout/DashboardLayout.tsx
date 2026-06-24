@@ -39,7 +39,7 @@ export default function DashboardLayout() {
               onClick={() => navigate('/dashboard/chatbots')}
             >
               <Plus size={16} />
-              Create Chatbot
+              Create
             </Button>
             <UserButton afterSignOutUrl="/" />
           </div>

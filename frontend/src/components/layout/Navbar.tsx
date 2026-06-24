@@ -46,8 +46,8 @@ export default function Navbar() {
       style={{ background: 'var(--body-bg)', backdropFilter: 'blur(16px)' }}>
       <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center">
-            <CreBotLogo size={20} className="text-black w-5 h-5" />
+          <div className="w-8 h-8 rounded-lg bg-[var(--btn-bg)] flex items-center justify-center">
+            <CreBotLogo size={20} className="text-[var(--btn-text)] w-5 h-5" />
           </div>
           <span className="font-display font-bold text-lg text-[var(--text-primary)] tracking-tight">CreBot</span>
         </Link>

@@ -60,8 +60,9 @@ export default function PricingPreview() {
               )}
               <Card
                 elevated={plan.popular}
-                className={`p-6 h-full ${plan.popular ? 'border-[var(--white-alpha-20)]' : ''}`}
+                className={`p-6 h-full ${plan.popular ? 'border-[var(--white-alpha-20)] relative overflow-hidden' : ''}`}
               >
+                {plan.popular && <div className="absolute top-0 left-0 w-full h-1 bg-[var(--btn-bg)]" />}
                 <div className="mb-6">
                   <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-1">{plan.name}</h3>
                   <p className="text-sm text-[var(--text-muted)] mb-4">{plan.desc}</p>
@@ -73,7 +74,9 @@ export default function PricingPreview() {
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-3">
-                      <Check size={16} className="text-[var(--text-primary)] mt-0.5 shrink-0" />
+                      <div className="w-5 h-5 rounded-full bg-[var(--white-alpha-10)] flex items-center justify-center shrink-0 mt-0.5">
+                        <Check size={12} className="text-[var(--text-primary)]" />
+                      </div>
                       <span className="text-sm text-[var(--text-secondary)]">{feature}</span>
                     </li>
                   ))}

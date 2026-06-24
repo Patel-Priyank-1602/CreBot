@@ -44,9 +44,9 @@ function Particles({ count = 3000 }) {
       </bufferGeometry>
       <pointsMaterial
         size={0.035}
-        color="#ffffff"
+        color="#FF5E00"
         transparent
-        opacity={0.25}
+        opacity={0.35}
         sizeAttenuation
         blending={THREE.AdditiveBlending}
       />
@@ -100,7 +100,7 @@ function KnowledgeGraph() {
       {nodes.map((node, i) => (
         <mesh key={`node-${i}`} position={node.pos}>
           <sphereGeometry args={[node.size, 12, 12]} />
-          <meshBasicMaterial color="#ffffff" transparent opacity={0.3} />
+          <meshBasicMaterial color="#FF7B2E" transparent opacity={0.4} />
         </mesh>
       ))}
       {connections.map(([a, b], i) => {
@@ -119,7 +119,7 @@ function KnowledgeGraph() {
                 itemSize={3}
               />
             </bufferGeometry>
-            <lineBasicMaterial color="#ffffff" transparent opacity={0.06} />
+            <lineBasicMaterial color="#FF5E00" transparent opacity={0.15} />
           </line>
         );
       })}
@@ -171,27 +171,18 @@ function FloatingDocs() {
         <mesh key={`doc-${i}`} position={doc.pos} rotation={[0, doc.rotation, doc.rotation * 0.3]}>
           <planeGeometry args={[doc.size * 2.5, doc.size * 3.2]} />
           <meshBasicMaterial
-            color="#111111"
+            color="#1F0F08"
             transparent
-            opacity={0.5}
+            opacity={0.6}
             side={THREE.DoubleSide}
           />
           <lineSegments>
             <edgesGeometry args={[new THREE.PlaneGeometry(doc.size * 2.5, doc.size * 3.2)]} />
-            <lineBasicMaterial color="#ffffff" transparent opacity={0.08} />
+            <lineBasicMaterial color="#FF5E00" transparent opacity={0.2} />
           </lineSegments>
         </mesh>
       ))}
     </group>
-  );
-}
-
-function GridFloor() {
-  return (
-    <gridHelper
-      args={[30, 40, '#1a1a1a', '#111111']}
-      position={[0, -5, 0]}
-    />
   );
 }
 
@@ -201,7 +192,6 @@ function Scene() {
       <Particles count={4000} />
       <KnowledgeGraph />
       <FloatingDocs />
-      <GridFloor />
       <ambientLight intensity={0.1} />
     </>
   );

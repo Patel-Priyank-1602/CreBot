@@ -136,7 +136,7 @@ export default function SettingsPage() {
           </Link>
         </Card>
 
-        {/* Workspace Settings */}
+        {/* Workspace Settings
         <Card className="p-6">
           <div className="flex items-center gap-4 mb-6">
             <SectionIcon icon={SettingsIcon} />
@@ -153,7 +153,7 @@ export default function SettingsPage() {
               {wsSaved ? 'Saved!' : 'Save Changes'}
             </Button>
           </div>
-        </Card>
+        </Card> */}
 
         {/* API Keys */}
         <Card className="p-6">

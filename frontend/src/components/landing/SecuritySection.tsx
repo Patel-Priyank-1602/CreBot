@@ -50,7 +50,7 @@ export default function SecuritySection() {
             <Card elevated className="p-6">
               <div className="space-y-4">
                 <div className="flex items-center gap-3 pb-4 border-b border-[var(--border-soft)]">
-                  <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-lg bg-[var(--white-alpha-10)] flex items-center justify-center">
                     <Shield size={16} className="text-[var(--text-primary)]" />
                   </div>
                   <div>
@@ -60,7 +60,7 @@ export default function SecuritySection() {
                   <span className="ml-auto px-2 py-1 text-xs rounded-md bg-[var(--white-alpha-10)] text-[var(--text-primary)]">Isolated</span>
                 </div>
                 <div className="flex items-center gap-3 pb-4 border-b border-[var(--border-soft)]">
-                  <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-lg bg-[var(--white-alpha-10)] flex items-center justify-center">
                     <Shield size={16} className="text-[var(--text-primary)]" />
                   </div>
                   <div>
@@ -70,7 +70,7 @@ export default function SecuritySection() {
                   <span className="ml-auto px-2 py-1 text-xs rounded-md bg-[var(--white-alpha-10)] text-[var(--text-primary)]">Isolated</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-lg bg-[var(--white-alpha-10)] flex items-center justify-center">
                     <Shield size={16} className="text-[var(--text-primary)]" />
                   </div>
                   <div>

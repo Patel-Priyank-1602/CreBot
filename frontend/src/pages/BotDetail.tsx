@@ -109,7 +109,7 @@ export default function BotDetail() {
         </button>
 
         <div className="flex items-center gap-4 mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-[var(--btn-bg)] flex items-center justify-center text-[var(--btn-text)] shadow-[0_0_20px_var(--btn-bg)]">
+          <div className="w-12 h-12 rounded-2xl bg-[var(--btn-bg)] flex items-center justify-center text-[var(--btn-text)]">
             <Settings size={24} />
           </div>
           <div>
@@ -250,7 +250,7 @@ export default function BotDetail() {
                 </div>
                 <button
                   onClick={handleDeleteBot}
-                  className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium transition-all duration-200 bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white border border-red-500/50 hover:border-red-500 hover:shadow-[0_0_20px_rgba(239,68,68,0.3)]"
+                  className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium transition-all duration-200 bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white border border-red-500/50 hover:border-red-500"
                 >
                   <Trash2 size={16} /> Delete Chatbot
                 </button>

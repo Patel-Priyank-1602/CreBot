@@ -7,15 +7,15 @@ import { cn } from '../../lib/utils';
 import CreBotLogo from '../common/CreBotLogo';
 
 const sidebarItems = [
-  { label: 'Overview', icon: LayoutDashboard, href: '/dashboard' },
-  { label: 'Chatbots', icon: Bot, href: '/dashboard/chatbots' },
-  { label: 'Knowledge Base', icon: FileText, href: '/dashboard/knowledge' },
-  { label: 'Test Chat', icon: MessageCircle, href: '/dashboard/rag-chat' },
-  { label: 'Chat Logs', icon: MessageSquare, href: '/dashboard/logs' },
-  { label: 'Embed', icon: Code, href: '/dashboard/embed' },
-  { label: 'Billing', icon: CreditCard, href: '/dashboard/billing' },
-  { label: 'Settings', icon: Settings, href: '/dashboard/settings' },
-  { label: 'Join Bot', icon: Users, href: '/dashboard/join' },
+  { label: 'Overview', icon: LayoutDashboard, href: '/dashboard', color: 'text-emerald-500' },
+  { label: 'Chatbots', icon: Bot, href: '/dashboard/chatbots', color: 'text-blue-500' },
+  { label: 'Knowledge Base', icon: FileText, href: '/dashboard/knowledge', color: 'text-violet-500' },
+  { label: 'Test Chat', icon: MessageCircle, href: '/dashboard/rag-chat', color: 'text-amber-500' },
+  { label: 'Chat Logs', icon: MessageSquare, href: '/dashboard/logs', color: 'text-pink-500' },
+  { label: 'Embed', icon: Code, href: '/dashboard/embed', color: 'text-indigo-500' },
+  { label: 'Billing', icon: CreditCard, href: '/dashboard/billing', color: 'text-teal-500' },
+  { label: 'Settings', icon: Settings, href: '/dashboard/settings', color: 'text-[var(--text-muted)]' },
+  { label: 'Join Bot', icon: Users, href: '/dashboard/join', color: 'text-cyan-500' },
 ];
 
 interface SidebarProps {
@@ -41,9 +41,9 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
         style={{ borderColor: 'var(--border-soft)' }}>
         {!collapsed ? (
           <Link to="/dashboard" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-[var(--btn-bg)] flex items-center justify-center shrink-0 transition-transform hover:scale-105">
-              <CreBotLogo size={20} className="text-[var(--btn-text)] w-5 h-5" />
-            </div>
+          <div className="w-8 h-8 rounded-lg bg-[var(--btn-bg)] flex items-center justify-center">
+            <CreBotLogo size={20} className="text-[var(--btn-text)] w-5 h-5" />
+          </div>
             <span className="font-display font-bold text-lg text-[var(--text-primary)] tracking-tight">CreBot</span>
           </Link>
         ) : (
@@ -73,17 +73,20 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
             end={item.href === '/dashboard'}
             className={({ isActive }) =>
               cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200',
+                'group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200',
                 collapsed && 'justify-center px-2',
                 isActive
-                  ? 'text-[var(--text-primary)]'
-                  : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]',
-                isActive ? 'bg-[var(--active-bg)]' : 'hover:bg-[var(--hover-bg)]'
+                  ? 'text-[var(--text-primary)] bg-[var(--active-bg)]'
+                  : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--hover-bg)]'
               )
             }
           >
-            <item.icon size={18} />
-            {!collapsed && <span>{item.label}</span>}
+            {({ isActive }) => (
+              <>
+                <item.icon size={18} className={isActive ? item.color : 'text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition-colors'} />
+                {!collapsed && <span>{item.label}</span>}
+              </>
+            )}
           </NavLink>
         ))}
       </nav>

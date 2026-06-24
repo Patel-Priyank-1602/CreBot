@@ -5,8 +5,8 @@ import Button from '../common/Button';
 
 export default function CTASection() {
   return (
-    <section className="py-24">
-      <div className="max-w-4xl mx-auto px-6 text-center">
+    <section className="py-24 relative overflow-hidden">
+      <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
