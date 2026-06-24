@@ -4,7 +4,6 @@ import { useSearchParams } from 'react-router-dom';
 import { Bot, PanelRight, Sparkles, Loader as LoaderIcon } from 'lucide-react';
 import MessageBubble from './MessageBubble';
 import QueryInput from './QueryInput';
-import SourcePanel from './SourcePanel';
 import { cn } from '../../lib/utils';
 import { api } from '../../lib/api';
 import { listBots, Bot as BotType } from '../../services/chatbotService';
@@ -28,7 +27,6 @@ export default function ChatWindow() {
   
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
-  const [showSources, setShowSources] = useState(false);
   const [bots, setBots] = useState<BotType[]>([]);
   const [selectedBot, setSelectedBot] = useState<BotType | null>(null);
   const [botsLoading, setBotsLoading] = useState(true);
@@ -94,21 +92,9 @@ export default function ChatWindow() {
 
   const isEmpty = messages.length === 0;
 
-  const sourceItems = useMemo(() =>
-    messages
-      .filter((m) => m.role === 'assistant' && m.sources)
-      .flatMap((m) => m.sources!.map((s) => ({
-        id: s.name,
-        name: s.name,
-        preview: `Relevant content from ${s.name} with relevance score of ${Math.round(s.score * 100)}%.`,
-        score: s.score,
-      }))),
-    [messages]
-  );
-
   return (
     <div className="flex h-full">
-      <div className={cn('flex-1 flex flex-col', showSources && 'border-r border-[var(--border-soft)]')}>
+      <div className="flex-1 flex flex-col">
         <header className="flex items-center justify-between px-6 h-14 border-b border-[var(--border-soft)] bg-[var(--bg-secondary)]">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-[var(--btn-bg)] flex items-center justify-center">
@@ -134,16 +120,6 @@ export default function ChatWindow() {
               )}
             </div>
           </div>
-          <button
-            onClick={() => setShowSources(!showSources)}
-            className={cn(
-              'flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-colors',
-              showSources ? 'bg-[var(--active-bg)] text-[var(--text-primary)]' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--hover-bg)]'
-            )}
-          >
-            <PanelRight size={14} />
-            Sources
-          </button>
         </header>
 
         <div className="flex-1 overflow-y-auto px-6 py-6">
@@ -208,12 +184,6 @@ export default function ChatWindow() {
 
         <QueryInput onSend={handleSend} onClear={() => setMessages([])} disabled={loading || !selectedBot} />
       </div>
-
-      <SourcePanel
-        sources={sourceItems}
-        open={showSources}
-        onClose={() => setShowSources(false)}
-      />
     </div>
   );
 }

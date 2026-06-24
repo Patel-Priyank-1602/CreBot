@@ -1,7 +1,7 @@
 import secrets
 import time
 from fastapi import APIRouter, HTTPException, Request, Depends
-from middlewares.auth import workspace_middleware
+from middlewares.auth import workspace_middleware, get_workspace_id
 from models.schemas import (
     CreateBotRequest,
     UpdateBotRequest,
@@ -13,6 +13,9 @@ from models.schemas import (
     QueryLogsResponse,
     QueryLogEntry,
     BotMemberResponse,
+    JoinBotRequest,
+    GenerateInviteCodeRequest,
+    InviteCodeResponse,
 )
 from utils.supabase_client import supabase
 from utils.clerk_auth import get_clerk_user_id
@@ -47,13 +50,14 @@ def _batch_insert_documents(documents: list[dict]) -> None:
                 time.sleep(1 * attempt)
 
 
-def _format_bot(bot: dict, is_owner: bool = True) -> BotResponse:
+def _format_bot(bot: dict, is_owner: bool = True, can_edit: bool = False) -> BotResponse:
     return BotResponse(
         id=bot["id"],
         name=bot["name"],
         widget_key=bot["widget_key"],
         created_at=bot["created_at"],
         is_owner=is_owner,
+        can_edit=can_edit or is_owner,
         status=bot.get("status", "active"),
         description=bot.get("description", ""),
         total_files=bot.get("total_files", 0),
@@ -67,7 +71,7 @@ def _format_bot(bot: dict, is_owner: bool = True) -> BotResponse:
     )
 
 
-def _get_bot_for_user(bot_id: str, user_id: str, workspace_id: str, require_owner: bool = False):
+def _get_bot_for_user(bot_id: str, user_id: str, workspace_id: str, require_owner: bool = False, require_edit: bool = False):
     try:
         bot = supabase.table("bots").select("*").eq("id", bot_id).execute()
         if not bot.data:
@@ -80,12 +84,10 @@ def _get_bot_for_user(bot_id: str, user_id: str, workspace_id: str, require_owne
 
     is_owner = bot_data.get("clerk_user_id") == user_id
 
-    bot_ws = bot_data.get("workspace_id")
-    if bot_ws and str(bot_ws) != str(workspace_id):
-        raise HTTPException(status_code=403, detail="Access denied.")
-
     if is_owner:
         return bot_data
+
+
 
     if require_owner:
         raise HTTPException(status_code=403, detail="Only the owner can perform this action.")
@@ -94,6 +96,9 @@ def _get_bot_for_user(bot_id: str, user_id: str, workspace_id: str, require_owne
         member = supabase.table("bot_members").select("*").eq("bot_id", bot_id).eq("clerk_user_id", user_id).execute()
         if not member.data:
             raise HTTPException(status_code=403, detail="Access denied. You are not a member of this bot.")
+            
+        if require_edit and not member.data[0].get("member_email", "").endswith("[edit]"):
+            raise HTTPException(status_code=403, detail="Edit access is required.")
     except HTTPException:
         raise
     except Exception:
@@ -189,14 +194,22 @@ async def get_bot(request: Request, bot_id: str):
     ws_id = request.state.workspace_id
     bot_data = _get_bot_for_user(bot_id, user_id, ws_id)
     is_owner = bot_data.get("clerk_user_id") == user_id
-    return _format_bot(bot_data, is_owner)
+    can_edit = is_owner
+    if not is_owner:
+        try:
+            member = supabase.table("bot_members").select("*").eq("bot_id", bot_id).eq("clerk_user_id", user_id).execute()
+            if member.data:
+                can_edit = "[edit]" in member.data[0].get("member_email", "")
+        except Exception:
+            pass
+    return _format_bot(bot_data, is_owner, can_edit)
 
 
 @router.patch("/{bot_id}", response_model=BotResponse)
 async def update_bot(request: Request, bot_id: str, body: UpdateBotRequest):
     user_id = get_clerk_user_id(request)
-    ws_id = request.state.workspace_id
-    _get_bot_for_user(bot_id, user_id, ws_id, require_owner=True)
+    ws_id = get_workspace_id(request)
+    _get_bot_for_user(bot_id, user_id, ws_id, require_edit=True)
 
     update = body.model_dump(exclude_none=True)
     if update:
@@ -332,7 +345,7 @@ async def delete_bot(request: Request, bot_id: str):
 async def list_bot_members(request: Request, bot_id: str):
     user_id = get_clerk_user_id(request)
     ws_id = request.state.workspace_id
-    _get_bot_for_user(bot_id, user_id, ws_id, require_owner=True)
+    _get_bot_for_user(bot_id, user_id, ws_id, require_edit=True)
 
     try:
         result = supabase.table("bot_members").select("*").eq("bot_id", bot_id).execute()
@@ -355,7 +368,7 @@ async def list_bot_members(request: Request, bot_id: str):
 async def remove_bot_member(request: Request, bot_id: str, member_id: str):
     user_id = get_clerk_user_id(request)
     ws_id = request.state.workspace_id
-    _get_bot_for_user(bot_id, user_id, ws_id, require_owner=True)
+    _get_bot_for_user(bot_id, user_id, ws_id, require_edit=True)
 
     try:
         supabase.table("bot_members").delete().eq("id", member_id).eq("bot_id", bot_id).execute()
@@ -368,7 +381,7 @@ async def remove_bot_member(request: Request, bot_id: str, member_id: str):
 async def add_bot_member(request: Request, bot_id: str, body: AddMemberRequest):
     user_id = get_clerk_user_id(request)
     ws_id = request.state.workspace_id
-    _get_bot_for_user(bot_id, user_id, ws_id, require_owner=True)
+    _get_bot_for_user(bot_id, user_id, ws_id, require_edit=True)
 
     try:
         existing = supabase.table("bot_members").select("*").eq("bot_id", bot_id).eq("member_email", body.email).execute()
@@ -396,4 +409,87 @@ async def add_bot_member(request: Request, bot_id: str, body: AddMemberRequest):
         clerk_user_id=member.get("clerk_user_id"),
         member_email=member["member_email"],
         joined_at=member["joined_at"],
+    )
+
+
+@router.post("/join", response_model=BotResponse)
+async def join_bot(request: Request, body: JoinBotRequest):
+    user_id = get_clerk_user_id(request)
+    
+    import jwt
+    from config import settings
+    
+    try:
+        payload = jwt.decode(body.code, settings.SUPABASE_SERVICE_KEY, algorithms=["HS256"])
+        bot_id = payload.get("bot_id")
+        access = payload.get("access", "view")
+        
+        bot_res = supabase.table("bots").select("*").eq("id", bot_id).execute()
+        if not bot_res.data:
+            raise HTTPException(status_code=404, detail="Invalid bot code.")
+        bot_data = bot_res.data[0]
+        
+    except jwt.PyJWTError:
+        # Fallback for old codes (widget_key)
+        try:
+            bot_res = supabase.table("bots").select("*").eq("widget_key", body.code).execute()
+            if not bot_res.data:
+                raise HTTPException(status_code=404, detail="Invalid bot code.")
+            bot_data = bot_res.data[0]
+            access = "view"
+        except HTTPException:
+            raise
+        except Exception:
+            raise HTTPException(status_code=404, detail="Invalid bot code.")
+
+    if bot_data.get("clerk_user_id") == user_id:
+        raise HTTPException(status_code=400, detail="You are already the owner of this bot.")
+        
+    try:
+        existing = supabase.table("bot_members").select("*").eq("bot_id", bot_data["id"]).eq("clerk_user_id", user_id).execute()
+        if existing.data:
+            # Update access level if changed
+            current_email = existing.data[0].get("member_email", "")
+            new_email = f"Joined via code [{access}]"
+            if current_email != new_email:
+                supabase.table("bot_members").update({"member_email": new_email}).eq("id", existing.data[0]["id"]).execute()
+                return _format_bot(bot_data, False)
+            raise HTTPException(status_code=400, detail="You are already a member of this bot.")
+    except HTTPException:
+        raise
+    except Exception:
+        pass
+
+    try:
+        supabase.table("bot_members").insert({
+            "bot_id": bot_data["id"],
+            "clerk_user_id": user_id,
+            "member_email": f"Joined via code [{access}]",
+        }).execute()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to join bot: {str(e)}")
+
+    return _format_bot(bot_data, False)
+
+
+@router.post("/generate-invite", response_model=InviteCodeResponse)
+async def generate_invite_code(request: Request, body: GenerateInviteCodeRequest):
+    user_id = get_clerk_user_id(request)
+    ws_id = get_workspace_id(request)
+    
+    bot_data = _get_bot_for_user(body.bot_id, user_id, ws_id, require_edit=True)
+    
+    import jwt
+    from config import settings
+    
+    code = jwt.encode(
+        {"bot_id": bot_data["id"], "access": body.access}, 
+        settings.SUPABASE_SERVICE_KEY, 
+        algorithm="HS256"
+    )
+    
+    return InviteCodeResponse(
+        code=code,
+        bot_name=bot_data["name"],
+        access=body.access
     )

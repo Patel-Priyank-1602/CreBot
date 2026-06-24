@@ -18,7 +18,7 @@ const EmbedPage = lazy(() => import('./pages/EmbedPage'));
 const ChatLogsPage = lazy(() => import('./pages/ChatLogsPage'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 const BillingPage = lazy(() => import('./pages/BillingPage'));
-const AdminPage = lazy(() => import('./pages/AdminPage'));
+const JoinBotPage = lazy(() => import('./pages/JoinBotPage'));
 
 function AppContent() {
   const { theme } = useTheme();
@@ -69,7 +69,7 @@ function AppContent() {
               <Route path="logs" element={<ChatLogsPage />} />
               <Route path="settings" element={<SettingsPage />} />
               <Route path="billing" element={<BillingPage />} />
-              <Route path="admin" element={<AdminPage />} />
+              <Route path="join" element={<JoinBotPage />} />
             </Route>
 
             <Route

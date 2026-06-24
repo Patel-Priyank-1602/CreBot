@@ -27,13 +27,15 @@ async def workspace_middleware(request: Request):
             request.state.workspace_id = ws["id"]
             request.state.user_role = ws.get("role", "user")
         else:
-            supabase.table("workspaces").insert({
+            res = supabase.table("workspaces").insert({
                 "clerk_user_id": clerk_user_id,
                 "name": "My Workspace",
                 "email": "",
                 "role": "user",
                 "plan": "free",
             }).execute()
+            if res.data:
+                request.state.workspace_id = res.data[0]["id"]
             request.state.user_role = "user"
     except Exception:
         print("[WARN] workspace_middleware: workspaces table unavailable — using fallback id")

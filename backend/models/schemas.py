@@ -15,6 +15,7 @@ class BotResponse(BaseModel):
     widget_key: str
     created_at: str
     is_owner: bool = True
+    can_edit: bool = False
     status: str = 'active'
     description: str = ''
     total_files: int = 0
@@ -37,6 +38,21 @@ class BotMemberResponse(BaseModel):
 
 class AddMemberRequest(BaseModel):
     email: str
+
+
+class JoinBotRequest(BaseModel):
+    code: str
+
+
+class GenerateInviteCodeRequest(BaseModel):
+    bot_id: str
+    access: str = "view"  # "view" or "edit"
+
+
+class InviteCodeResponse(BaseModel):
+    code: str
+    bot_name: str
+    access: str
 
 
 class SyncMembersRequest(BaseModel):

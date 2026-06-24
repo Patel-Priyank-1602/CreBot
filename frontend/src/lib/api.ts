@@ -6,7 +6,7 @@ export function setClerkTokenGetter(getter: () => Promise<string | null>) {
   _getToken = getter;
 }
 
-async function fetchApi(endpoint: string, options: RequestInit = {}) {
+async function fetchApi(endpoint: string, options: RequestInit = {}, _retryCount = 0): Promise<any> {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     ...(options.headers as Record<string, string> || {}),
@@ -23,6 +23,12 @@ async function fetchApi(endpoint: string, options: RequestInit = {}) {
     ...options,
     headers,
   });
+
+  // Retry on 401 — Clerk token may not be ready yet on initial page load
+  if (response.status === 401 && _retryCount < 2) {
+    await new Promise((r) => setTimeout(r, 800 * (_retryCount + 1)));
+    return fetchApi(endpoint, options, _retryCount + 1);
+  }
 
   const data = await response.json();
   if (!response.ok) {
@@ -68,6 +74,8 @@ export const api = {
     getMembers: (botId: string) => fetchApi(`/bots/${botId}/members`),
     removeMember: (botId: string, memberId: string) => fetchApi(`/bots/${botId}/members/${memberId}`, { method: 'DELETE' }),
     addMember: (botId: string, email: string) => fetchApi(`/bots/${botId}/members/add`, { method: 'POST', body: JSON.stringify({ email }) }),
+    join: (code: string) => fetchApi('/bots/join', { method: 'POST', body: JSON.stringify({ code }) }),
+    generateInvite: (botId: string, access: 'view' | 'edit') => fetchApi('/bots/generate-invite', { method: 'POST', body: JSON.stringify({ bot_id: botId, access }) }),
   },
   members: {
     sync: (email: string) => fetchApi(`/invites/sync`, { method: 'POST', body: JSON.stringify({ email }) }),

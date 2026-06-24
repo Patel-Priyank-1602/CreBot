@@ -1,7 +1,7 @@
 import { NavLink, Link } from 'react-router-dom';
 import {
   LayoutDashboard, Bot, FileText, MessageSquare, Code, CreditCard, Settings, Shield,
-  ChevronLeft, MessageCircle
+  ChevronLeft, MessageCircle, Users
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import CreBotLogo from '../common/CreBotLogo';
@@ -15,7 +15,7 @@ const sidebarItems = [
   { label: 'Embed', icon: Code, href: '/dashboard/embed' },
   { label: 'Billing', icon: CreditCard, href: '/dashboard/billing' },
   { label: 'Settings', icon: Settings, href: '/dashboard/settings' },
-  { label: 'Admin', icon: Shield, href: '/dashboard/admin' },
+  { label: 'Join Bot', icon: Users, href: '/dashboard/join' },
 ];
 
 interface SidebarProps {

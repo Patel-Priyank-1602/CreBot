@@ -83,32 +83,44 @@ export default function ChatbotDetail() {
               </Button>
             </Card>
 
-            <Card className="p-5">
-              <div className="flex items-center gap-3 pb-4 border-b border-[var(--border-soft)] mb-4">
-                <div className="w-8 h-8 rounded-lg bg-[var(--bg-input)] border border-[var(--border-soft)] flex items-center justify-center text-[var(--text-primary)]">
-                  <Bot size={16} />
+            <div className="space-y-6">
+              <Card className="p-5">
+                <div className="flex items-center gap-3 pb-4 border-b border-[var(--border-soft)] mb-4">
+                  <div className="w-8 h-8 rounded-lg bg-[var(--bg-input)] border border-[var(--border-soft)] flex items-center justify-center text-[var(--text-primary)]">
+                    <Bot size={16} />
+                  </div>
+                  <h3 className="text-sm font-semibold text-[var(--text-primary)]">Quick Stats</h3>
                 </div>
-                <h3 className="text-sm font-semibold text-[var(--text-primary)]">Quick Stats</h3>
-              </div>
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-[var(--text-muted)]">Status</span>
-                  <span className="text-[var(--text-primary)] capitalize">{bot.status}</span>
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-[var(--text-muted)]">Status</span>
+                    <span className="text-[var(--text-primary)] capitalize">{bot.status}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-[var(--text-muted)]">Conversations</span>
+                    <span className="text-[var(--text-primary)]">{bot.total_chats}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-[var(--text-muted)]">Files</span>
+                    <span className="text-[var(--text-primary)]">{bot.total_files}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-[var(--text-muted)]">Last Updated</span>
+                    <span className="text-[var(--text-primary)]">{formatDate(bot.updated_at)}</span>
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-[var(--text-muted)]">Conversations</span>
-                  <span className="text-[var(--text-primary)]">{bot.total_chats}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-[var(--text-muted)]">Files</span>
-                  <span className="text-[var(--text-primary)]">{bot.total_files}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-[var(--text-muted)]">Last Updated</span>
-                  <span className="text-[var(--text-primary)]">{formatDate(bot.updated_at)}</span>
-                </div>
-              </div>
-            </Card>
+              </Card>
+
+              <Card className="p-5">
+                <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-2">Members & Advanced Settings</h3>
+                <p className="text-xs text-[var(--text-muted)] mb-4">
+                  Generate access codes, invite team members, and customize widget settings.
+                </p>
+                <Button variant="primary" className="w-full justify-center" size="sm" onClick={() => navigate(`/bot/${bot.id}`)}>
+                  Open Advanced Editor
+                </Button>
+              </Card>
+            </div>
           </div>
         </>
       )}

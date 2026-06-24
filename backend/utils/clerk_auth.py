@@ -73,7 +73,11 @@ def get_clerk_user_id(request: Request) -> str:
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=401, detail="Token has expired. Please sign in again.")
     except jwt.InvalidTokenError as e:
+        with open("auth_error.log", "a") as f:
+            f.write(f"Invalid Token Error: {e}\n")
         raise HTTPException(status_code=401, detail=f"Invalid token: {str(e)}")
     except Exception as e:
+        with open("auth_error.log", "a") as f:
+            f.write(f"Error: {e}\n")
         print(f"[Clerk Auth Error] {e}")
         raise HTTPException(status_code=401, detail=f"Authentication failed: {str(e)}")

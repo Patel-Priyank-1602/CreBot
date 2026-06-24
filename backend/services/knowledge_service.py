@@ -25,7 +25,13 @@ def _validate_bot_ownership(bot_id: str, user_id: str, workspace_id: Optional[st
             raise HTTPException(status_code=404, detail="Bot not found")
         b = bot.data[0]
         if b.get("clerk_user_id") != user_id:
-            if workspace_id and b.get("workspace_id") and str(b["workspace_id"]) != str(workspace_id):
+            try:
+                member = supabase.table("bot_members").select("*").eq("bot_id", bot_id).eq("clerk_user_id", user_id).execute()
+                if not member.data or not member.data[0].get("member_email", "").endswith("[edit]"):
+                    raise HTTPException(status_code=403, detail="Access denied: bot does not belong to you or you lack edit access.")
+            except HTTPException:
+                raise
+            except Exception:
                 raise HTTPException(status_code=403, detail="Access denied: bot does not belong to you")
         return b
     except HTTPException:
@@ -95,6 +101,9 @@ def _process_file_text(file_id: str, bot_id: Optional[str], text: str):
     from services.chunking import chunk_faq_text
     from services.embedding import embed_texts
 
+    # Remove null bytes to prevent PostgreSQL errors
+    text = text.replace("\x00", "").replace("\u0000", "")
+
     chunks = chunk_faq_text(text) if len(text) > 20 else [text]
     if not chunks:
         chunks = [text]
@@ -126,7 +135,7 @@ def _process_file_text(file_id: str, bot_id: Optional[str], text: str):
 
 def list_files(user_id: str, bot_id: str):
     try:
-        query = supabase.table("knowledge_files").select("*").eq("user_id", user_id).eq("bot_id", bot_id).order("created_at", desc=True)
+        query = supabase.table("knowledge_files").select("*").eq("bot_id", bot_id).order("created_at", desc=True)
         result = query.execute()
         return result.data
     except Exception as e:
@@ -137,7 +146,7 @@ def list_files(user_id: str, bot_id: str):
 
 def get_file(file_id: str, user_id: str, bot_id: Optional[str] = None):
     try:
-        query = supabase.table("knowledge_files").select("*").eq("id", file_id).eq("user_id", user_id)
+        query = supabase.table("knowledge_files").select("*").eq("id", file_id)
         if bot_id:
             query = query.eq("bot_id", bot_id)
         result = query.execute()
@@ -192,6 +201,8 @@ async def upload_file(file: UploadFile, user_id: str, uploaded_by: str, bot_id: 
             file_path.unlink()
         if _is_missing_table_error(e):
             raise HTTPException(status_code=500, detail=MISSING_TABLE_MSG)
+        with open("upload_error.log", "a") as f:
+            f.write(f"Upload Error: {e}\n")
         raise HTTPException(status_code=500, detail="Upload failed: " + str(e))
 
     _set_status(file_id, "processing")
@@ -212,6 +223,8 @@ async def upload_file(file: UploadFile, user_id: str, uploaded_by: str, bot_id: 
         _set_status(file_id, "failed", "Text extraction failed")
         raise
     except Exception as e:
+        with open("upload_error.log", "a") as f:
+            f.write(f"Processing Error: {e}\n")
         _set_status(file_id, "failed", str(e))
         raise HTTPException(status_code=500, detail=f"Processing failed: {str(e)}")
 
@@ -230,7 +243,7 @@ def delete_file(file_id: str, user_id: str, bot_id: str):
     if file_path.exists():
         file_path.unlink()
     try:
-        supabase.table("knowledge_files").delete().eq("id", file_id).eq("user_id", user_id).eq("bot_id", bot_id).execute()
+        supabase.table("knowledge_files").delete().eq("id", file_id).eq("bot_id", bot_id).execute()
         supabase.table("knowledge_chunks").delete().eq("file_id", file_id).eq("bot_id", bot_id).execute()
     except Exception:
         pass

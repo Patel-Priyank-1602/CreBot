@@ -52,18 +52,7 @@ function MessageBubble({ role, content, sources, onRegenerate }: MessageBubblePr
           {content}
         </div>
 
-        {sources && sources.length > 0 && role === 'assistant' && (
-          <div className="flex flex-wrap gap-1.5">
-            {sources.map((source, i) => (
-              <span
-                key={i}
-                className="text-[10px] px-2 py-0.5 rounded-md bg-[var(--bg-input)] border border-[var(--border-soft)] text-[var(--text-muted)] font-mono"
-              >
-                {source.name} ({Math.round(source.score * 100)}%)
-              </span>
-            ))}
-          </div>
-        )}
+
 
         {role === 'assistant' && (
           <div className="flex items-center gap-1 px-1">

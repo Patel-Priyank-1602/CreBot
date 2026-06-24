@@ -17,14 +17,8 @@ async def dashboard_chat(request: Request, body: DashboardChatRequest):
     ws_id = request.state.workspace_id
     user_id = request.state.clerk_user_id
 
-    bot_result = supabase.table("bots").select("id, workspace_id, clerk_user_id").eq("id", body.bot_id).execute()
-    if not bot_result.data:
-        raise HTTPException(status_code=404, detail="Bot not found")
-    bot = bot_result.data[0]
-    
-    is_authorized = str(bot.get("workspace_id")) == str(ws_id) or str(bot.get("clerk_user_id")) == str(user_id)
-    if not is_authorized:
-        raise HTTPException(status_code=403, detail="Access denied")
+    from routes.bots import _get_bot_for_user
+    _get_bot_for_user(body.bot_id, user_id, ws_id)
 
     history = [{"role": m.role, "content": m.content} for m in body.chat_history]
 

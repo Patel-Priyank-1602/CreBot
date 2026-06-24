@@ -24,6 +24,12 @@ async def get_chat_logs(
     offset: int = Query(0),
 ):
     ws_id = request.state.workspace_id
+    user_id = request.state.clerk_user_id
+    
+    if chatbot_id:
+        from routes.bots import _get_bot_for_user
+        _get_bot_for_user(chatbot_id, user_id, ws_id)
+
     logs, total = list_logs(ws_id, search, chatbot_id, status, from_date, to_date, limit, offset)
     return {"logs": logs, "total": total, "limit": limit, "offset": offset}
 
@@ -31,7 +37,8 @@ async def get_chat_logs(
 @router.get("/{log_id}")
 async def get_chat_log(request: Request, log_id: str):
     ws_id = request.state.workspace_id
-    log = get_log(log_id, ws_id)
+    user_id = request.state.clerk_user_id
+    log = get_log(log_id, ws_id, user_id)
     if not log:
         from fastapi import HTTPException
         raise HTTPException(status_code=404, detail="Log not found")
@@ -41,7 +48,8 @@ async def get_chat_log(request: Request, log_id: str):
 @router.delete("/{log_id}")
 async def delete_chat_log(request: Request, log_id: str):
     ws_id = request.state.workspace_id
-    delete_log(log_id, ws_id)
+    user_id = request.state.clerk_user_id
+    delete_log(log_id, ws_id, user_id)
     return {"message": "Log deleted successfully"}
 
 

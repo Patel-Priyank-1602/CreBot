@@ -19,10 +19,24 @@ from routes.chat import router as chat_router
 
 limiter = Limiter(key_func=get_remote_address)
 
+from contextlib import asynccontextmanager
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    from utils.clerk_auth import _get_jwks_client
+    try:
+        # Pre-fetch JWKS to avoid cold start latency/errors on concurrent initial requests
+        jwks_client = _get_jwks_client()
+        jwks_client.get_jwk_set()
+    except Exception as e:
+        print(f"[Startup Warning] Failed to pre-fetch JWKS: {e}")
+    yield
+
 app = FastAPI(
     title="CreBot API",
     description="AI Customer Support Chatbot Builder",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
 app.state.limiter = limiter

@@ -13,12 +13,14 @@ def list_logs(
     offset: int = 0,
 ):
     try:
-        query = supabase.table("chat_logs").select("*", count="exact").eq("workspace_id", workspace_id)
+        query = supabase.table("chat_logs").select("*", count="exact")
+        if chatbot_id:
+            query = query.eq("chatbot_id", chatbot_id)
+        else:
+            query = query.eq("workspace_id", workspace_id)
 
         if search:
             query = query.or_(f"user_question.ilike.%{search}%,bot_answer.ilike.%{search}%")
-        if chatbot_id:
-            query = query.eq("chatbot_id", chatbot_id)
         if status:
             query = query.eq("status", status)
         if from_date:
@@ -58,19 +60,29 @@ def list_logs(
     return logs, total
 
 
-def get_log(log_id: str, workspace_id: str):
+def get_log(log_id: str, workspace_id: str, user_id: str):
     try:
-        result = supabase.table("chat_logs").select("*").eq("id", log_id).eq("workspace_id", workspace_id).execute()
+        result = supabase.table("chat_logs").select("*").eq("id", log_id).execute()
         if not result.data:
             return None
-        return result.data[0]
+        log = result.data[0]
+        if log.get("workspace_id") == workspace_id:
+            return log
+        if log.get("chatbot_id"):
+            from routes.bots import _get_bot_for_user
+            _get_bot_for_user(log["chatbot_id"], user_id, workspace_id)
+            return log
+        return None
     except Exception:
         return None
 
 
-def delete_log(log_id: str, workspace_id: str):
+def delete_log(log_id: str, workspace_id: str, user_id: str):
+    log = get_log(log_id, workspace_id, user_id)
+    if not log:
+        return
     try:
-        supabase.table("chat_logs").delete().eq("id", log_id).eq("workspace_id", workspace_id).execute()
+        supabase.table("chat_logs").delete().eq("id", log_id).execute()
     except Exception:
         pass
 

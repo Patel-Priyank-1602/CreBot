@@ -19,10 +19,9 @@ def _get_bot_safe(chatbot_id: str, workspace_id: str):
     return None
 
 
-def get_embed_settings(workspace_id: str, chatbot_id: str):
-    b = _get_bot_safe(chatbot_id, workspace_id)
-    if not b:
-        raise HTTPException(status_code=404, detail="Chatbot not found")
+from routes.bots import _get_bot_for_user
+def get_embed_settings(workspace_id: str, chatbot_id: str, user_id: str):
+    b = _get_bot_for_user(chatbot_id, user_id, workspace_id, require_edit=True)
 
     embed_id = b.get("embed_id") or b.get("widget_key", "")
 
@@ -37,8 +36,8 @@ def get_embed_settings(workspace_id: str, chatbot_id: str):
     }
 
 
-def update_embed_settings(workspace_id: str, chatbot_id: str, data: dict):
-    get_embed_settings(workspace_id, chatbot_id)
+def update_embed_settings(workspace_id: str, chatbot_id: str, data: dict, user_id: str):
+    get_embed_settings(workspace_id, chatbot_id, user_id)
 
     update_data = {}
     if "welcome_message" in data:
@@ -57,11 +56,11 @@ def update_embed_settings(workspace_id: str, chatbot_id: str, data: dict):
         except Exception:
             pass
 
-    return get_embed_settings(workspace_id, chatbot_id)
+    return get_embed_settings(workspace_id, chatbot_id, user_id)
 
 
-def get_embed_script(workspace_id: str, chatbot_id: str):
-    embed_settings = get_embed_settings(workspace_id, chatbot_id)
+def get_embed_script(workspace_id: str, chatbot_id: str, user_id: str):
+    embed_settings = get_embed_settings(workspace_id, chatbot_id, user_id)
 
     snippet = f"""<!-- CreBot Chat Widget -->
 <script
