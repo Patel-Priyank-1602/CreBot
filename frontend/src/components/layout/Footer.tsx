@@ -9,7 +9,7 @@ const footerLinks = {
 export default function Footer() {
   return (
     <footer className="border-t border-[var(--border-soft)] bg-[var(--bg-main)]">
-      <div className="max-w-7xl mx-auto px-6 py-12">
+      <div className="w-full px-4 lg:px-8 py-12">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center gap-2.5 mb-4">

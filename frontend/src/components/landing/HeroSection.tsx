@@ -127,7 +127,7 @@ function AnimatedMockChat() {
         <div className="p-6 pt-3 bg-[var(--bg-main)] rounded-b-[2rem]">
           <div className="bg-[var(--bg-input)] border border-[var(--border-soft)] focus-within:border-[var(--btn-bg)] transition-colors rounded-full px-5 py-3.5 flex items-center gap-3 relative shadow-inner">
             <div className="flex-1 relative h-6 flex items-center overflow-hidden">
-              {step === 0 && <span className="text-[14px] text-[var(--text-muted)] font-medium">Ask about features, pricing, docs...</span>}
+              {step !== 1 && <span className="text-[14px] text-[var(--text-muted)] font-medium">Ask about features, pricing, docs...</span>}
               {step === 1 && (
                 <motion.div
                   initial={{ width: 0 }}
@@ -151,66 +151,94 @@ function AnimatedMockChat() {
 
 export default function HeroSection() {
   return (
-    <section id="product" className="relative min-h-screen flex items-center overflow-hidden pt-[72px] scroll-mt-[72px]">
+    <section id="product" className="relative min-h-screen flex items-center overflow-hidden pt-[90px] scroll-mt-[90px]">
       <ParticleBackground />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-12 lg:py-16">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div>
+      <div className="relative z-10 w-full px-4 lg:px-8 py-12 lg:py-24">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="max-w-xl">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.15
+                  }
+                }
+              }}
             >
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-[var(--text-primary)] leading-[1.1] tracking-tight mb-6 text-balance">
-                Turn Your Knowledge Base Into an{' '}
-                <span className="text-[var(--text-primary)] opacity-80">Intelligent Chatbot</span>
+              {/* <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--border-soft)] bg-[var(--bg-elevated)] mb-8 shadow-sm">
+                <span className="w-2 h-2 rounded-full bg-[#E05A00] animate-pulse" />
+                <span className="text-sm font-medium text-[var(--text-muted)] tracking-wide">CreBot 2.0 is now live</span>
+              </motion.div> */}
+
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-display font-bold text-[var(--text-primary)] leading-[1.1] tracking-tight mb-8 text-balance">
+                <motion.span variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }} className="block">Zero-Speculation</motion.span>
+                <motion.span variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }} className="block text-transparent bg-clip-text bg-gradient-to-r from-[#E05A00] to-orange-400">AI Chatbots.</motion.span>
               </h1>
             </motion.div>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.15 }}
-              className="text-lg text-[var(--text-muted)] leading-relaxed mb-8 max-w-lg"
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="text-lg sm:text-xl text-[var(--text-muted)] leading-relaxed mb-10 max-w-lg font-light"
             >
-              Upload documents, build isolated knowledge spaces, and deploy AI chatbots that answer with context from your own data.
+              Upload documents and deploy AI chatbots that answer with precise context from your own data. No hallucinations, just grounded answers.
             </motion.p>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-wrap gap-4 mb-8"
+              transition={{ duration: 0.8, delay: 0.55 }}
+              className="flex flex-wrap gap-4 mb-10"
             >
               <SignInButton mode="modal">
-                <Button variant="primary" size="lg">
+                <Button variant="primary" className="px-8 py-4 text-lg rounded-xl shadow-[0_0_20px_rgba(224,90,0,0.4)] hover:shadow-[0_0_30px_rgba(224,90,0,0.6)] transition-all">
                   Start Building
-                  <ArrowRight size={18} />
+                  <ArrowRight size={20} className="ml-2" />
                 </Button>
               </SignInButton>
-              <Button variant="secondary" size="lg">
-                <Play size={18} />
+              <Button variant="secondary" className="px-8 py-4 text-lg rounded-xl">
+                <Play size={20} className="mr-2" />
                 View Demo
               </Button>
             </motion.div>
 
-            <motion.p
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.45 }}
-              className="text-sm text-[var(--text-muted)]"
+              transition={{ duration: 1, delay: 0.8 }}
+              className="flex items-center gap-4 text-sm text-[var(--text-muted)] font-medium"
             >
-              Built for teams, SaaS products, documentation portals, and internal knowledge systems.
-            </motion.p>
+              <div className="flex -space-x-2">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className={`w-8 h-8 rounded-full border-2 border-[var(--bg-main)] bg-[var(--bg-elevated)] flex items-center justify-center relative z-${10 - i}`}>
+                     <span className="text-[10px] text-[var(--text-primary)]">{['JD', 'AL', 'MR', 'SK'][i-1]}</span>
+                  </div>
+                ))}
+              </div>
+              <span>Joined by 1,000+ developers</span>
+            </motion.div>
           </div>
 
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            initial={{ opacity: 0, scale: 0.85, rotateY: 15 }}
+            animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+            transition={{ duration: 1.2, type: "spring", bounce: 0.2, delay: 0.3 }}
+            className="relative lg:ml-auto w-full max-w-[440px] mx-auto perspective-1000"
           >
-            <AnimatedMockChat />
+            <motion.div
+              animate={{ y: [0, -12, 0] }}
+              transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+            >
+              <div className="absolute -inset-6 bg-gradient-to-tr from-[#E05A00]/20 to-orange-400/10 blur-3xl rounded-[4rem] -z-10" />
+              <div className="absolute -inset-1 bg-gradient-to-b from-white/10 to-transparent blur-sm rounded-[2.5rem] -z-10" />
+              <AnimatedMockChat />
+            </motion.div>
           </motion.div>
         </div>
       </div>

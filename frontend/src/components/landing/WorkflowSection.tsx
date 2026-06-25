@@ -13,7 +13,7 @@ const steps = [
 export default function WorkflowSection() {
   return (
     <section id="docs" className="py-24 scroll-mt-[72px]">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="w-full px-4 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

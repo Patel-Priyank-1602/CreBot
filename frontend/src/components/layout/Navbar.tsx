@@ -2,16 +2,19 @@ import { Link, useLocation } from 'react-router-dom';
 import { SignInButton, useUser } from '@clerk/clerk-react';
 import { Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { cn } from '../../lib/utils';
 import Button from '../common/Button';
 import CreBotLogo from '../common/CreBotLogo';
 
 const navLinks = [
-  { label: 'Product', href: '#product' },
-  { label: 'Features', href: '#features' },
-  { label: 'Docs', href: '#docs' },
-  { label: 'Security', href: '#security' },
-  { label: 'Pricing', href: '#pricing' },
+  { label: 'Product', href: '/#product' },
+  { label: 'Features', href: '/#features' },
+  { label: 'Docs', href: '/#docs' },
+  { label: 'Use Case', href: '/#use-cases' },
+  { label: 'About', href: '/#about' },
+  { label: 'Contact', href: '/#contact' },
+  { label: 'FAQ', href: '/#faq' },
 ];
 
 export default function Navbar() {
@@ -42,52 +45,57 @@ export default function Navbar() {
   }, [isLanding]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 h-[72px] border-b border-[var(--border-soft)]"
-      style={{ background: 'var(--body-bg)', backdropFilter: 'blur(16px)' }}>
-      <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+    <nav className="fixed top-0 left-0 right-0 z-50 h-[90px] border-b border-[var(--border-soft)]"
+      style={{ background: '#000000', backdropFilter: 'blur(16px)' }}>
+      <div className="w-full px-4 md:px-8 h-full flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-[var(--btn-bg)] flex items-center justify-center">
-            <CreBotLogo size={20} className="text-[var(--btn-text)] w-5 h-5" />
-          </div>
-          <span className="font-display font-bold text-lg text-[var(--text-primary)] tracking-tight">CreBot</span>
+          <img src="/favtag.png" alt="CreBot Logo" className="h-12 w-auto object-contain" />
         </Link>
 
-        {isLanding && (
-          <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => {
-              const isActive = activeSection === link.href.replace('#', '');
-              return (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className={cn(
-                    'px-3 py-2 text-sm rounded-lg transition-colors',
-                    isActive
-                      ? 'text-[var(--text-primary)] bg-[var(--hover-bg)] font-medium'
-                      : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
-                  )}
-                >
-                  {link.label}
-                </a>
-              );
-            })}
-          </div>
-        )}
+        <div className="hidden md:flex items-center gap-2">
+          {navLinks.map((link) => {
+            const isActive = link.href.includes('#') 
+              ? activeSection === link.href.replace('/#', '')
+              : location.pathname === link.href;
 
-        <div className="hidden md:flex items-center gap-3">
+            return (
+              <a
+                key={link.label}
+                href={link.href}
+                className={cn(
+                  'relative px-4 py-2 text-base rounded-lg transition-colors',
+                  isActive
+                    ? 'text-[var(--text-primary)] font-medium'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                )}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="nav-pill"
+                    className="absolute inset-0 bg-[var(--hover-bg)] rounded-lg z-0"
+                    transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+                <span className="relative z-10">{link.label}</span>
+              </a>
+            );
+          })}
+        </div>
+
+        <div className="hidden md:flex items-center gap-5">
           {isSignedIn ? (
             <Link to="/dashboard">
-              <Button variant="primary" size="sm">Dashboard</Button>
+              <Button variant="primary">Dashboard</Button>
             </Link>
           ) : (
             <>
               <SignInButton mode="modal">
-                <button className="px-4 py-2 text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
+                <button className="px-5 py-2.5 text-base font-medium text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
                   Login
                 </button>
               </SignInButton>
               <SignInButton mode="modal">
-                <Button variant="primary" size="sm">Get Started</Button>
+                <Button variant="primary">Get Started</Button>
               </SignInButton>
             </>
           )}

@@ -6,7 +6,7 @@ import Card from '../components/common/Card';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
 import ErrorState from '../components/common/ErrorState';
-import { getWorkspace, updateWorkspaceName, listApiKeys, createApiKey, revokeApiKey, exportData, Workspace, ApiKey, CreatedApiKey } from '../services/settingsService';
+import { listApiKeys, createApiKey, revokeApiKey, exportData, ApiKey, CreatedApiKey } from '../services/settingsService';
 
 function SectionIcon({ icon: Icon, className }: { icon: any; className?: string }) {
   return (
@@ -17,13 +17,9 @@ function SectionIcon({ icon: Icon, className }: { icon: any; className?: string 
 }
 
 export default function SettingsPage() {
-  const [workspace, setWorkspace] = useState<Workspace | null>(null);
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [wsName, setWsName] = useState('');
-  const [savingWs, setSavingWs] = useState(false);
-  const [wsSaved, setWsSaved] = useState(false);
   const [creatingKey, setCreatingKey] = useState(false);
   const [newKey, setNewKey] = useState<CreatedApiKey | null>(null);
   const [exporting, setExporting] = useState(false);
@@ -31,10 +27,8 @@ export default function SettingsPage() {
   const load = () => {
     setLoading(true);
     setError('');
-    Promise.all([getWorkspace(), listApiKeys()])
-      .then(([ws, keys]) => {
-        setWorkspace(ws);
-        setWsName(ws.name);
+    Promise.all([listApiKeys()])
+      .then(([keys]) => {
         setApiKeys(keys);
       })
       .catch((e) => setError(e.message))
@@ -43,19 +37,7 @@ export default function SettingsPage() {
 
   useEffect(() => { load(); }, []);
 
-  const handleSaveWorkspace = async () => {
-    setSavingWs(true);
-    try {
-      const updated = await updateWorkspaceName(wsName);
-      setWorkspace(updated);
-      setWsSaved(true);
-      setTimeout(() => setWsSaved(false), 2000);
-    } catch (e: any) {
-      alert(e.message);
-    } finally {
-      setSavingWs(false);
-    }
-  };
+
 
   const handleCreateKey = async () => {
     setCreatingKey(true);
@@ -91,7 +73,7 @@ export default function SettingsPage() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `workspace-export.json`;
+      a.download = `data-export.json`;
       a.click();
       URL.revokeObjectURL(url);
     } catch (e: any) {
@@ -114,7 +96,7 @@ export default function SettingsPage() {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       <div className="mb-10">
         <h1 className="text-2xl font-display font-bold text-[var(--text-primary)] mb-1">Settings</h1>
-        <p className="text-sm text-[var(--text-muted)]">Manage your workspace, API keys, and data controls.</p>
+        <p className="text-sm text-[var(--text-muted)]">Manage your API keys and data controls.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-5xl">
@@ -136,24 +118,7 @@ export default function SettingsPage() {
           </Link>
         </Card>
 
-        {/* Workspace Settings
-        <Card className="p-6">
-          <div className="flex items-center gap-4 mb-6">
-            <SectionIcon icon={SettingsIcon} />
-            <div>
-              <h3 className="text-base font-semibold text-[var(--text-primary)]">Workspace Settings</h3>
-              <p className="text-sm text-[var(--text-muted)]">Configure your workspace name and preferences.</p>
-            </div>
-          </div>
-          <div className="space-y-4 max-w-sm">
-            <Input label="Workspace Name" placeholder="My Workspace"
-              value={wsName} onChange={(e) => setWsName(e.target.value)} />
-            <Button variant="primary" size="sm" onClick={handleSaveWorkspace} disabled={savingWs}>
-              {savingWs ? <Loader size={14} className="animate-spin" /> : wsSaved ? <Check size={14} /> : null}
-              {wsSaved ? 'Saved!' : 'Save Changes'}
-            </Button>
-          </div>
-        </Card> */}
+
 
         {/* API Keys */}
         <Card className="p-6">
@@ -224,7 +189,7 @@ export default function SettingsPage() {
             <SectionIcon icon={Download} />
             <div>
               <h3 className="text-base font-semibold text-[var(--text-primary)]">Data Export</h3>
-              <p className="text-sm text-[var(--text-muted)]">Export all your workspace data as a JSON file.</p>
+              <p className="text-sm text-[var(--text-muted)]">Export all your data as a JSON file.</p>
             </div>
           </div>
           <Button variant="secondary" size="sm" onClick={handleExport} disabled={exporting}>
@@ -253,10 +218,7 @@ export default function SettingsPage() {
               <FileText size={14} />
               Delete Knowledge Base
             </Button>
-            <Button variant="danger" size="sm" disabled>
-              <Trash2 size={14} />
-              Delete Workspace
-            </Button>
+
           </div>
         </Card>
 

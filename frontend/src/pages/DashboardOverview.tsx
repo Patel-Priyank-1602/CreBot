@@ -42,7 +42,7 @@ export default function DashboardOverview() {
     <div>
       <div className="mb-8">
         <h1 className="text-2xl font-display font-bold text-[var(--text-primary)] mb-1">Overview</h1>
-        <p className="text-sm text-[var(--text-muted)]">Welcome back. Here is your workspace summary.</p>
+        <p className="text-sm text-[var(--text-muted)]">Welcome back. Here is your overview.</p>
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">

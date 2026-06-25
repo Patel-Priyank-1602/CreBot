@@ -16,6 +16,7 @@ const sidebarItems = [
   { label: 'Billing', icon: CreditCard, href: '/dashboard/billing', color: 'text-teal-500' },
   { label: 'Settings', icon: Settings, href: '/dashboard/settings', color: 'text-[var(--text-muted)]' },
   { label: 'Join Bot', icon: Users, href: '/dashboard/join', color: 'text-cyan-500' },
+
 ];
 
 interface SidebarProps {

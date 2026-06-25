@@ -20,6 +20,7 @@ const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 const BillingPage = lazy(() => import('./pages/BillingPage'));
 const JoinBotPage = lazy(() => import('./pages/JoinBotPage'));
 
+
 function AppContent() {
   const { theme } = useTheme();
 
@@ -70,6 +71,7 @@ function AppContent() {
               <Route path="settings" element={<SettingsPage />} />
               <Route path="billing" element={<BillingPage />} />
               <Route path="join" element={<JoinBotPage />} />
+
             </Route>
 
             <Route

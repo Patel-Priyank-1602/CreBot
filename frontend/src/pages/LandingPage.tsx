@@ -5,7 +5,10 @@ import HeroSection from '../components/landing/HeroSection';
 import FeatureGrid from '../components/landing/FeatureGrid';
 import WorkflowSection from '../components/landing/WorkflowSection';
 import SecuritySection from '../components/landing/SecuritySection';
-import PricingPreview from '../components/landing/PricingPreview';
+import UseCasesSection from '../components/landing/UseCasesSection';
+import AboutSection from '../components/landing/AboutSection';
+import ContactSection from '../components/landing/ContactSection';
+import FAQSection from '../components/landing/FAQSection';
 import CTASection from '../components/landing/CTASection';
 
 export default function LandingPage() {
@@ -21,7 +24,10 @@ export default function LandingPage() {
       <FeatureGrid />
       <WorkflowSection />
       <SecuritySection />
-      <PricingPreview />
+      <UseCasesSection />
+      <AboutSection />
+      <ContactSection />
+      <FAQSection />
       <CTASection />
       <Footer />
     </motion.div>

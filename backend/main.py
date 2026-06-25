@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+import os
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
@@ -62,6 +64,8 @@ app.include_router(settings_router, prefix="/api/settings", tags=["Settings"])
 app.include_router(admin_router, prefix="/api/admin", tags=["Admin"])
 app.include_router(chat_router, prefix="/api/chat", tags=["Chat"])
 
+widget_dir = os.path.join(os.path.dirname(__file__), "..", "widget")
+app.mount("/widget", StaticFiles(directory=widget_dir), name="widget")
 
 @app.get("/", tags=["Health"])
 async def health_check():
