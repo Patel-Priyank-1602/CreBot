@@ -17,8 +17,9 @@ export default function LandingPage() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="bg-[var(--body-bg)] min-h-screen"
+      className="bg-[var(--bg-main)] min-h-screen"
     >
+      <div className="grain" id="grain"></div>
       <Navbar />
       <HeroSection />
       <FeatureGrid />

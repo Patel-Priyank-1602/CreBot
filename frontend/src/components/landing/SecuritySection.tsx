@@ -1,40 +1,49 @@
 import { motion } from 'framer-motion';
 import { Share2, Eye, Edit3 } from 'lucide-react';
-import Card from '../common/Card';
 
 const points = [
-  { icon: Eye, title: 'View Access', desc: 'Grants access to view the bot, chat with it, and copy the embed code.' },
-  { icon: Edit3, title: 'Edit Access', desc: 'Grants full access to the bot to scan knowledge bases, write configs, and edit everything.' },
+  { icon: Eye, title: 'VIEW ACCESS', desc: 'Grants access to view the bot, chat with it, and copy the embed code. No configuration changes permitted.' },
+  { icon: Edit3, title: 'EDIT ACCESS', desc: 'Grants full access to the bot to scan knowledge bases, write configs, and edit absolute parameters.' },
 ];
 
 export default function SecuritySection() {
   return (
-    <section className="py-24 bg-[var(--bg-secondary)] scroll-mt-[72px]">
-      <div className="w-full px-4 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+    <section
+      id="collaboration"
+      className="relative py-28 lg:py-36 border-t border-[var(--border-default)] bg-[var(--bg-main)] overflow-hidden"
+    >
+      <div className="w-full max-w-[1600px] mx-auto px-6 lg:px-10">
+
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="w-14 h-14 rounded-2xl bg-[#000000] border border-[var(--border-soft)] flex items-center justify-center text-[var(--text-primary)] mb-6 shadow-sm">
-              <Share2 size={24} className="text-[#E05A00]" />
+            <div className="section-marker mb-6">
+              <span>04 — Collaboration</span>
             </div>
-            <h2 className="text-4xl sm:text-5xl font-display font-bold text-[var(--text-primary)] mb-6 tracking-tight text-balance">
-              Collaborate and <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E05A00] to-orange-400">Share Bots.</span>
+
+            <h2 className="font-display text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-white mb-8">
+              SHARE BOTS.<br />
+              <span className="text-stroke">CONTROL</span><br />
+              <span className="text-[var(--btn-bg)]">ACCESS.</span>
             </h2>
-            <p className="text-lg text-[var(--text-muted)] mb-10 leading-relaxed max-w-lg">
-              You can easily share your bots with your team. Control exactly who has access to view and embed, versus who can edit the core configurations.
+
+            <p className="text-[var(--text-secondary)] text-lg leading-relaxed font-sans mb-12 max-w-xl">
+              Engineered for teams. Distribute bots across departments while strictly controlling who dictates the system parameters.
             </p>
-            <div className="space-y-8">
+
+            <div className="space-y-10 pt-8 border-t border-[var(--border-soft)]">
               {points.map((point) => (
-                <div key={point.title} className="flex gap-5 group">
-                  <div className="w-12 h-12 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-soft)] flex items-center justify-center text-[var(--text-primary)] shrink-0 group-hover:border-[#E05A00]/50 transition-colors">
-                    <point.icon size={20} className={point.title === 'Edit Access' ? 'text-[#E05A00]' : 'text-emerald-500'} />
+                <div key={point.title} className="flex gap-6 group">
+                  <div className="w-12 h-12 border border-[var(--border-soft)] flex items-center justify-center text-[var(--text-primary)] shrink-0 group-hover:border-[var(--btn-bg)] group-hover:bg-[var(--btn-bg)] group-hover:text-black transition-colors">
+                    <point.icon size={20} />
                   </div>
                   <div>
-                    <h4 className="text-xl font-bold text-[var(--text-primary)] mb-2">{point.title}</h4>
-                    <p className="text-[var(--text-secondary)] leading-relaxed">{point.desc}</p>
+                    <h4 className="font-heading tracking-widest text-xl text-white uppercase mb-2 group-hover:text-[var(--btn-bg)] transition-colors">{point.title}</h4>
+                    <p className="text-[var(--text-secondary)] text-sm font-sans leading-relaxed">{point.desc}</p>
                   </div>
                 </div>
               ))}
@@ -47,42 +56,54 @@ export default function SecuritySection() {
             viewport={{ once: true }}
             className="lg:ml-auto w-full max-w-lg"
           >
-            <Card elevated className="p-8 relative overflow-hidden border border-[var(--border-soft)] rounded-[2rem] shadow-2xl bg-[#000000]">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-[#E05A00]/5 blur-3xl rounded-full -z-10" />
+            <div className="notch-corner border border-[var(--border-default)] bg-[var(--bg-card)] p-10 relative group">
+              <div className="font-mono text-[10px] text-[var(--btn-bg)] tracking-[0.2em] uppercase mb-8 pb-4 border-b border-[var(--border-soft)]">
+                / Access Control Roster
+              </div>
+
               <div className="space-y-6 relative z-10">
+                {/* User 1 */}
                 <div className="flex items-center gap-4 pb-6 border-b border-[var(--border-soft)]">
-                  <div className="w-12 h-12 rounded-full bg-[#E05A00]/10 flex items-center justify-center text-[#E05A00] font-bold text-lg border border-[#E05A00]/20">
+                  <div className="w-12 h-12 flex items-center justify-center text-[var(--btn-bg)] font-mono text-sm border border-[var(--btn-bg)] bg-[var(--btn-bg)]/10">
                     JD
                   </div>
                   <div>
-                    <p className="text-base font-bold text-white">John Doe (You)</p>
-                    <p className="text-sm text-[var(--text-muted)]">john@example.com</p>
+                    <p className="font-heading text-lg text-white uppercase tracking-wide">John Doe (You)</p>
+                    <p className="font-mono text-[10px] text-[var(--text-muted)] tracking-widest uppercase">john@example.com</p>
                   </div>
-                  <span className="ml-auto px-3 py-1.5 text-xs font-bold uppercase tracking-wider rounded-lg bg-[var(--white-alpha-10)] text-[var(--text-primary)] border border-[var(--border-soft)]">Owner</span>
+                  <span className="ml-auto px-4 py-2 font-mono text-[10px] tracking-widest text-white border border-white/20">OWNER</span>
                 </div>
+
+                {/* User 2 */}
                 <div className="flex items-center gap-4 pb-6 border-b border-[var(--border-soft)]">
-                  <div className="w-12 h-12 rounded-full bg-[var(--bg-elevated)] flex items-center justify-center text-white font-bold text-lg border border-[var(--border-soft)]">
+                  <div className="w-12 h-12 flex items-center justify-center text-[var(--text-primary)] font-mono text-sm border border-[var(--border-soft)] bg-[var(--bg-elevated)]">
                     AL
                   </div>
                   <div>
-                    <p className="text-base font-bold text-white">Alex Lee</p>
-                    <p className="text-sm text-[var(--text-muted)]">alex@example.com</p>
+                    <p className="font-heading text-lg text-[var(--text-primary)] uppercase tracking-wide">Alex Lee</p>
+                    <p className="font-mono text-[10px] text-[var(--text-muted)] tracking-widest uppercase">alex@example.com</p>
                   </div>
-                  <span className="ml-auto px-3 py-1.5 text-xs font-bold uppercase tracking-wider rounded-lg bg-[#E05A00]/10 text-[#E05A00] border border-[#E05A00]/20">Edit Access</span>
+                  <span className="ml-auto px-4 py-2 font-mono text-[10px] tracking-widest text-[var(--btn-bg)] border border-[var(--btn-bg)]">EDIT</span>
                 </div>
+
+                {/* User 3 */}
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-[var(--bg-elevated)] flex items-center justify-center text-white font-bold text-lg border border-[var(--border-soft)]">
+                  <div className="w-12 h-12 flex items-center justify-center text-[var(--text-primary)] font-mono text-sm border border-[var(--border-soft)] bg-[var(--bg-elevated)]">
                     MR
                   </div>
                   <div>
-                    <p className="text-base font-bold text-white">Maria Rodriguez</p>
-                    <p className="text-sm text-[var(--text-muted)]">maria@example.com</p>
+                    <p className="font-heading text-lg text-[var(--text-primary)] uppercase tracking-wide">Maria Rodriguez</p>
+                    <p className="font-mono text-[10px] text-[var(--text-muted)] tracking-widest uppercase">maria@example.com</p>
                   </div>
-                  <span className="ml-auto px-3 py-1.5 text-xs font-bold uppercase tracking-wider rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">View Access</span>
+                  <span className="ml-auto px-4 py-2 font-mono text-[10px] tracking-widest text-white/50 border border-[var(--border-soft)]">VIEW</span>
                 </div>
               </div>
-            </Card>
+
+              <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-[var(--btn-bg)] opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute bottom-0 left-0 w-8 h-8 border-b border-l border-[var(--btn-bg)] opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
           </motion.div>
+
         </div>
       </div>
     </section>

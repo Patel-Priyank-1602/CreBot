@@ -36,8 +36,9 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        display: ['Geist Sans', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['Archivo', 'sans-serif'],
+        display: ['Bebas Neue', 'sans-serif'],
+        heading: ['Oswald', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
       },
       borderRadius: {

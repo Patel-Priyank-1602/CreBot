@@ -1,99 +1,76 @@
 import { motion } from 'framer-motion';
-import { Github, Twitter, Mail } from 'lucide-react';
 
 export default function AboutSection() {
   return (
-    <section id="about" className="relative py-24 bg-[#000000] text-white overflow-hidden border-t border-[var(--border-soft)]">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[400px] bg-gradient-to-b from-[#E05A00]/10 to-transparent blur-[100px] -z-10" />
+    <section id="about" className="relative py-28 lg:py-36 border-t border-[var(--border-default)] bg-[#030303] overflow-hidden">
+      <div className="max-w-[1600px] mx-auto px-6 lg:px-10">
+        
+        {/* STATS STRIP */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-6 mb-24 pb-24 border-b border-[var(--border-soft)]">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="border-l border-[var(--border-soft)] pl-6">
+            <div className="font-display text-5xl md:text-7xl text-white">0.0%</div>
+            <div className="font-mono text-[11px] text-[var(--text-muted)] tracking-[0.2em] uppercase mt-2">Hallucination Rate</div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="border-l border-[var(--border-soft)] pl-6">
+            <div className="font-display text-5xl md:text-7xl text-[var(--btn-bg)]">100%</div>
+            <div className="font-mono text-[11px] text-[var(--text-muted)] tracking-[0.2em] uppercase mt-2">Source Traceability</div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="border-l border-[var(--border-soft)] pl-6">
+            <div className="font-display text-5xl md:text-7xl text-white">124K</div>
+            <div className="font-mono text-[11px] text-[var(--text-muted)] tracking-[0.2em] uppercase mt-2">Queries Handled</div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="border-l border-[var(--border-soft)] pl-6">
+            <div className="font-display text-5xl md:text-7xl text-white">24/7</div>
+            <div className="font-mono text-[11px] text-[var(--text-muted)] tracking-[0.2em] uppercase mt-2">Uptime Protocol</div>
+          </motion.div>
+        </div>
 
-      <div className="w-full px-4 lg:px-8 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-display font-bold tracking-tight mb-6">
-            The Developer <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E05A00] to-orange-400">Behind CreBot.</span>
-          </h2>
-          <p className="text-lg text-[var(--text-muted)] max-w-2xl mx-auto leading-relaxed">
-            CreBot was created out of a necessity for an AI customer support solution that strictly adhered to provided documentation without hallucinating answers.
-          </p>
-        </motion.div>
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+          <div className="lg:col-span-5">
+            <div className="section-marker mb-6">
+              <span>06 — Architecture</span>
+            </div>
+            <motion.h2 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="font-display text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-white"
+            >
+              ENGINEERED<br />
+              <span className="text-stroke">FOR</span><br />
+              <span className="text-[var(--btn-bg)]">TRUTH.</span>
+            </motion.h2>
+          </div>
 
-        <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
           <motion.div 
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
-            className="space-y-8"
+            viewport={{ once: true }}
+            className="lg:col-span-7 space-y-10"
           >
             <div>
-              <h3 className="text-2xl font-bold mb-4">Engineering Philosophy</h3>
-              <p className="text-[var(--text-secondary)] leading-relaxed">
-                I believe in shipping zero-speculation systems. By utilizing Retrieval-Augmented Generation (RAG) with high-speed LLM inference, CreBot ensures that every answer is traced directly back to the source text. Quality and latency are the top priorities.
+              <h3 className="font-display text-3xl text-white mb-4">ENGINEERING PHILOSOPHY</h3>
+              <p className="text-[var(--text-secondary)] text-sm leading-relaxed font-sans max-w-2xl">
+                We believe in shipping zero-speculation systems. By utilizing strict Retrieval-Augmented Generation (RAG) with high-speed LLM inference, CreBot ensures that every answer is traced directly back to the source text. No guessing. No making things up. Just raw, extracted facts.
               </p>
             </div>
             
-            <div>
-              <h3 className="text-2xl font-bold mb-4">Tech Stack Details</h3>
-              <p className="text-[var(--text-secondary)] leading-relaxed mb-4">
-                Built with a deep focus on performance and minimal overhead:
-              </p>
-              <ul className="space-y-3 text-[var(--text-muted)]">
-                <li className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#E05A00]" />
-                  <strong className="text-white">Frontend:</strong> React, Vite, TailwindCSS, Framer Motion
+            <div className="pt-8 border-t border-[var(--border-soft)]">
+              <h3 className="font-display text-3xl text-white mb-6">TECH STACK METRICS</h3>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-4">
+                  <div className="font-mono text-[11px] text-[var(--btn-bg)] tracking-[0.2em] mt-1 shrink-0 w-24">FRONTEND</div>
+                  <div className="text-[var(--text-primary)] text-sm font-heading tracking-wide uppercase">React · Vite · TailwindCSS · Framer Motion</div>
                 </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#E05A00]" />
-                  <strong className="text-white">Backend:</strong> FastAPI, Python, Groq API (Llama 3)
+                <li className="flex items-start gap-4">
+                  <div className="font-mono text-[11px] text-[var(--btn-bg)] tracking-[0.2em] mt-1 shrink-0 w-24">BACKEND</div>
+                  <div className="text-[var(--text-primary)] text-sm font-heading tracking-wide uppercase">FastAPI · Python · Groq Llama 3 Inference</div>
                 </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#E05A00]" />
-                  <strong className="text-white">Infrastructure:</strong> Supabase, Vector Embeddings
+                <li className="flex items-start gap-4">
+                  <div className="font-mono text-[11px] text-[var(--btn-bg)] tracking-[0.2em] mt-1 shrink-0 w-24">INFRA</div>
+                  <div className="text-[var(--text-primary)] text-sm font-heading tracking-wide uppercase">Supabase · PGVector Embeddings</div>
                 </li>
               </ul>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="bg-[var(--bg-elevated)] border border-[var(--border-soft)] rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-[#E05A00]/10 blur-2xl rounded-full" />
-              
-              <img src="/tag (2).png" alt="CreBot Logo" className="w-16 h-16 object-contain mb-8 relative z-10" />
-              <h3 className="text-2xl font-bold mb-2 relative z-10">Connect with me</h3>
-              <p className="text-[var(--text-muted)] mb-8 relative z-10">
-                Always open to discussing AI, systems engineering, or potential opportunities.
-              </p>
-
-              <div className="space-y-4 relative z-10">
-                <a href="#" className="flex items-center gap-4 p-4 rounded-xl border border-[var(--border-soft)] hover:bg-[var(--hover-bg)] hover:border-[#E05A00]/50 transition-all group">
-                  <div className="w-10 h-10 rounded-lg bg-[var(--bg-main)] border border-[var(--border-soft)] flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Github size={18} className="text-[var(--text-primary)]" />
-                  </div>
-                  <span className="font-medium text-[var(--text-primary)]">GitHub Profile</span>
-                </a>
-                <a href="#" className="flex items-center gap-4 p-4 rounded-xl border border-[var(--border-soft)] hover:bg-[var(--hover-bg)] hover:border-[#E05A00]/50 transition-all group">
-                  <div className="w-10 h-10 rounded-lg bg-[var(--bg-main)] border border-[var(--border-soft)] flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Twitter size={18} className="text-[#1DA1F2]" />
-                  </div>
-                  <span className="font-medium text-[var(--text-primary)]">Twitter / X</span>
-                </a>
-                <a href="#" className="flex items-center gap-4 p-4 rounded-xl border border-[var(--border-soft)] hover:bg-[var(--hover-bg)] hover:border-[#E05A00]/50 transition-all group">
-                  <div className="w-10 h-10 rounded-lg bg-[var(--bg-main)] border border-[var(--border-soft)] flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Mail size={18} className="text-emerald-500" />
-                  </div>
-                  <span className="font-medium text-[var(--text-primary)]">Email Me</span>
-                </a>
-              </div>
             </div>
           </motion.div>
         </div>

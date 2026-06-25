@@ -3,74 +3,151 @@ import { Briefcase, Users, ShoppingCart, Code, ShieldCheck, Zap } from 'lucide-r
 
 const useCases = [
   {
-    title: 'SaaS Customer Support',
+    title: 'SAAS CUSTOMER SUPPORT',
     description: 'Instantly answer repetitive questions about pricing, features, and troubleshooting using your existing docs.',
-    icon: <Zap size={24} className="text-[#E05A00]" />
+    icon: <Zap size={24} className="text-[var(--btn-bg)]" />,
+    num: '01',
+    category: 'SUPPORT',
+    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80',
+    details: [
+      'Reduce ticket volume by 40%',
+      '24/7 instant resolution',
+      'Seamless human handoff',
+      'Multi-language support'
+    ]
   },
   {
-    title: 'Internal Team Knowledge',
+    title: 'INTERNAL KNOWLEDGE',
     description: 'Onboard new engineers or sales reps by letting them chat with your company wiki and internal documentation.',
-    icon: <Users size={24} className="text-[#E05A00]" />
+    icon: <Users size={24} className="text-[var(--btn-bg)]" />,
+    num: '02',
+    category: 'OPERATIONS',
+    image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80',
+    details: [
+      'Slash onboarding time',
+      'Single source of truth',
+      'Department-specific bots',
+      'Secure access controls'
+    ]
   },
   {
-    title: 'E-Commerce FAQs',
+    title: 'E-COMMERCE FAQS',
     description: 'Provide instant answers to shipping policies, return windows, and product specifications.',
-    icon: <ShoppingCart size={24} className="text-[#E05A00]" />
+    icon: <ShoppingCart size={24} className="text-[var(--btn-bg)]" />,
+    num: '03',
+    category: 'SALES',
+    image: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&q=80',
+    details: [
+      'Pre-sales objection handling',
+      'Policy clarification',
+      'Order tracking integration',
+      'High-intent lead capture'
+    ]
   },
   {
-    title: 'API & Dev Tools Docs',
+    title: 'API & DEV DOCS',
     description: 'Help developers integrate faster by letting them ask questions directly to your API references.',
-    icon: <Code size={24} className="text-[#E05A00]" />
-  },
-  {
-    title: 'Legal & Compliance',
-    description: 'Search through massive compliance PDFs to find exact clauses and regulations instantly.',
-    icon: <ShieldCheck size={24} className="text-[#E05A00]" />
-  },
-  {
-    title: 'Agency Workflows',
-    description: 'Manage multiple clients by creating isolated knowledge bases for each client account.',
-    icon: <Briefcase size={24} className="text-[#E05A00]" />
+    icon: <Code size={24} className="text-[var(--btn-bg)]" />,
+    num: '04',
+    category: 'DEVELOPER',
+    image: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&q=80',
+    details: [
+      'Code snippet generation',
+      'Endpoint discovery',
+      'Error code resolution',
+      'SDK usage examples'
+    ]
   }
 ];
 
 export default function UseCasesSection() {
   return (
-    <section id="use-cases" className="py-24 bg-[#000000] relative overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl h-[500px] bg-gradient-to-tr from-[#E05A00]/5 to-transparent blur-[120px] -z-10" />
+    <section id="use-cases" className="relative py-28 lg:py-36 border-t border-[var(--border-default)] bg-[#050505]">
+      <div className="max-w-[1600px] mx-auto px-6 lg:px-10">
+        
+        <div className="grid lg:grid-cols-12 gap-8 mb-20">
+          <div className="lg:col-span-7">
+            <div className="section-marker mb-6">
+              <span>05 — Use Cases</span>
+            </div>
+            <motion.h2 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="font-display text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-white"
+            >
+              ENDLESS <span className="text-[var(--btn-bg)]">POSSIBILITIES.</span><br />
+              <span className="text-stroke">ONE SYSTEM.</span>
+            </motion.h2>
+          </div>
+          <div className="lg:col-span-4 lg:col-start-9 flex flex-col justify-end">
+            <motion.p 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="text-[var(--text-secondary)] text-lg leading-relaxed font-sans mb-6"
+            >
+              From technical API documentation to internal HR policies, CreBot adapts to any text-based knowledge base. Hover cards to reveal protocol specifics.
+            </motion.p>
+          </div>
+        </div>
 
-      <div className="w-full px-4 lg:px-8 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-display font-bold tracking-tight mb-6 text-white">
-            Endless <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E05A00] to-orange-400">Possibilities.</span>
-          </h2>
-          <p className="text-lg text-[var(--text-muted)] max-w-2xl mx-auto leading-relaxed">
-            From technical API documentation to internal HR policies, CreBot adapts to any text-based knowledge base.
-          </p>
-        </motion.div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {useCases.map((useCase, idx) => (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="bg-[var(--bg-elevated)] border border-[var(--border-soft)] p-8 rounded-[2rem] hover:border-[#E05A00]/40 transition-colors group relative overflow-hidden"
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1, duration: 0.6 }}
+              className="group perspective-1000 h-[500px]"
             >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-[#E05A00]/0 group-hover:bg-[#E05A00]/10 blur-2xl rounded-full transition-all duration-500" />
-              <div className="w-14 h-14 rounded-2xl bg-[#000000] border border-[var(--border-soft)] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                {useCase.icon}
+              <div className="relative w-full h-full transition-transform duration-[800ms] transform-style-3d group-hover:rotate-y-180">
+                
+                {/* Front */}
+                <div className="absolute inset-0 backface-hidden bg-[var(--bg-card)] border border-[var(--border-default)] flex flex-col">
+                  <div className="relative h-3/5 overflow-hidden">
+                    <img 
+                      src={useCase.image} 
+                      className="w-full h-full object-cover img-noir group-hover:grayscale-[70%] transition-all duration-700" 
+                      alt={useCase.title} 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-card)] to-transparent" />
+                    <div className="absolute top-4 left-4 font-mono text-[10px] text-[var(--btn-bg)] tracking-[0.2em]">/ {useCase.num}</div>
+                    <div className="absolute top-4 right-4 px-2 py-1 bg-black/60 backdrop-blur-sm font-mono text-[10px] text-white tracking-[0.15em]">{useCase.category}</div>
+                  </div>
+                  <div className="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h3 className="font-display text-3xl leading-none text-white">{useCase.title}</h3>
+                    </div>
+                    <div className="flex items-center justify-between mt-4 pt-4 border-t border-[var(--border-soft)]">
+                      <span className="font-mono text-[10px] text-[var(--text-muted)] tracking-[0.15em] uppercase">Use Case Detail</span>
+                      <span className="font-mono text-[10px] text-[var(--btn-bg)] tracking-[0.15em]">HOVER →</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Back */}
+                <div className="absolute inset-0 backface-hidden rotate-y-180 bg-[var(--bg-elevated)] border border-[var(--border-default)] p-7 flex flex-col">
+                  <div className="font-mono text-[10px] text-[var(--btn-bg)] tracking-[0.2em] uppercase mb-4">/ {useCase.category} — Profile</div>
+                  <h3 className="font-display text-2xl mb-5 text-white">Capabilities</h3>
+                  <ul className="space-y-3 text-sm text-[var(--text-secondary)] font-sans mb-6">
+                    {useCase.details.map((detail, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <span className="w-1.5 h-1.5 bg-[var(--btn-bg)] rounded-sm mt-1.5 shrink-0" />
+                        <span>{detail}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-auto pt-5 border-t border-[var(--border-soft)]">
+                    <div className="font-mono text-[10px] text-[var(--text-muted)] tracking-[0.2em] uppercase mb-2">Description</div>
+                    <p className="text-xs text-[var(--text-secondary)] font-sans leading-relaxed">
+                      {useCase.description}
+                    </p>
+                  </div>
+                </div>
+
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">{useCase.title}</h3>
-              <p className="text-[var(--text-secondary)] leading-relaxed">{useCase.description}</p>
             </motion.div>
           ))}
         </div>
