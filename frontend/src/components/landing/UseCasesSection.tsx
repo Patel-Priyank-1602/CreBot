@@ -8,7 +8,7 @@ const useCases = [
     icon: <Zap size={24} className="text-[var(--btn-bg)]" />,
     num: '01',
     category: 'SUPPORT',
-    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80',
+    image: '/use1.png',
     details: [
       'Reduce ticket volume by 40%',
       '24/7 instant resolution',
@@ -22,7 +22,7 @@ const useCases = [
     icon: <Users size={24} className="text-[var(--btn-bg)]" />,
     num: '02',
     category: 'OPERATIONS',
-    image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80',
+    image: '/use2.png',
     details: [
       'Slash onboarding time',
       'Single source of truth',
@@ -36,7 +36,7 @@ const useCases = [
     icon: <ShoppingCart size={24} className="text-[var(--btn-bg)]" />,
     num: '03',
     category: 'SALES',
-    image: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&q=80',
+    image: '/use3.png',
     details: [
       'Pre-sales objection handling',
       'Policy clarification',
@@ -50,7 +50,7 @@ const useCases = [
     icon: <Code size={24} className="text-[var(--btn-bg)]" />,
     num: '04',
     category: 'DEVELOPER',
-    image: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&q=80',
+    image: '/use4.png',
     details: [
       'Code snippet generation',
       'Endpoint discovery',

@@ -7,7 +7,7 @@ const features = [
     category: 'INGESTION',
     title: 'UPLOAD KNOWLEDGE',
     desc: 'Add PDFs, TXT, Markdown, DOCX, and structured files to power your chatbot. Advanced chunking and vectorization pipeline included.',
-    image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80',
+    image: '/fec1.png',
     meta1: { label: 'Supported', value: 'PDF, TXT, MD' },
     meta2: { label: 'Pipeline', value: 'AUTO-CHUNKING' }
   },
@@ -16,7 +16,7 @@ const features = [
     category: 'RETRIEVAL',
     title: 'ASK WITH CONTEXT',
     desc: 'Get answers grounded in your uploaded knowledge base. No speculation. Every claim is traced back to a specific document.',
-    image: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&q=80',
+    image: '/fec2.png',
     meta1: { label: 'Latency', value: '< 200MS' },
     meta2: { label: 'Accuracy', value: 'GROUNDED' }
   },
@@ -25,7 +25,7 @@ const features = [
     category: 'DEPLOYMENT',
     title: 'EMBED ANYWHERE',
     desc: 'Generate an embed snippet and place your chatbot on any website. Fully customizable UI to match your brand.',
-    image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80',
+    image: 'fec3.png',
     meta1: { label: 'Integration', value: 'IFRAME / JS' },
     meta2: { label: 'Customization', value: 'FULL CSS' }
   },
@@ -34,7 +34,7 @@ const features = [
     category: 'SECURITY',
     title: 'CLIENT ISOLATION',
     desc: 'Keep every user\'s documents and vectors separated securely. Enterprise-grade tenant isolation by default.',
-    image: 'https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?auto=format&fit=crop&q=80',
+    image: '/fec4.png',
     meta1: { label: 'Standard', value: 'SOC2 TYPE II' },
     meta2: { label: 'Encryption', value: 'AES-256' }
   },
@@ -43,7 +43,7 @@ const features = [
     category: 'ANALYTICS',
     title: 'CHAT LOGS',
     desc: 'Export conversations for review, support, and training. Identify knowledge gaps and improve your documentation.',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80',
+    image: '/fec5.png',
     meta1: { label: 'Retention', value: 'INFINITE' },
     meta2: { label: 'Format', value: 'JSON / CSV' }
   },
@@ -52,7 +52,7 @@ const features = [
     category: 'PORTABILITY',
     title: 'KNOWLEDGE EXPORT',
     desc: 'Download the complete knowledge base as a single file. You own your data. No vendor lock-in, ever.',
-    image: 'https://images.unsplash.com/photo-1614064641913-6b70fea1ffff?auto=format&fit=crop&q=80',
+    image: '/fec6.png',
     meta1: { label: 'Lock-in', value: 'ZERO' },
     meta2: { label: 'Access', value: 'API / UI' }
   },
@@ -86,7 +86,7 @@ export default function FeatureGrid() {
               viewport={{ once: true }}
               className="text-[var(--text-secondary)] text-lg leading-relaxed font-sans mb-6"
             >
-              From file upload to deployment — manage your entire RAG pipeline from one place. Engineered for speed and precision.
+              From file upload to deployment - manage your entire RAG pipeline from one place. Engineered for speed and precision.
             </motion.p>
           </div>
         </div>
@@ -129,12 +129,12 @@ export default function FeatureGrid() {
                   </div>
                 </div>
                 
-                <a href="#product" className="flex items-center justify-between font-heading text-sm tracking-[0.15em] uppercase text-[var(--text-primary)] group/link">
+                {/* <a href="#product" className="flex items-center justify-between font-heading text-sm tracking-[0.15em] uppercase text-[var(--text-primary)] group/link">
                   <span className="relative after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[1px] after:bg-[var(--btn-bg)] after:transition-all group-hover/link:after:w-full">
                     Explore Capability
                   </span>
                   <ArrowRight size={16} className="text-[var(--btn-bg)]" />
-                </a>
+                </a> */}
               </div>
             </motion.article>
           ))}

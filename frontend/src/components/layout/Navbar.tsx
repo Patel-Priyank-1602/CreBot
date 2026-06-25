@@ -55,7 +55,7 @@ export default function Navbar() {
 
         <div className="hidden md:flex items-center gap-2">
           {navLinks.map((link) => {
-            const isActive = link.href.includes('#') 
+            const isActive = link.href.includes('#')
               ? activeSection === link.href.replace('/#', '')
               : location.pathname === link.href;
 

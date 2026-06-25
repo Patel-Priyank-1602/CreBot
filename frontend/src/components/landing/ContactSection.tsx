@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
+import { useForm, ValidationError } from '@formspree/react';
 
 export default function ContactSection() {
+  const [state, handleSubmit] = useForm('xykqedwn');
   return (
     <section id="contact" className="relative py-28 lg:py-36 border-t border-[var(--border-default)] bg-[var(--bg-main)] overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-6 lg:px-10 relative z-10">
@@ -51,44 +53,69 @@ export default function ContactSection() {
               <div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-l-2 border-[var(--btn-bg)] transition-all group-hover:w-16 group-hover:h-16" />
               <div className="absolute bottom-0 right-0 w-12 h-12 border-b-2 border-r-2 border-[var(--btn-bg)] transition-all group-hover:w-16 group-hover:h-16" />
               
-              <form className="space-y-8 relative z-10">
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div className="flex flex-col">
-                    <label className="font-mono text-[10px] text-[var(--btn-bg)] tracking-[0.2em] uppercase mb-2">First Name</label>
-                    <input 
-                      type="text" 
-                      className="bg-transparent border-0 border-b border-[var(--border-soft)] focus:border-[var(--btn-bg)] outline-none text-white font-heading text-xl py-2 px-0 transition-colors focus:ring-0" 
-                      placeholder="JOHN" 
-                    />
+              <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
+                {state.succeeded ? (
+                  <div className="flex flex-col items-center justify-center p-8 text-center bg-[var(--btn-bg)]/10 border border-[var(--btn-bg)]/30">
+                    <h3 className="font-heading text-2xl text-[var(--btn-bg)] mb-2">REQUEST TRANSMITTED</h3>
+                    <p className="font-sans text-[var(--text-secondary)]">Our enterprise team will respond within 4 hours.</p>
                   </div>
-                  <div className="flex flex-col">
-                    <label className="font-mono text-[10px] text-[var(--btn-bg)] tracking-[0.2em] uppercase mb-2">Last Name</label>
-                    <input 
-                      type="text" 
-                      className="bg-transparent border-0 border-b border-[var(--border-soft)] focus:border-[var(--btn-bg)] outline-none text-white font-heading text-xl py-2 px-0 transition-colors focus:ring-0" 
-                      placeholder="DOE" 
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-col">
-                  <label className="font-mono text-[10px] text-[var(--btn-bg)] tracking-[0.2em] uppercase mb-2">Work Email</label>
-                  <input 
-                    type="email" 
-                    className="bg-transparent border-0 border-b border-[var(--border-soft)] focus:border-[var(--btn-bg)] outline-none text-white font-heading text-xl py-2 px-0 transition-colors focus:ring-0" 
-                    placeholder="JOHN@COMPANY.COM" 
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <label className="font-mono text-[10px] text-[var(--btn-bg)] tracking-[0.2em] uppercase mb-2">Initiative Details</label>
-                  <textarea 
-                    rows={3} 
-                    className="bg-transparent border-0 border-b border-[var(--border-soft)] focus:border-[var(--btn-bg)] outline-none text-white font-heading text-xl py-2 px-0 transition-colors resize-none focus:ring-0" 
-                    placeholder="DESCRIBE YOUR KNOWLEDGE BASE..." 
-                  />
-                </div>
-                <button type="button" className="mt-8 font-heading text-sm tracking-[0.2em] uppercase text-black bg-white px-10 py-5 hover:bg-[var(--btn-bg)] hover:text-white transition-colors duration-300 w-full text-center font-bold">
-                  TRANSMIT REQUEST
-                </button>
+                ) : (
+                  <>
+                    <div className="grid md:grid-cols-2 gap-8">
+                      <div className="flex flex-col">
+                        <label htmlFor="firstName" className="font-mono text-[10px] text-[var(--btn-bg)] tracking-[0.2em] uppercase mb-2">First Name</label>
+                        <input 
+                          id="firstName"
+                          name="firstName"
+                          type="text" 
+                          required
+                          className="bg-transparent border-0 border-b border-[var(--border-soft)] focus:border-[var(--btn-bg)] outline-none text-white font-heading text-xl py-2 px-0 transition-colors focus:ring-0" 
+                          placeholder="JOHN" 
+                        />
+                        <ValidationError prefix="First Name" field="firstName" errors={state.errors} className="text-red-500 text-xs mt-1" />
+                      </div>
+                      <div className="flex flex-col">
+                        <label htmlFor="lastName" className="font-mono text-[10px] text-[var(--btn-bg)] tracking-[0.2em] uppercase mb-2">Last Name</label>
+                        <input 
+                          id="lastName"
+                          name="lastName"
+                          type="text" 
+                          required
+                          className="bg-transparent border-0 border-b border-[var(--border-soft)] focus:border-[var(--btn-bg)] outline-none text-white font-heading text-xl py-2 px-0 transition-colors focus:ring-0" 
+                          placeholder="DOE" 
+                        />
+                        <ValidationError prefix="Last Name" field="lastName" errors={state.errors} className="text-red-500 text-xs mt-1" />
+                      </div>
+                    </div>
+                    <div className="flex flex-col">
+                      <label htmlFor="email" className="font-mono text-[10px] text-[var(--btn-bg)] tracking-[0.2em] uppercase mb-2">Work Email</label>
+                      <input 
+                        id="email"
+                        name="email"
+                        type="email" 
+                        required
+                        className="bg-transparent border-0 border-b border-[var(--border-soft)] focus:border-[var(--btn-bg)] outline-none text-white font-heading text-xl py-2 px-0 transition-colors focus:ring-0" 
+                        placeholder="JOHN@COMPANY.COM" 
+                      />
+                      <ValidationError prefix="Email" field="email" errors={state.errors} className="text-red-500 text-xs mt-1" />
+                    </div>
+                    <div className="flex flex-col">
+                      <label htmlFor="message" className="font-mono text-[10px] text-[var(--btn-bg)] tracking-[0.2em] uppercase mb-2">Initiative Details</label>
+                      <textarea 
+                        id="message"
+                        name="message"
+                        rows={3} 
+                        required
+                        className="bg-transparent border-0 border-b border-[var(--border-soft)] focus:border-[var(--btn-bg)] outline-none text-white font-heading text-xl py-2 px-0 transition-colors resize-none focus:ring-0" 
+                        placeholder="DESCRIBE YOUR KNOWLEDGE BASE..." 
+                      />
+                      <ValidationError prefix="Message" field="message" errors={state.errors} className="text-red-500 text-xs mt-1" />
+                    </div>
+                    <button type="submit" disabled={state.submitting} className="mt-8 font-heading text-sm tracking-[0.2em] uppercase text-black bg-white px-10 py-5 hover:bg-[var(--btn-bg)] hover:text-white transition-colors duration-300 w-full text-center font-bold disabled:opacity-50 disabled:cursor-not-allowed">
+                      {state.submitting ? 'TRANSMITTING...' : 'TRANSMIT REQUEST'}
+                    </button>
+                  </>
+                )}
               </form>
             </div>
           </motion.div>

@@ -9,7 +9,6 @@ import UseCasesSection from '../components/landing/UseCasesSection';
 import AboutSection from '../components/landing/AboutSection';
 import ContactSection from '../components/landing/ContactSection';
 import FAQSection from '../components/landing/FAQSection';
-import CTASection from '../components/landing/CTASection';
 
 export default function LandingPage() {
   return (
@@ -29,7 +28,6 @@ export default function LandingPage() {
       <AboutSection />
       <ContactSection />
       <FAQSection />
-      <CTASection />
       <Footer />
     </motion.div>
   );

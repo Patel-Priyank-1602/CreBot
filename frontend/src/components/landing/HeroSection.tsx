@@ -6,7 +6,7 @@ import { Bot, Send, User } from 'lucide-react';
 const REEL_IMAGES = [
   'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80',
   'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80'
+  'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80',
 ];
 
 const AnimatedMockChat = () => {
@@ -50,7 +50,7 @@ const AnimatedMockChat = () => {
             <Bot size={20} className="text-[var(--btn-bg)]" />
           </div>
           <div>
-            <h3 className="font-heading text-sm uppercase tracking-widest text-white">SYSTEM BOT</h3>
+            <h3 className="font-heading text-sm uppercase tracking-widest text-white">CreBot</h3>
             <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[var(--text-muted)] flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[var(--btn-bg)] animate-pulse"></span> ONLINE
             </p>

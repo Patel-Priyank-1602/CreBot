@@ -54,21 +54,28 @@ export default function AboutSection() {
                 We believe in shipping zero-speculation systems. By utilizing strict Retrieval-Augmented Generation (RAG) with high-speed LLM inference, CreBot ensures that every answer is traced directly back to the source text. No guessing. No making things up. Just raw, extracted facts.
               </p>
             </div>
+
+            <div className="pt-8 border-t border-[var(--border-soft)]">
+              <h3 className="font-display text-3xl text-white mb-4">OUR VISION</h3>
+              <p className="text-[var(--text-secondary)] text-sm leading-relaxed font-sans max-w-2xl">
+                We aim to democratize enterprise intelligence. By transforming scattered documentation into a centralized, infinitely scalable knowledge engine, we empower organizations to move faster, eliminate data silos, and foster a culture of absolute clarity.
+              </p>
+            </div>
             
             <div className="pt-8 border-t border-[var(--border-soft)]">
-              <h3 className="font-display text-3xl text-white mb-6">TECH STACK METRICS</h3>
+              <h3 className="font-display text-3xl text-white mb-6">CORE TEAM</h3>
               <ul className="space-y-4">
                 <li className="flex items-start gap-4">
-                  <div className="font-mono text-[11px] text-[var(--btn-bg)] tracking-[0.2em] mt-1 shrink-0 w-24">FRONTEND</div>
-                  <div className="text-[var(--text-primary)] text-sm font-heading tracking-wide uppercase">React · Vite · TailwindCSS · Framer Motion</div>
+                  <div className="font-mono text-[11px] text-[var(--btn-bg)] tracking-[0.2em] mt-1 shrink-0 w-24">PRIYANK</div>
+                  <div className="text-[var(--text-primary)] text-sm font-heading tracking-wide uppercase">Full Stack Developer</div>
                 </li>
                 <li className="flex items-start gap-4">
-                  <div className="font-mono text-[11px] text-[var(--btn-bg)] tracking-[0.2em] mt-1 shrink-0 w-24">BACKEND</div>
-                  <div className="text-[var(--text-primary)] text-sm font-heading tracking-wide uppercase">FastAPI · Python · Groq Llama 3 Inference</div>
+                  <div className="font-mono text-[11px] text-[var(--btn-bg)] tracking-[0.2em] mt-1 shrink-0 w-24">MIRAL</div>
+                  <div className="text-[var(--text-primary)] text-sm font-heading tracking-wide uppercase">Web Developer & Designer</div>
                 </li>
                 <li className="flex items-start gap-4">
-                  <div className="font-mono text-[11px] text-[var(--btn-bg)] tracking-[0.2em] mt-1 shrink-0 w-24">INFRA</div>
-                  <div className="text-[var(--text-primary)] text-sm font-heading tracking-wide uppercase">Supabase · PGVector Embeddings</div>
+                  <div className="font-mono text-[11px] text-[var(--btn-bg)] tracking-[0.2em] mt-1 shrink-0 w-24">SUJAL</div>
+                  <div className="text-[var(--text-primary)] text-sm font-heading tracking-wide uppercase">Backend Developer</div>
                 </li>
               </ul>
             </div>
