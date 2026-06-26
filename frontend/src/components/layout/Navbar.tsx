@@ -45,6 +45,18 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, [isLanding]);
 
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (isLanding && href.startsWith('/#')) {
+      e.preventDefault();
+      const targetId = href.replace('/#', '');
+      const element = document.getElementById(targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+        window.history.pushState(null, '', href);
+      }
+    }
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 h-[90px] border-b border-[var(--border-soft)]"
       style={{ background: '#000000', backdropFilter: 'blur(16px)' }}>
@@ -63,6 +75,7 @@ export default function Navbar() {
               <a
                 key={link.label}
                 href={link.href}
+                onClick={(e) => handleScroll(e, link.href)}
                 className={cn(
                   'relative px-4 py-2 text-base rounded-lg transition-colors',
                   isActive
@@ -124,7 +137,10 @@ export default function Navbar() {
                     ? 'text-[var(--text-primary)] bg-[var(--hover-bg)] font-medium'
                     : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                 )}
-                onClick={() => setMobileOpen(false)}
+                onClick={(e) => {
+                  setMobileOpen(false);
+                  handleScroll(e, link.href);
+                }}
               >
                 {link.label}
               </a>

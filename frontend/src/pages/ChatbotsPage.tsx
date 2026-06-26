@@ -8,7 +8,7 @@ import { formatTimeAgo } from '../lib/utils';
 import ErrorState from '../components/common/ErrorState';
 import EmptyState from '../components/common/EmptyState';
 import { Bot as BotIcon } from 'lucide-react';
-import { listBots, createBot, deleteBot, Bot } from '../services/chatbotService';
+import { listBots, createBot, deleteBot, updateBot, Bot } from '../services/chatbotService';
 import { getOverview } from '../services/dashboardService';
 
 export default function ChatbotsPage() {
@@ -50,6 +50,15 @@ export default function ChatbotsPage() {
     if (!confirm('Are you sure you want to delete this chatbot?')) return;
     try {
       await deleteBot(botId);
+      await load();
+    } catch (e: any) {
+      alert(e.message);
+    }
+  };
+
+  const handleRename = async (botId: string, newName: string) => {
+    try {
+      await updateBot(botId, { name: newName });
       await load();
     } catch (e: any) {
       alert(e.message);
@@ -114,6 +123,7 @@ export default function ChatbotsPage() {
                 conversationsCount={bot.total_chats}
                 lastUpdated={formatTimeAgo(bot.updated_at || bot.created_at)}
                 onDelete={() => handleDelete(bot.id)}
+                onRename={(newName) => handleRename(bot.id, newName)}
               />
             ))}
           </div>

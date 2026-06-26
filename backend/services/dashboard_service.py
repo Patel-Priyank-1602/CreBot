@@ -2,18 +2,19 @@ from utils.supabase_client import supabase
 
 
 def _count_with_fallback(table: str, workspace_id: str, user_id: str = "") -> int:
+    count = 0
     try:
         r = supabase.table(table).select("id", count="exact").eq("workspace_id", workspace_id).execute()
-        return r.count or 0
+        count = r.count or 0
     except Exception:
         pass
-    if user_id:
+    if count == 0 and user_id:
         try:
             r = supabase.table(table).select("id", count="exact").eq("clerk_user_id", user_id).execute()
-            return r.count or 0
+            count = r.count or 0
         except Exception:
             pass
-    return 0
+    return count
 
 
 def _query_with_fallback(table: str, columns: str, workspace_id: str, user_id: str = "", order: str = "created_at", desc: bool = True, limit: int = 10):
@@ -65,6 +66,47 @@ def get_overview(workspace_id: str, user_id: str = ""):
     except Exception:
         limits = {"storage_limit": 52428800, "chatbot_limit": 5}
 
+    chat_distribution = []
+    storage_distribution = []
+
+    # Try to get bots by workspace_id first, then fallback to clerk_user_id
+    bots = []
+    try:
+        bots_req = supabase.table("bots").select("id, name").eq("workspace_id", workspace_id).execute()
+        bots = bots_req.data or []
+    except Exception:
+        pass
+
+    if not bots and user_id:
+        try:
+            bots_req = supabase.table("bots").select("id, name").eq("clerk_user_id", user_id).execute()
+            bots = bots_req.data or []
+        except Exception:
+            pass
+
+    for bot in bots:
+        # Chat distribution
+        try:
+            b_chat_count = supabase.table("chat_logs").select("id", count="exact").eq("chatbot_id", bot["id"]).execute()
+            cc = b_chat_count.count or 0
+            chat_distribution.append({"name": bot["name"], "value": cc})
+        except Exception:
+            chat_distribution.append({"name": bot["name"], "value": 0})
+
+        # Storage distribution - try bot_id first, then user_id for files linked to this bot
+        try:
+            s_req = supabase.table("knowledge_files").select("file_size").eq("bot_id", bot["id"]).execute()
+            s_sum = sum(f.get("file_size", 0) for f in s_req.data)
+            storage_distribution.append({"name": bot["name"], "value": round(s_sum / 1024, 2)})
+        except Exception:
+            storage_distribution.append({"name": bot["name"], "value": 0})
+
+    # If no bot-level storage found but we have overall storage, show it as "Unlinked Files"
+    bot_storage_total = sum(item["value"] for item in storage_distribution)
+    overall_storage_kb = round(storage_used / 1024, 2)
+    if overall_storage_kb > bot_storage_total and overall_storage_kb > 0:
+        storage_distribution.append({"name": "Unlinked Files", "value": round(overall_storage_kb - bot_storage_total, 2)})
+
     return {
         "total_chatbots": chatbot_count,
         "total_files": file_count,
@@ -72,6 +114,8 @@ def get_overview(workspace_id: str, user_id: str = ""):
         "storage_used": storage_used,
         "storage_limit": limits["storage_limit"],
         "chatbot_limit": limits["chatbot_limit"],
+        "chat_distribution": chat_distribution,
+        "storage_distribution": storage_distribution
     }
 
 

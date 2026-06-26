@@ -1,5 +1,5 @@
-import { memo } from 'react';
-import { Bot, FileText, MessageSquare, ExternalLink, Settings as SettingsIcon, Trash2 } from 'lucide-react';
+import { memo, useState, useRef, useEffect } from 'react';
+import { Bot, FileText, MessageSquare, ExternalLink, Edit2, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import Button from '../common/Button';
@@ -12,6 +12,7 @@ interface ChatbotCardProps {
   conversationsCount: number;
   lastUpdated: string;
   onDelete?: () => void;
+  onRename?: (newName: string) => void;
 }
 
 function ChatbotCard({
@@ -22,8 +23,35 @@ function ChatbotCard({
   conversationsCount,
   lastUpdated,
   onDelete,
+  onRename,
 }: ChatbotCardProps) {
   const navigate = useNavigate();
+  const [isEditing, setIsEditing] = useState(false);
+  const [editName, setEditName] = useState(name);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isEditing) {
+      inputRef.current?.focus();
+    }
+  }, [isEditing]);
+
+  const handleRenameSubmit = () => {
+    setIsEditing(false);
+    if (editName.trim() && editName.trim() !== name && onRename) {
+      onRename(editName.trim());
+    } else {
+      setEditName(name); // revert on empty
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') handleRenameSubmit();
+    if (e.key === 'Escape') {
+      setIsEditing(false);
+      setEditName(name);
+    }
+  };
 
   return (
     <motion.div
@@ -36,7 +64,21 @@ function ChatbotCard({
             <Bot size={20} />
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-[var(--text-primary)]">{name}</h3>
+            {isEditing ? (
+              <input
+                ref={inputRef}
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+                onBlur={handleRenameSubmit}
+                onKeyDown={handleKeyDown}
+                className="text-sm font-semibold text-[var(--text-primary)] bg-transparent border-b border-[var(--border-default)] focus:border-[var(--btn-bg)] focus:outline-none w-full"
+              />
+            ) : (
+              <div className="flex items-center gap-2 group cursor-pointer" onClick={() => setIsEditing(true)}>
+                <h3 className="text-sm font-semibold text-[var(--text-primary)]">{name}</h3>
+                <Edit2 size={12} className="text-[var(--text-muted)] opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+            )}
             <span className={`text-xs ${status === 'active' ? 'text-white/60' : 'text-[var(--text-muted)]'}`}>
               {status === 'active' ? 'Active' : 'Draft'}
             </span>

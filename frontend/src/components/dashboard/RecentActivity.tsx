@@ -6,6 +6,8 @@ import { getActivity, ActivityItem } from '../../services/dashboardService';
 function RecentActivity() {
   const [activities, setActivities] = useState<ActivityItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showAll, setShowAll] = useState(false);
+  const displayedActivities = showAll ? activities : activities.slice(0, 5);
 
   useEffect(() => {
     getActivity()
@@ -39,11 +41,11 @@ function RecentActivity() {
         <p className="text-sm text-[var(--text-muted)] text-center py-4">No recent activity.</p>
       ) : (
         <div className="space-y-3">
-          {activities.map((activity) => {
+          {displayedActivities.map((activity) => {
             const Icon = iconMap[activity.type] || MessageSquare;
             return (
-              <div key={activity.id} className="flex items-center gap-3 py-2">
-                <div className="w-8 h-8 rounded-lg bg-[var(--bg-input)] border border-[var(--border-soft)] flex items-center justify-center text-[var(--text-muted)] shrink-0">
+              <div key={activity.id} className="flex items-center gap-3 py-2 group">
+                <div className="w-8 h-8 rounded-lg bg-[var(--bg-input)] border border-[var(--border-soft)] flex items-center justify-center text-[var(--text-muted)] shrink-0 transition-colors group-hover:border-[var(--text-muted)]">
                   <Icon size={15} />
                 </div>
                 <div className="min-w-0">
@@ -54,6 +56,15 @@ function RecentActivity() {
               </div>
             );
           })}
+          
+          {activities.length > 5 && (
+            <button 
+              onClick={() => setShowAll(!showAll)}
+              className="w-full mt-2 py-2 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all rounded-lg hover:bg-[var(--white-alpha-5)] border border-transparent hover:border-[var(--white-alpha-10)]"
+            >
+              {showAll ? 'Show less' : 'See more'}
+            </button>
+          )}
         </div>
       )}
     </div>

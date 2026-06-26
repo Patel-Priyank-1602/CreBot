@@ -1,0 +1,216 @@
+========================================
+HOME / HERO
+========================================
+Name: Patel Priyank
+Title: Full-Stack AI Engineer
+Description: I design and build intelligent web applications that bridge the gap between cutting-edge AI and real-world problems.
+Resume: /resume.pdf
+
+========================================
+ABOUT
+========================================
+Tagline: Focused on building intelligent systems that solve real problems not just interfaces that look good.
+
+Paragraph 1: Passionate and detail-oriented Computer Engineering Undergraduate at PDEU, Gandhinagar, with hands-on experience building Production-Grade Full-stack and AI-powered applications. Skilled in developing end-to-end systems using React, Python, FastAPI, and modern ML frameworks - from intelligent threat detection platforms to agentic research pipelines.
+
+Paragraph 2: Experienced in Machine Learning, NLP, and Real-time web systems. Comfortable across the Full stack - Frontend interfaces, REST APIs, databases, and cloud deployment via Docker, Render, and Supabase. Actively building open-source AI developer tools and exploring agentic systems, local LLMs, and scalable system design through real-world projects and hackathons.
+
+Stats:
+- 25+ Projects
+- 15+ Technologies
+- 2+ Years Experience
+- 10+ Certifications
+
+========================================
+EXPERIENCE
+========================================
+1. Brainy Beam Info-Tech
+   Role: MERN Stack Developer
+   Type: Internship
+   Duration: 2026-05-01 to 2026-07-01
+   Location: Ahmedabad, Gujarat
+   Description: Built and deployed MERN-based web applications with reusable React components and REST API integrations. Implemented JWT-based authentication flows and optimized MongoDB queries. Streamlined debugging and testing workflows using Git/GitHub.
+   Responsibilities:
+   - Built and deployed MERN-based web applications with reusable React components and REST API integrations, improving modularity and reducing frontend development time.
+   - Implemented JWT-based authentication flows, optimized MongoDB queries, and developed responsive UI features using Express.js and Node.js.
+   - Streamlined debugging, testing, and deployment workflows using Git/GitHub, contributing to faster release cycles and improved application performance.
+
+2. PyShell
+   Role: Web Developer
+   Type: Full-time
+   Duration: 2025-05-01 to 2025-10-31
+   Location: Ahmedabad, Gujarat
+   Description: Developed the official PyShell Documentation Website, contributing over 90% to its core structure, content organization, and styling. Built approximately 70% of the frontend for the PyShell CLI Web Platform using Next.js, Tailwind CSS, and Vercel.
+   Responsibilities:
+   - Lead Web developer of the Pyshell Community Projects.
+   - Designed and implemented core UI components and styling using modern web technologies.
+   - Collaborated with content creators to ensure accurate and well-structured documentation.
+   - Optimized website performance and responsiveness across various devices.
+   - Integrated dynamic content retrieval mechanisms from backend services.
+   Projects: 
+   - Official PyShell CLI Website (https://pyshellweb.netlify.app/)
+   - Official PyShell Documentation Website (https://pyshelldocs.netlify.app/)
+
+========================================
+EDUCATION
+========================================
+1. Pandit Deendayal Energy University (PDEU)
+   Degree: B.Tech. in Computer Science Engineering
+   Duration: 2023-07-01 to 2027-05-31
+   Score: 8.94 CGPA
+   Location: Gandhinagar, Gujarat, India
+   Description: Pandit Deendayal Energy University (PDEU) is a premier private university focused on energy, technology, and innovation-driven education with strong industry collaboration.
+   Summary: Pursuing a Bachelor’s degree in Computer Science Engineering at PDEU. Actively involved in building Real-world Projects and Exploring scalable software solutions.
+   Coursework: Data Structures & Algorithms, Operating Systems, Database Management Systems, Computer Networks, Software Engineering, Web Technologies
+
+2. The Radiant International School
+   Degree: HSC (Science)
+   Duration: 2021-05-30 to 2023-03-01
+   Score: 93.69 Percentile
+   Location: Surat, Gujarat
+   Description: Strong academic grounding in science and mathematics.
+   Summary: Focused on Physics, Chemistry, and Mathematics with emphasis on analytical thinking and problem-solving.
+   Coursework: Physics, Mathematics, Chemistry
+
+========================================
+PROJECTS
+========================================
+1. Sentinel AI
+   Category: Cybersecurity, Artificial Intelligence, Machine Learning, Computer Vision, Web Application
+   Description: Production-grade AI-powered cybersecurity platform designed to detect phishing attacks, scams, malicious URLs, spoofed emails, risky phone numbers, QR-based threats, and fraudulent content using multimodal machine learning pipelines, OCR, NLP, and computer vision — all from a single unified interface.
+   Tech Stack: React, TypeScript, Vite, Tailwind CSS, FastAPI, Python, Scikit-learn, OpenCV, Tesseract OCR, Supabase, Docker, Recharts
+   Demo: https://sentinelcyberai.netlify.app
+   GitHub: https://github.com/Patel-Priyank-1602/Sentinel_Cyber_AI
+
+2. QueryIQ
+   Category: Artificial Intelligence, Agentic AI, Data Intelligence, Research Automation, Web Application
+   Description: Production-grade agentic intelligence engine that transforms natural language queries into structured, validated, and actionable data using multi-LLM orchestration, autonomous web research, and Human-in-the-Loop verification workflows.
+   Tech Stack: React, Vite, FastAPI, Python, Groq API, LLaMA 3.3, Tavily API, Supabase, PostgreSQL, Pydantic
+   Demo: https://queryiqsearch.netlify.app
+   GitHub: https://github.com/Patel-Priyank-1602/QueryIQ
+
+3. Expezplit
+   Category: FinTech, Expense Tracker, Bill Splitting, Productivity, Web Application
+   Description: A modern full-stack expense tracking and intelligent bill-splitting platform built to simplify personal finance management and group expense coordination.
+   Tech Stack: React, TypeScript, Vite, Node.js, Express.js, Supabase, PostgreSQL, Clerk, Recharts, Nodemailer
+   Demo: https://expezplit.netlify.app
+   GitHub: https://github.com/Patel-Priyank-1602/Expezplit
+
+4. LFT Server
+   Category: File Sharing, Networking, Real-Time Systems, Offline Applications, Web Application
+   Description: A secure offline-first local file transfer platform built for high-speed peer-to-peer sharing across Wi-Fi hotspots without relying on cloud infrastructure.
+   Tech Stack: Python, Flask, Server-Sent Events (SSE), HTML, CSS, JavaScript, REST API
+   Demo: https://lftdocs.netlify.app/
+   GitHub: https://github.com/Patel-Priyank-1602/file-transfer
+
+5. Media Sync
+   Category: Real-Time Systems, Media Streaming, Collaboration Platform, Networking, Web Application
+   Description: A self-hosted real-time media synchronization platform designed for collaborative streaming, presentations, and local network watch parties.
+   Tech Stack: Node.js, Express.js, Socket.IO, JavaScript, HTML, CSS, REST API, WebSockets
+   Demo: https://rmsdocs.netlify.app
+   GitHub: https://github.com/Patel-Priyank-1602/Media_Sync
+
+6. InfraVision
+   Category: AI, Sustainability, Geospatial Analysis, Energy Tech, Web Application
+   Description: AI-powered interactive platform for planning and optimizing green hydrogen infrastructure with real-time impact analysis, geospatial intelligence, and gamified sustainability scoring.
+   Tech Stack: React, TypeScript, TailwindCSS, Leaflet.js, Node.js, Express.js, Groq API, OpenStreetMap
+   Demo: https://infravisionh2.onrender.com/
+   GitHub: https://github.com/Patel-Priyank-1602/InfraVision
+
+7. Cineverse Hub
+   Category: Entertainment, Web Application, Movie Platform, UI/UX, Streaming
+   Description: Modern OTT-style movie and series discovery platform built for cinema enthusiasts to explore and plan their 2025 watchlist.
+   Tech Stack: Next.js, React, TypeScript, Tailwind CSS, Framer Motion, Radix UI, Netlify
+   Demo: https://cineverse-p.netlify.app/
+   GitHub: https://github.com/Patel-Priyank-1602/movieweb-blog
+
+8. WebSync
+   Category: Productivity, Bookmark Manager, Web Application, Utility Tool, Frontend
+   Description: A modern and fully customizable bookmark management platform designed to organize, search, and manage saved websites through a clean, category-driven experience.
+   Tech Stack: HTML, CSS, JavaScript
+   Demo: https://patel-priyank-1602.github.io/WebSyncP-/
+   GitHub: https://github.com/Patel-Priyank-1602/WebSyncP-
+
+========================================
+SKILLS
+========================================
+- Programming Languages: Python, Java, C, JavaScript, HTML, CSS
+- Frontend Development: HTML, CSS, JavaScript, React.js, Next.js
+- Backend Development: Node.js, Flask, FastAPI, Express.js
+- Databases: MySQL, PostgreSQL, Supabase
+- Python Libraries: NumPy, Pandas, Matplotlib, Seaborn, Scikit-learn, OpenCV
+- Data Visualization: Tableau, Power BI
+- Tools & Platforms: Git, GitHub, Jupyter Notebook, VS Code, Vercel, Netlify, Canva, Clerk Auth, Render, Postman
+
+========================================
+ACHIEVEMENTS
+========================================
+1. 2nd Rank in PDEU ACM Hackathon
+   Organization: PDEU ACM Student Chapter
+   Date: March 2025
+   Project: Healthcare Portal
+   Description: Secured 2nd position in the annual hackathon organized by PDEU ACM Student Chapter. Developed an innovative solution for smart campus management.
+   Demo: https://www.linkedin.com/posts/patel-priyank-945131288_hackathon-webdevelopment-nextjs-activity-7299407853709062145-lV2h?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEXJSwUBy1pZdakiKqJQHFrTO0xksmyea28
+   GitHub: https://github.com/Ka1-Trivedi/Emergency-Medical-Portal.git
+
+2. Hackout’2025 Online & Offline Round Qualification
+   Organization: Dhirubhai Ambani University (via Unstop)
+   Date: September 2025
+   Project: Green Hydrogen InfraVision
+   Description: Selected for both the Online and Offline Rounds of Hackout’2025 with team NPHard. Built Green Hydrogen InfraVision, an AI-powered and gamified platform to map, optimize, and analyze green hydrogen infrastructure.
+   Demo: https://www.linkedin.com/posts/patel-priyank-945131288_hackout2025-greenhydrogen-ai-activity-7368260435646517250-9X0C?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEXJSwUBy1pZdakiKqJQHFrTO0xksmyea28
+   GitHub: https://github.com/Patel-Priyank-1602/InfraVision.git
+
+========================================
+CERTIFICATIONS
+========================================
+1. NPTEL (Human–Computer Interaction)
+   Organization: IIIT Delhi, IIT Madras
+   Date: November 2025
+   Description: Completed a 12-week NPTEL Human–Computer Interaction course with a score of 81/100.
+   Link: https://drive.google.com/file/d/1o8QGi6Gsew6Gtrr3hqun0AK9xMSvNYqy/view?usp=sharing
+
+2. Career Essentials in Generative AI
+   Organization: Microsoft & LinkedIn Learning
+   Date: December 2024
+   Description: Completed the Career Essentials in Generative AI learning path by Microsoft and LinkedIn Learning.
+   Link: https://drive.google.com/file/d/1OtHYy8L1X04lV9h3SdvY3_Ar24-VKPEU/view?usp=sharing
+
+3. Civic and Social Services Internship
+   Organization: Nirvana Foundation
+   Date: July 2024
+   Description: Completed a one-month Civic and Social Services Internship with Nirvana Foundation in 2024.
+   Link: https://drive.google.com/file/d/1oVllnYNHRuuqG6lVmAwISA3NGTGZSVGu/view?usp=sharing
+
+4. Power BI & Tableau Workshop
+   Organization: Society of Mathematics
+   Date: March 2024
+   Description: Participated in the Power BI & Tableau Workshop organized by the Society of Mathematics on 26 March 2024.
+   Link: https://drive.google.com/file/d/1sM03w88FOIpmjvU_FWh5bQCkuhvVRwSX/view?usp=sharing
+
+5. SQL (Basic) Skill Certification
+   Organization: HackerRank
+   Date: March 2025
+   Description: Earned the SQL (Basic) skill certification from HackerRank by successfully passing the assessment.
+   Link: https://drive.google.com/file/d/1Otc8SK1FuYcHkFvlaXNWjHmIg23xUi79/view?usp=sharing
+
+========================================
+HOBBIES
+========================================
+1. Drawing (https://drawing-p.netlify.app/)
+2. Film Review (https://film-p.netlify.app/)
+3. Blog (https://blogai-p.netlify.app/)
+4. Gov Rules 2024-25 (https://patel-priyank-1602.github.io/Indian-Rules/)
+5. Singing (https://song-p.netlify.app/)
+6. Cricket
+7. Gaming
+
+========================================
+CONTACT & LINKS
+========================================
+Email: patelpriyank2526@gmail.com
+Phone: +91 95127 71016
+LinkedIn: https://www.linkedin.com/in/patel-priyank-945131288/
+GitHub: https://github.com/Patel-Priyank-1602
+Instagram: https://www.instagram.com/patelpriyank.d
+Twitter: https://x.com/Priyank_P16

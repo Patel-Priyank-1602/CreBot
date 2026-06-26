@@ -129,6 +129,11 @@ class UpdateBotRequest(BaseModel):
     position: Optional[str] = None
 
 
+class DistributionItem(BaseModel):
+    name: str
+    value: float
+
+
 class DashboardOverviewResponse(BaseModel):
     total_chatbots: int
     total_files: int
@@ -136,6 +141,8 @@ class DashboardOverviewResponse(BaseModel):
     storage_used: int
     storage_limit: int
     chatbot_limit: int
+    chat_distribution: list[DistributionItem] = []
+    storage_distribution: list[DistributionItem] = []
 
 
 class DashboardActivityItem(BaseModel):

@@ -51,6 +51,20 @@ def _batch_insert_documents(documents: list[dict]) -> None:
 
 
 def _format_bot(bot: dict, is_owner: bool = True, can_edit: bool = False) -> BotResponse:
+    # Dynamically compute total_files and total_chats
+    total_files = 0
+    total_chats = 0
+    try:
+        f_res = supabase.table("knowledge_files").select("id", count="exact").eq("bot_id", bot["id"]).execute()
+        total_files = f_res.count or 0
+    except Exception:
+        total_files = bot.get("total_files", 0)
+    try:
+        c_res = supabase.table("chat_logs").select("id", count="exact").eq("chatbot_id", bot["id"]).execute()
+        total_chats = c_res.count or 0
+    except Exception:
+        total_chats = bot.get("total_chats", 0)
+
     return BotResponse(
         id=bot["id"],
         name=bot["name"],
@@ -60,8 +74,8 @@ def _format_bot(bot: dict, is_owner: bool = True, can_edit: bool = False) -> Bot
         can_edit=can_edit or is_owner,
         status=bot.get("status", "active"),
         description=bot.get("description", ""),
-        total_files=bot.get("total_files", 0),
-        total_chats=bot.get("total_chats", 0),
+        total_files=total_files,
+        total_chats=total_chats,
         embed_id=bot.get("embed_id") or bot.get("widget_key", ""),
         allowed_domains=bot.get("allowed_domains", []),
         welcome_message=bot.get("welcome_message", "Hi! How can I help you today?"),
@@ -163,22 +177,35 @@ async def list_bots(request: Request):
     user_id = get_clerk_user_id(request)
     ws_id = request.state.workspace_id
 
-    owned_bots = []
+    owned_bots_map = {}
     try:
-        owned_result = supabase.table("bots").select("*").eq("workspace_id", ws_id).execute()
-        owned_bots = [_format_bot(bot, is_owner=True) for bot in owned_result.data]
-        
-        # Fallback for legacy bots that might not have a workspace_id yet
-        if not owned_bots:
-            fallback_result = supabase.table("bots").select("*").eq("clerk_user_id", user_id).execute()
-            owned_bots = [_format_bot(bot, is_owner=True) for bot in fallback_result.data]
+        # Get bots by workspace_id
+        ws_result = supabase.table("bots").select("*").eq("workspace_id", ws_id).execute()
+        for bot in ws_result.data:
+            owned_bots_map[bot["id"]] = bot
     except Exception:
         pass
+
+    try:
+        # Also get bots by clerk_user_id (handles bots without workspace_id set)
+        user_result = supabase.table("bots").select("*").eq("clerk_user_id", user_id).execute()
+        for bot in user_result.data:
+            if bot["id"] not in owned_bots_map:
+                owned_bots_map[bot["id"]] = bot
+                # Best-effort: fix missing workspace_id for future queries
+                try:
+                    supabase.table("bots").update({"workspace_id": ws_id}).eq("id", bot["id"]).execute()
+                except Exception:
+                    pass
+    except Exception:
+        pass
+
+    owned_bots = [_format_bot(bot, is_owner=True) for bot in owned_bots_map.values()]
 
     member_bots = []
     try:
         member_result = supabase.table("bot_members").select("bot_id").eq("clerk_user_id", user_id).execute()
-        member_bot_ids = [m["bot_id"] for m in member_result.data]
+        member_bot_ids = [m["bot_id"] for m in member_result.data if m["bot_id"] not in owned_bots_map]
         if member_bot_ids:
             shared_result = supabase.table("bots").select("*").in_("id", member_bot_ids).execute()
             member_bots = [_format_bot(bot, is_owner=False) for bot in shared_result.data]

@@ -1,5 +1,10 @@
 import { api } from '../lib/api';
 
+export interface DistributionItem {
+  name: string;
+  value: number;
+}
+
 export interface DashboardOverview {
   total_chatbots: number;
   total_files: number;
@@ -7,6 +12,8 @@ export interface DashboardOverview {
   storage_used: number;
   storage_limit: number;
   chatbot_limit: number;
+  chat_distribution: DistributionItem[];
+  storage_distribution: DistributionItem[];
 }
 
 export interface ActivityItem {
