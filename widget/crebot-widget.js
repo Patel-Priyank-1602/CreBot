@@ -3,9 +3,9 @@
  * 
  * Usage: Add this to any website:
  * <script
- *   src="YOUR_HOST/widget/crebot-widget.js"
+ *   src="https://crebot-ole4.onrender.com/widget/crebot-widget.js"
  *   data-widget-key="wk_xxxxx"
- *   data-api-url="https://your-backend.onrender.com"
+ *   data-api-url="https://crebot-ole4.onrender.com"
  *   async>
  * </script>
  *
@@ -22,10 +22,10 @@
     const scriptTag = document.currentScript;
     const WIDGET_KEY = scriptTag?.getAttribute("data-widget-key") || "";
     const BOT_ID = scriptTag?.getAttribute("data-bot-id") || "";
-    const API_URL = scriptTag?.getAttribute("data-api-url") || "";
+    const API_URL = scriptTag?.getAttribute("data-api-url") || "https://crebot-ole4.onrender.com";
 
-    if ((!WIDGET_KEY && !BOT_ID) || !API_URL) {
-        console.error("[CreBot] Missing data-widget-key (or data-bot-id) or data-api-url on script tag.");
+    if ((!WIDGET_KEY && !BOT_ID)) {
+        console.error("[CreBot] Missing data-widget-key (or data-bot-id) on script tag.");
         return;
     }
 
