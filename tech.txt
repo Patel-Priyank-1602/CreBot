@@ -1,0 +1,34 @@
+Project Name: CreBot — AI Customer Support Chatbot Builder
+
+Description:
+CreBot is a self-serve SaaS platform designed to allow any business to upload their FAQ and generate an AI-powered chat widget. It is built on a fully free tech stack and can be easily embedded on any website within minutes. The platform consists of a Next.js dashboard where business owners can upload FAQs and manage bots, a FastAPI backend that handles the core logic and AI pipeline, and an embeddable Javascript widget for end website visitors to interact with the chatbot.
+
+Architecture Flow:
+1. Business Owner -> Next.js Dashboard (Upload FAQ / Manage bots) -> FastAPI Backend -> Supabase (Data & Vector Store)
+2. End Website Visitor -> Embedded JS Widget (Ask Questions) -> FastAPI Backend -> Supabase (Context Retrieval via pgvector) -> Groq LLM (Answer Generation)
+
+Tech Stack in Detail:
+
+1. Frontend (Dashboard): 
+   - Technology: Next.js (React)
+   - Purpose: Provides the Dashboard UI for business owners to create accounts, manage their bots, upload FAQ data, train bots, view logs, and retrieve embed snippets.
+
+2. Backend (API & AI Pipeline):
+   - Technology: FastAPI (Python)
+   - Purpose: Serves as the high-performance core API handling bot CRUD operations, training (chunking and embedding text), and the chat endpoint logic.
+
+3. Database & Authentication:
+   - Technology: Supabase (PostgreSQL)
+   - Purpose: Handles user authentication (signup/login), and stores relational data including users, bots, FAQ documents, and chat logs.
+
+4. Vector Store:
+   - Technology: pgvector (Supabase PostgreSQL extension)
+   - Purpose: Performs fast similarity search by storing and querying high-dimensional vector embeddings of the FAQ data.
+
+5. Large Language Model (LLM):
+   - Technology: Groq (running Llama 3)
+   - Purpose: Receives the user's question along with the most relevant FAQ context from the vector store and generates a fast, accurate, and conversational answer.
+
+6. Chat Widget:
+   - Technology: Vanilla JavaScript
+   - Purpose: A lightweight, easily embeddable script that renders the chat interface on the end-user's website and communicates with the FastAPI backend.
