@@ -1,4 +1,5 @@
-const API_URL = 'http://localhost:8000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.MODE === 'production' ? 'https://crebot-ole4.onrender.com' : 'http://localhost:8000');
+const API_URL = `${API_BASE_URL}/api`;
 
 let _getToken: (() => Promise<string | null>) | null = null;
 
