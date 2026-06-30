@@ -47,16 +47,19 @@ export const sidebarGroups = [
 interface SidebarProps {
   collapsed: boolean;
   onToggle: () => void;
+  className?: string;
+  isMobile?: boolean;
 }
 
-export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
+export default function Sidebar({ collapsed, onToggle, className, isMobile }: SidebarProps) {
   return (
       <aside
         className={cn(
-          'fixed left-0 top-0 h-full z-40',
-          'transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col',
+          !isMobile && 'fixed left-0 top-0 z-40',
+          'h-full transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col',
           'bg-[var(--sidebar-bg)] border-r border-[var(--border-soft)]',
-          collapsed ? 'w-[80px]' : 'w-[260px]'
+          isMobile ? 'w-full' : (collapsed ? 'w-[80px]' : 'w-[260px]'),
+          className
         )}
       >
       <div className={cn("relative flex items-center h-[72px] group", collapsed ? "justify-center" : "px-6 justify-between")}>
@@ -105,6 +108,11 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
                 key={item.href}
                 to={item.href}
                 end={item.href === '/dashboard'}
+                onClick={() => {
+                  if (isMobile && onToggle) {
+                    onToggle();
+                  }
+                }}
                 className={({ isActive }) =>
                   cn(
                     'relative group flex items-center gap-2.5 px-2 py-1.5 rounded-lg text-[13px] font-medium transition-all duration-300 ease-out',

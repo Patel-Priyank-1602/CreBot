@@ -39,7 +39,7 @@ export default function Footer() {
                   className="w-16 h-16 object-contain"
                 />
               
-              <span className="font-display font-bold text-3xl text-white tracking-wide">CreBot</span>
+              <span className="font-display font-bold text-2xl sm:text-3xl text-white tracking-wide">CreBot</span>
             </div>
             <p className="text-base text-[var(--text-secondary)] font-sans max-w-md leading-relaxed mb-10">
               Build intelligent chatbots from your own knowledge base. Zero hallucination, enterprise-grade security, and lightning-fast responses.
@@ -94,7 +94,7 @@ export default function Footer() {
 
       {/* Massive Static Text Section */}
       <div className="w-full overflow-hidden flex items-end justify-center select-none bg-[#030303] leading-none pb-0 pt-4">
-        <span className="text-[28vw] lg:text-[24vw] leading-[0.75] tracking-tighter font-serif text-[#151515] text-center w-full block">
+        <span className="text-[20vw] lg:text-[24vw] leading-[0.75] tracking-tighter font-serif text-[#151515] text-center w-full block">
           CreBot
         </span>
       </div>

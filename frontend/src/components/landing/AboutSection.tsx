@@ -8,19 +8,19 @@ export default function AboutSection() {
         {/* STATS STRIP */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-6 mb-24 pb-24 border-b border-[var(--border-soft)]">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="border-l border-[var(--border-soft)] pl-6">
-            <div className="font-display text-5xl md:text-7xl text-white">0.0%</div>
+            <div className="font-display text-4xl sm:text-5xl md:text-7xl text-white">0.0%</div>
             <div className="font-mono text-[11px] text-[var(--text-muted)] tracking-[0.2em] uppercase mt-2">Hallucination Rate</div>
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="border-l border-[var(--border-soft)] pl-6">
-            <div className="font-display text-5xl md:text-7xl text-[var(--btn-bg)]">100%</div>
+            <div className="font-display text-4xl sm:text-5xl md:text-7xl text-[var(--btn-bg)]">100%</div>
             <div className="font-mono text-[11px] text-[var(--text-muted)] tracking-[0.2em] uppercase mt-2">Source Traceability</div>
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="border-l border-[var(--border-soft)] pl-6">
-            <div className="font-display text-5xl md:text-7xl text-white">124K</div>
+            <div className="font-display text-4xl sm:text-5xl md:text-7xl text-white">124K</div>
             <div className="font-mono text-[11px] text-[var(--text-muted)] tracking-[0.2em] uppercase mt-2">Queries Handled</div>
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="border-l border-[var(--border-soft)] pl-6">
-            <div className="font-display text-5xl md:text-7xl text-white">24/7</div>
+            <div className="font-display text-4xl sm:text-5xl md:text-7xl text-white">24/7</div>
             <div className="font-mono text-[11px] text-[var(--text-muted)] tracking-[0.2em] uppercase mt-2">Uptime Protocol</div>
           </motion.div>
         </div>
@@ -34,7 +34,7 @@ export default function AboutSection() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="font-display text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-white"
+              className="font-display text-3xl sm:text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-white"
             >
               ENGINEERED<br />
               <span className="text-stroke">FOR</span><br />

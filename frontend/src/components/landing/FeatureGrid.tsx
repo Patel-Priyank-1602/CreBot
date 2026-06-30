@@ -72,7 +72,7 @@ export default function FeatureGrid() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="font-display text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-white"
+              className="font-display text-3xl sm:text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-white"
             >
               EVERYTHING YOU NEED.<br />
               <span className="text-stroke">NOTHING YOU</span><br />
@@ -91,7 +91,7 @@ export default function FeatureGrid() {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {features.map((feature, i) => (
             <motion.article 
               key={feature.title}
@@ -101,7 +101,7 @@ export default function FeatureGrid() {
               transition={{ delay: i * 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               className="group notch-corner border border-[var(--border-default)] bg-[var(--bg-card)] hover:border-[var(--btn-bg)] transition-colors duration-400"
             >
-              <div className="relative h-64 overflow-hidden">
+              <div className="relative h-48 sm:h-64 overflow-hidden">
                 <img 
                   src={feature.image} 
                   className="w-full h-full object-cover img-noir group-hover:scale-105 group-hover:grayscale-[80%] transition-all duration-700" 

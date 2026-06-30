@@ -25,7 +25,7 @@ export default function SecuritySection() {
               <span>04 — Collaboration</span>
             </div>
 
-            <h2 className="font-display text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-white mb-8">
+            <h2 className="font-display text-3xl sm:text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-white mb-8">
               SHARE BOTS.<br />
               <span className="text-stroke">CONTROL</span><br />
               <span className="text-[var(--btn-bg)]">ACCESS.</span>
@@ -71,7 +71,7 @@ export default function SecuritySection() {
                     <p className="font-heading text-lg text-white uppercase tracking-wide">John Doe (You)</p>
                     <p className="font-mono text-[10px] text-[var(--text-muted)] tracking-widest uppercase">john@example.com</p>
                   </div>
-                  <span className="ml-auto px-4 py-2 font-mono text-[10px] tracking-widest text-white border border-white/20">OWNER</span>
+                    <span className="ml-auto px-3 sm:px-4 py-2 font-mono text-[10px] tracking-widest text-white border border-white/20 shrink-0">OWNER</span>
                 </div>
 
                 {/* User 2 */}
@@ -83,7 +83,7 @@ export default function SecuritySection() {
                     <p className="font-heading text-lg text-[var(--text-primary)] uppercase tracking-wide">Alex Lee</p>
                     <p className="font-mono text-[10px] text-[var(--text-muted)] tracking-widest uppercase">alex@example.com</p>
                   </div>
-                  <span className="ml-auto px-4 py-2 font-mono text-[10px] tracking-widest text-[var(--btn-bg)] border border-[var(--btn-bg)]">EDIT</span>
+                    <span className="ml-auto px-3 sm:px-4 py-2 font-mono text-[10px] tracking-widest text-[var(--btn-bg)] border border-[var(--btn-bg)] shrink-0">EDIT</span>
                 </div>
 
                 {/* User 3 */}
@@ -95,7 +95,7 @@ export default function SecuritySection() {
                     <p className="font-heading text-lg text-[var(--text-primary)] uppercase tracking-wide">Maria Rodriguez</p>
                     <p className="font-mono text-[10px] text-[var(--text-muted)] tracking-widest uppercase">maria@example.com</p>
                   </div>
-                  <span className="ml-auto px-4 py-2 font-mono text-[10px] tracking-widest text-white/50 border border-[var(--border-soft)]">VIEW</span>
+                    <span className="ml-auto px-3 sm:px-4 py-2 font-mono text-[10px] tracking-widest text-white/50 border border-[var(--border-soft)] shrink-0">VIEW</span>
                 </div>
               </div>
 

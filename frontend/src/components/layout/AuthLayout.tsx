@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import CreBotLogo from '../common/CreBotLogo';
-import ParticleBackground from '../landing/ParticleBackground';
 
 interface AuthLayoutProps {
   children: ReactNode;
@@ -12,7 +11,12 @@ interface AuthLayoutProps {
 export default function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
   return (
     <div className="min-h-screen bg-[var(--body-bg)] flex relative overflow-hidden">
-      <ParticleBackground />
+      {/* Lightweight CSS background replacing heavy Three.js particles */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_50%,rgba(224,90,0,0.08)_0%,transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_20%,rgba(224,90,0,0.05)_0%,transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_80%,rgba(255,255,255,0.02)_0%,transparent_40%)]" />
+      </div>
 
       <div className="hidden lg:flex flex-1 flex-col justify-center px-16 relative z-10">
         <div className="max-w-lg">
@@ -58,3 +62,4 @@ export default function AuthLayout({ children, title, subtitle }: AuthLayoutProp
     </div>
   );
 }
+

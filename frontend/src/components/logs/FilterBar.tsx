@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Search, Calendar } from 'lucide-react';
 import { getChatbotFilters } from '../../services/chatLogService';
 import { LogFilters } from '../../services/chatLogService';
+import Select from '../common/Select';
 
 interface FilterBarProps {
   onFilterChange: (filters: LogFilters) => void;
@@ -48,20 +49,28 @@ export default function FilterBar({ onFilterChange }: FilterBarProps) {
           />
         </div>
       </div>
-      <select value={chatbotId} onChange={(e) => { setChatbotId(e.target.value); applyFilters({ chatbotId: e.target.value }); }}
-        className="bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-3 py-2 text-sm text-[var(--text-muted)] focus:outline-none focus:border-[var(--text-primary)] transition-colors">
-        <option value="">All Chatbots</option>
-        {chatbots.map((b) => (
-          <option key={b.id} value={b.id}>{b.name}</option>
-        ))}
-      </select>
-      <select value={timeFilter} onChange={(e) => { setTimeFilter(e.target.value); applyFilters({ timeFilter: e.target.value }); }}
-        className="bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-3 py-2 text-sm text-[var(--text-muted)] focus:outline-none focus:border-[var(--text-primary)] transition-colors">
-        <option value="">All Time</option>
-        <option value="today">Today</option>
-        <option value="week">This Week</option>
-        <option value="month">This Month</option>
-      </select>
+      <div className="w-40">
+        <Select
+          value={chatbotId}
+          onChange={(val) => { setChatbotId(val); applyFilters({ chatbotId: val }); }}
+          options={[
+            { value: '', label: 'All Chatbots' },
+            ...chatbots.map(b => ({ value: b.id, label: b.name }))
+          ]}
+        />
+      </div>
+      <div className="w-36">
+        <Select
+          value={timeFilter}
+          onChange={(val) => { setTimeFilter(val); applyFilters({ timeFilter: val }); }}
+          options={[
+            { value: '', label: 'All Time' },
+            { value: 'today', label: 'Today' },
+            { value: 'week', label: 'This Week' },
+            { value: 'month', label: 'This Month' },
+          ]}
+        />
+      </div>
     </div>
   );
 }

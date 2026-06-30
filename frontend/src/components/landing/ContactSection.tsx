@@ -16,7 +16,7 @@ export default function ContactSection() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="font-display text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-white mb-8"
+              className="font-display text-3xl sm:text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-white mb-8"
             >
               DEPLOY<br />
               <span className="text-[var(--btn-bg)]">CREBOT.</span>
@@ -48,7 +48,7 @@ export default function ContactSection() {
             viewport={{ once: true }}
             className="lg:col-span-7"
           >
-            <div className="relative p-10 bg-[var(--bg-card)] border border-[var(--border-default)] group">
+            <div className="relative p-6 sm:p-10 bg-[var(--bg-card)] border border-[var(--border-default)] group">
               {/* Corner brackets */}
               <div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-l-2 border-[var(--btn-bg)] transition-all group-hover:w-16 group-hover:h-16" />
               <div className="absolute bottom-0 right-0 w-12 h-12 border-b-2 border-r-2 border-[var(--btn-bg)] transition-all group-hover:w-16 group-hover:h-16" />

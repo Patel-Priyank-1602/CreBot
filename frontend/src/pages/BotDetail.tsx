@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@clerk/clerk-react';
 import { api, setClerkTokenGetter } from '../lib/api';
 import { cn } from '../lib/utils';
+import Select from '../components/common/Select';
 import { ArrowLeft, Copy, Check, Users, Trash2, UserPlus, Mail, Settings } from 'lucide-react';
 import Card from '../components/common/Card';
 
@@ -140,14 +141,16 @@ export default function BotDetail() {
                       <p className="text-xs text-[var(--text-muted)]">Create a secure joining code to share with a team member.</p>
                     </div>
                     <div className="flex items-center gap-3 shrink-0">
-                      <select
-                        value={inviteAccess}
-                        onChange={(e) => setInviteAccess(e.target.value as 'view' | 'edit')}
-                        className="bg-[var(--bg-input)] border border-[var(--border-soft)] rounded-lg px-4 py-2 text-sm text-[var(--text-primary)] focus:outline-none transition-colors"
-                      >
-                        <option value="view">View Access</option>
-                        <option value="edit">Edit Access</option>
-                      </select>
+                      <div className="w-36">
+                        <Select
+                          value={inviteAccess}
+                          onChange={(val) => setInviteAccess(val as 'view' | 'edit')}
+                          options={[
+                            { value: 'view', label: 'View Access' },
+                            { value: 'edit', label: 'Edit Access' }
+                          ]}
+                        />
+                      </div>
                       <button
                         onClick={handleGenerateCode}
                         disabled={generatingCode}

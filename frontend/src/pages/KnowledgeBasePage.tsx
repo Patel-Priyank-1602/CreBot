@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { FileText, Bot } from 'lucide-react';
+import Select from '../components/common/Select';
 import UploadDropzone from '../components/knowledge/UploadDropzone';
 import KnowledgeTable from '../components/knowledge/KnowledgeTable';
 import ExportKnowledgeCard from '../components/knowledge/ExportKnowledgeCard';
@@ -81,15 +82,13 @@ export default function KnowledgeBasePage() {
         ) : bots.length === 0 ? (
           <p className="text-sm text-[var(--text-muted)]">Create a chatbot first to manage its knowledge base.</p>
         ) : (
-          <select
-            value={selectedBotId}
-            onChange={(e) => handleBotChange(e.target.value)}
-            className="bg-[var(--bg-input)] border border-[var(--border-default)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--text-primary)] transition-colors w-full max-w-xs"
-          >
-            {bots.map((b) => (
-              <option key={b.id} value={b.id}>{b.name}</option>
-            ))}
-          </select>
+          <div className="w-full max-w-xs">
+            <Select
+              value={selectedBotId}
+              onChange={(val) => handleBotChange(val)}
+              options={bots.map((b) => ({ value: b.id, label: b.name }))}
+            />
+          </div>
         )}
         {selectedBot && (
           <p className="text-xs text-[var(--text-muted)] mt-1.5 flex items-center gap-1.5">

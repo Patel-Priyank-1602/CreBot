@@ -74,7 +74,7 @@ export default function UseCasesSection() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="font-display text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-white"
+              className="font-display text-3xl sm:text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-white"
             >
               ENDLESS <span className="text-[var(--btn-bg)]">POSSIBILITIES.</span><br />
               <span className="text-stroke">ONE SYSTEM.</span>
@@ -100,7 +100,7 @@ export default function UseCasesSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1, duration: 0.6 }}
-              className="group perspective-1000 h-[500px]"
+              className="group perspective-1000 h-[400px] sm:h-[500px]"
             >
               <div className="relative w-full h-full transition-transform duration-[800ms] transform-style-3d group-hover:rotate-y-180">
                 

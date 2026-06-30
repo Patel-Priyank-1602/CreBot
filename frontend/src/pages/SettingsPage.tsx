@@ -6,7 +6,7 @@ import Card from '../components/common/Card';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
 import ErrorState from '../components/common/ErrorState';
-import { listApiKeys, createApiKey, revokeApiKey, exportData, ApiKey, CreatedApiKey } from '../services/settingsService';
+import { exportData } from '../services/settingsService';
 
 function SectionIcon({ icon: Icon, className }: { icon: any; className?: string }) {
   return (
@@ -17,53 +17,18 @@ function SectionIcon({ icon: Icon, className }: { icon: any; className?: string 
 }
 
 export default function SettingsPage() {
-  const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [creatingKey, setCreatingKey] = useState(false);
-  const [newKey, setNewKey] = useState<CreatedApiKey | null>(null);
   const [exporting, setExporting] = useState(false);
 
   const load = () => {
-    setLoading(true);
+    setLoading(false);
     setError('');
-    Promise.all([listApiKeys()])
-      .then(([keys]) => {
-        setApiKeys(keys);
-      })
-      .catch((e) => setError(e.message))
-      .finally(() => setLoading(false));
   };
 
   useEffect(() => { load(); }, []);
 
 
-
-  const handleCreateKey = async () => {
-    setCreatingKey(true);
-    setNewKey(null);
-    try {
-      const key = await createApiKey();
-      setNewKey(key);
-      const keys = await listApiKeys();
-      setApiKeys(keys);
-    } catch (e: any) {
-      alert(e.message);
-    } finally {
-      setCreatingKey(false);
-    }
-  };
-
-  const handleRevokeKey = async (keyId: string) => {
-    if (!confirm('Revoke this API key? This cannot be undone.')) return;
-    try {
-      await revokeApiKey(keyId);
-      const keys = await listApiKeys();
-      setApiKeys(keys);
-    } catch (e: any) {
-      alert(e.message);
-    }
-  };
 
   const handleExport = async () => {
     setExporting(true);
@@ -83,12 +48,6 @@ export default function SettingsPage() {
     }
   };
 
-  const copyNewKey = () => {
-    if (newKey?.full_key) {
-      navigator.clipboard.writeText(newKey.full_key);
-      alert('API key copied to clipboard. Store it securely - you won\'t see it again.');
-    }
-  };
 
   if (error) return <ErrorState message={error} onRetry={load} />;
 
@@ -99,7 +58,7 @@ export default function SettingsPage() {
         <p className="text-sm text-[var(--text-muted)]">Manage your API keys and data controls.</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-5xl">
+      <div className="flex flex-col gap-6 max-w-3xl">
 
         {/* Profile Settings */}
         <Card className="p-6">
@@ -118,70 +77,6 @@ export default function SettingsPage() {
           </Link>
         </Card>
 
-
-
-        {/* API Keys */}
-        <Card className="p-6">
-          <div className="flex items-center gap-4 mb-6">
-            <SectionIcon icon={Key} />
-            <div>
-              <h3 className="text-base font-semibold text-[var(--text-primary)]">API Keys</h3>
-              <p className="text-sm text-[var(--text-muted)]">Manage your API keys for programmatic access.</p>
-            </div>
-          </div>
-
-          {newKey && (
-            <div className="mb-5 p-4 bg-[var(--bg-input)] border border-emerald-500/30 rounded-xl">
-              <p className="text-xs text-[var(--text-secondary)] mb-3 font-medium">New API Key created — copy it now. It won't be shown again:</p>
-              <div className="flex items-center gap-2">
-                <code className="text-xs text-[var(--text-primary)] font-mono bg-[var(--black-alpha-50)] px-3 py-2 rounded-lg flex-1 truncate border border-[var(--border-soft)] break-all">
-                  {newKey.full_key}
-                </code>
-                <button onClick={copyNewKey}
-                  className="px-3 py-2 rounded-lg bg-[var(--btn-bg)] text-[var(--btn-text)] text-xs hover:opacity-90 transition-opacity flex items-center gap-1.5 font-medium shrink-0">
-                  <Copy size={12} />
-                  Copy
-                </button>
-              </div>
-            </div>
-          )}
-
-          <div className="space-y-2.5 mb-5">
-            {apiKeys.length === 0 ? (
-              <p className="text-xs text-[var(--text-muted)] py-3">No API keys created yet.</p>
-            ) : (
-              apiKeys.map((key) => (
-                <div key={key.id}
-                  className="flex items-center justify-between p-3 bg-[var(--bg-input)] border border-[var(--border-soft)] rounded-xl">
-                  <div className="min-w-0 flex-1 mr-3">
-                    <code className="text-xs text-[var(--text-secondary)] font-mono">{key.key_preview}</code>
-                    <p className="text-xs text-[var(--text-muted)] mt-1">
-                      Created {new Date(key.created_at).toLocaleDateString()}
-                      {key.last_used_at ? ` · Last used ${new Date(key.last_used_at).toLocaleDateString()}` : ''}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <span className={`text-xs px-2.5 py-1 rounded-lg font-medium ${
-                      key.status === 'active'
-                        ? 'bg-emerald-500/10 text-emerald-500'
-                        : 'bg-[var(--bg-input)] text-[var(--text-muted)] border border-[var(--border-soft)]'
-                    }`}>
-                      {key.status}
-                    </span>
-                    {key.status === 'active' && (
-                      <Button variant="danger" size="sm" onClick={() => handleRevokeKey(key.id)}>Revoke</Button>
-                    )}
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-
-          <Button variant="primary" size="sm" onClick={handleCreateKey} disabled={creatingKey}>
-            {creatingKey ? <Loader size={14} className="animate-spin" /> : <Plus size={14} />}
-            Generate New Key
-          </Button>
-        </Card>
 
         {/* Data Export */}
         <Card className="p-6">

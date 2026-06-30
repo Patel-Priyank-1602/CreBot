@@ -3,12 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { SignInButton } from '@clerk/clerk-react';
 import { Bot, Send, User } from 'lucide-react';
 
-const REEL_IMAGES = [
-  'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80',
-];
-
 const AnimatedMockChat = () => {
   const [step, setStep] = useState(0);
 
@@ -16,19 +10,19 @@ const AnimatedMockChat = () => {
     let isMounted = true;
     const runSequence = async () => {
       while (isMounted) {
-        setStep(0); // Empty
+        setStep(0);
         await new Promise(r => setTimeout(r, 1500));
         if (!isMounted) break;
-        setStep(1); // User typing
+        setStep(1);
         await new Promise(r => setTimeout(r, 1000));
         if (!isMounted) break;
-        setStep(2); // User sent
+        setStep(2);
         await new Promise(r => setTimeout(r, 600));
         if (!isMounted) break;
-        setStep(3); // Bot processing
+        setStep(3);
         await new Promise(r => setTimeout(r, 2000));
         if (!isMounted) break;
-        setStep(4); // Bot replied
+        setStep(4);
         await new Promise(r => setTimeout(r, 4000));
       }
     };
@@ -37,15 +31,15 @@ const AnimatedMockChat = () => {
   }, []);
 
   return (
-    <div className="relative w-full max-w-lg mx-auto lg:ml-auto perspective-1000">
+    <div className="relative w-full max-w-lg mx-auto lg:ml-auto">
       <motion.div
-        initial={{ opacity: 0, rotateY: 10, x: 20 }}
-        animate={{ opacity: 1, rotateY: -5, x: 0 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className="w-full bg-[var(--bg-card)] border border-[var(--border-default)] shadow-2xl relative overflow-hidden transform-style-3d"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="w-full bg-[var(--bg-card)] border border-[var(--border-default)] shadow-2xl relative overflow-hidden"
       >
         {/* Chat Header */}
-        <div className="flex items-center gap-3 px-5 py-4 border-b border-[var(--border-soft)] bg-black/40 backdrop-blur-sm">
+        <div className="flex items-center gap-3 px-5 py-4 border-b border-[var(--border-soft)] bg-black/40">
           <div className="w-10 h-10 rounded-sm bg-[var(--bg-elevated)] border border-[var(--border-soft)] flex items-center justify-center">
             <Bot size={20} className="text-[var(--btn-bg)]" />
           </div>
@@ -58,7 +52,7 @@ const AnimatedMockChat = () => {
         </div>
 
         {/* Chat Body */}
-        <div className="p-5 space-y-5 min-h-[320px] bg-[var(--bg-main)]/50 flex flex-col justify-end pb-6">
+        <div className="p-5 space-y-5 min-h-[280px] sm:min-h-[320px] bg-[var(--bg-main)]/50 flex flex-col justify-end pb-6">
           <AnimatePresence>
             {step >= 2 && (
               <motion.div 
@@ -115,7 +109,7 @@ const AnimatedMockChat = () => {
         </div>
 
         {/* Chat Input */}
-        <div className="p-4 border-t border-[var(--border-soft)] bg-black/40 backdrop-blur-sm">
+        <div className="p-4 border-t border-[var(--border-soft)] bg-black/40">
           <div className="flex items-center gap-2 bg-[var(--bg-main)] border border-[var(--border-soft)] p-2">
             <div className="flex-1 px-2 font-mono text-xs overflow-hidden h-4">
               <AnimatePresence mode="wait">
@@ -147,43 +141,24 @@ const AnimatedMockChat = () => {
 };
 
 export default function HeroSection() {
-  const [currentFrame, setCurrentFrame] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentFrame((prev) => (prev + 1) % REEL_IMAGES.length);
-    }, 6000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
-    <section id="product" className="relative h-screen min-h-[600px] w-full overflow-hidden bg-black flex items-center">
+    <section id="product" className="relative min-h-screen min-h-[600px] w-full overflow-hidden bg-black flex items-center pt-[90px] pb-16 lg:pt-0 lg:pb-0">
       
-      {/* Reel Frames */}
+      {/* Lightweight CSS background replacing external Unsplash images */}
       <div className="absolute inset-0 z-0">
-        <AnimatePresence mode="popLayout">
-          <motion.img
-            key={currentFrame}
-            src={REEL_IMAGES[currentFrame]}
-            initial={{ opacity: 0, scale: 1.05 }}
-            animate={{ opacity: 1, scale: 1.15 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 6, ease: "linear" }}
-            className="w-full h-full object-cover img-noir opacity-40"
-            alt="Cinematic abstract"
-          />
-        </AnimatePresence>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_30%,rgba(224,90,0,0.12)_0%,transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_80%,rgba(255,255,255,0.03)_0%,transparent_40%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_90%_90%,rgba(224,90,0,0.06)_0%,transparent_30%)]" />
       </div>
 
       {/* Overlays */}
       <div className="absolute inset-0 z-10 bg-gradient-to-r from-black via-black/80 to-black/20"></div>
       <div className="absolute inset-0 z-10 bg-[radial-gradient(ellipse_at_25%_60%,rgba(224,90,0,0.1)_0%,transparent_50%)]"></div>
-      <div className="scan-line z-20"></div>
 
       {/* Content */}
-      <div className="relative z-30 w-full max-w-[1600px] mx-auto px-6 lg:px-10">
+      <div className="relative z-30 w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
         
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-20 items-center">
           
           {/* Left Column - Typography */}
           <div className="max-w-3xl">
@@ -191,7 +166,7 @@ export default function HeroSection() {
               <span>LIVE</span>
             </div>
             
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-[4.5rem] leading-[0.9] mb-6 text-white uppercase tracking-tight">
+            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[4.5rem] leading-[0.9] mb-4 sm:mb-6 text-white uppercase tracking-tight">
               <motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8, delay: 0.1 }}>
                 Zero-Speculation
               </motion.div>
@@ -205,7 +180,7 @@ export default function HeroSection() {
             
             <motion.p 
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.5 }}
-              className="max-w-xl text-[var(--text-secondary)] text-sm md:text-base leading-relaxed font-sans mb-10"
+              className="max-w-xl text-[var(--text-secondary)] text-sm md:text-base leading-relaxed font-sans mb-6 sm:mb-10"
             >
               A private AI infrastructure for teams who refuse hallucination. Upload your knowledge base. Deploy instantly. One unrelenting standard - <span className="text-white font-medium">absolute precision</span>.
             </motion.p>
@@ -213,15 +188,15 @@ export default function HeroSection() {
             {/* CTA & Social Proof */}
             <motion.div 
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.8 }}
-              className="flex flex-col sm:flex-row items-start sm:items-center gap-8"
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-8"
             >
               <SignInButton mode="modal">
-                <button className="font-heading text-sm tracking-[0.2em] uppercase text-black bg-[var(--text-primary)] px-8 py-4 hover:bg-[var(--btn-bg)] hover:text-white transition-colors duration-300">
+                <button className="font-heading text-sm tracking-[0.2em] uppercase text-black bg-[var(--text-primary)] px-6 sm:px-8 py-3 sm:py-4 hover:bg-[var(--btn-bg)] hover:text-white transition-colors duration-300 w-full sm:w-auto text-center">
                   Deploy System
                 </button>
               </SignInButton>
               
-              <div className="flex items-center gap-4 border-l border-white/10 pl-8">
+              <div className="flex items-center gap-4 sm:border-l sm:border-white/10 sm:pl-8">
                 <div className="flex -space-x-3">
                   <div className="w-8 h-8 rounded-full border-2 border-black bg-[var(--bg-elevated)] flex items-center justify-center z-30 font-mono text-[10px] text-white">JD</div>
                   <div className="w-8 h-8 rounded-full border-2 border-black bg-[var(--bg-elevated)] flex items-center justify-center z-20 font-mono text-[10px] text-white">SK</div>
@@ -244,19 +219,19 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Marquee Ticker - Positioned Absolute Bottom */}
-      <div className="absolute bottom-0 left-0 right-0 border-t border-white/5 bg-black/60 backdrop-blur-sm py-2.5 overflow-hidden z-40">
+      {/* Marquee Ticker */}
+      <div className="absolute bottom-0 left-0 right-0 border-t border-white/5 bg-black/60 py-2 sm:py-2.5 overflow-hidden z-40">
         <div className="marquee-track font-display text-xs md:text-sm tracking-[0.25em] text-[var(--text-secondary)]">
-          <span className="px-8 text-white">NO SPECULATION</span><span className="text-[var(--btn-bg)]">/</span>
-          <span className="px-8">ABSOLUTE PRECISION</span><span className="text-[var(--btn-bg)]">/</span>
-          <span className="px-8 text-white">GROUNDED RESPONSES</span><span className="text-[var(--btn-bg)]">/</span>
-          <span className="px-8">YOUR DATA ONLY</span><span className="text-[var(--btn-bg)]">/</span>
-          <span className="px-8 text-white">CLIENT ISOLATION</span><span className="text-[var(--btn-bg)]">/</span>
-          <span className="px-8">ZERO HALLUCINATIONS</span><span className="text-[var(--btn-bg)]">/</span>
-          <span className="px-8 text-white">NO SPECULATION</span><span className="text-[var(--btn-bg)]">/</span>
-          <span className="px-8">ABSOLUTE PRECISION</span><span className="text-[var(--btn-bg)]">/</span>
-          <span className="px-8 text-white">GROUNDED RESPONSES</span><span className="text-[var(--btn-bg)]">/</span>
-          <span className="px-8">YOUR DATA ONLY</span><span className="text-[var(--btn-bg)]">/</span>
+          <span className="px-4 sm:px-8 text-white">NO SPECULATION</span><span className="text-[var(--btn-bg)]">/</span>
+          <span className="px-4 sm:px-8">ABSOLUTE PRECISION</span><span className="text-[var(--btn-bg)]">/</span>
+          <span className="px-4 sm:px-8 text-white">GROUNDED RESPONSES</span><span className="text-[var(--btn-bg)]">/</span>
+          <span className="px-4 sm:px-8">YOUR DATA ONLY</span><span className="text-[var(--btn-bg)]">/</span>
+          <span className="px-4 sm:px-8 text-white">CLIENT ISOLATION</span><span className="text-[var(--btn-bg)]">/</span>
+          <span className="px-4 sm:px-8">ZERO HALLUCINATIONS</span><span className="text-[var(--btn-bg)]">/</span>
+          <span className="px-4 sm:px-8 text-white">NO SPECULATION</span><span className="text-[var(--btn-bg)]">/</span>
+          <span className="px-4 sm:px-8">ABSOLUTE PRECISION</span><span className="text-[var(--btn-bg)]">/</span>
+          <span className="px-4 sm:px-8 text-white">GROUNDED RESPONSES</span><span className="text-[var(--btn-bg)]">/</span>
+          <span className="px-4 sm:px-8">YOUR DATA ONLY</span><span className="text-[var(--btn-bg)]">/</span>
         </div>
       </div>
     </section>

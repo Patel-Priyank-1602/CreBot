@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import HeroSection from '../components/landing/HeroSection';
@@ -12,13 +11,7 @@ import FAQSection from '../components/landing/FAQSection';
 
 export default function LandingPage() {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="bg-[var(--bg-main)] min-h-screen"
-    >
-      <div className="grain" id="grain"></div>
+    <div className="dark bg-black min-h-screen">
       <Navbar />
       <HeroSection />
       <FeatureGrid />
@@ -29,6 +22,7 @@ export default function LandingPage() {
       <ContactSection />
       <FAQSection />
       <Footer />
-    </motion.div>
+    </div>
   );
 }
+

@@ -45,7 +45,7 @@ export default function FAQSection() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-5xl md:text-7xl font-display font-bold tracking-tight mb-6 text-white"
+              className="text-3xl sm:text-5xl md:text-7xl font-display font-bold tracking-tight mb-6 text-white"
             >
               FREQUENTLY<br />
               <span className="text-stroke">ASKED</span><br />
@@ -80,7 +80,7 @@ export default function FAQSection() {
                       <span className={`font-mono text-sm tracking-[0.2em] transition-colors ${openIndex === idx ? 'text-[var(--btn-bg)]' : 'text-[var(--text-muted)] group-hover:text-white'}`}>
                         {faq.num}
                       </span>
-                      <span className={`font-heading text-2xl md:text-3xl tracking-wide transition-colors ${openIndex === idx ? 'text-white' : 'text-[var(--text-secondary)] group-hover:text-white'}`}>
+                      <span className={`font-heading text-xl sm:text-2xl md:text-3xl tracking-wide transition-colors ${openIndex === idx ? 'text-white' : 'text-[var(--text-secondary)] group-hover:text-white'}`}>
                         {faq.question}
                       </span>
                     </div>

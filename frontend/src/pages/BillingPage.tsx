@@ -93,42 +93,19 @@ export default function BillingPage() {
             {upgradeMsg && <p className="text-xs text-[var(--text-secondary)] mt-2">{upgradeMsg}</p>}
           </Card>
 
-          <div className="grid md:grid-cols-3 gap-4">
-            {plans.map((plan) => {
-              const isCurrent = current.plan === plan.name.toLowerCase();
-              return (
-                <Card key={plan.name} elevated={false}
-                  className={`p-5 ${isCurrent ? 'border-[var(--white-alpha-20)]' : ''}`}>
-                  <h3 className="text-base font-semibold text-[var(--text-primary)] mb-1">{plan.name}</h3>
-                  <div className="flex items-baseline gap-1 mb-4">
-                    <span className="text-2xl font-bold text-[var(--text-primary)]">${plan.price}</span>
-                    <span className="text-sm text-[var(--text-muted)]">/month</span>
-                  </div>
-                  <ul className="space-y-2 mb-6">
-                    <li className="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
-                      <Check size={14} className="text-[var(--text-primary)]" />
-                      {plan.chatbots === 999999 ? 'Unlimited chatbots' : `${plan.chatbots} chatbots`}
-                    </li>
-                    <li className="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
-                      <Check size={14} className="text-[var(--text-primary)]" />
-                      {formatFileSize(plan.storage)} storage
-                    </li>
-                    <li className="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
-                      <Check size={14} className="text-[var(--text-primary)]" />
-                      {plan.queries >= 999999 ? 'Unlimited queries' : `${plan.queries.toLocaleString()} queries/mo`}
-                    </li>
-                  </ul>
-                  <Button variant={isCurrent ? 'secondary' : 'primary'}
-                    className="w-full" size="sm"
-                    disabled={isCurrent || upgrading === plan.name}
-                    onClick={() => handleUpgrade(plan.name)}>
-                    {upgrading === plan.name ? <Loader size={14} className="animate-spin" /> : null}
-                    {isCurrent ? 'Current Plan' : upgrading === plan.name ? 'Upgrading...' : 'Upgrade'}
-                  </Button>
-                </Card>
-              );
-            })}
-          </div>
+          <Card className="p-6 border-[var(--btn-bg)]/30 relative overflow-hidden mt-6">
+            <div className="absolute top-0 right-0 p-4">
+              <span className="px-3 py-1 bg-[var(--btn-bg)]/10 text-[var(--btn-bg)] text-xs font-bold rounded-full uppercase tracking-wider">Early Access</span>
+            </div>
+            <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-3">100% Free During Beta</h3>
+            <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-4 max-w-2xl">
+              CreBot is currently completely free while we continue to build and improve the platform! We will be introducing paid plans soon, but for now, we'd love for you to use it and share your feedback so we can make it even better.
+            </p>
+            <div className="bg-[var(--bg-input)] border border-[var(--border-soft)] rounded-xl p-4 flex items-center gap-3 w-fit">
+              <Check className="text-[var(--btn-bg)]" size={18} />
+              <span className="text-sm font-medium text-[var(--text-primary)]">You can create up to <strong>5 chatbots</strong> for absolutely free.</span>
+            </div>
+          </Card>
         </>
       )}
     </motion.div>

@@ -11,10 +11,10 @@ export default function EmbedPreview({ selectedBot }: EmbedPreviewProps) {
   const welcomeMsg = selectedBot?.welcome_message || 'Hi! How can I help you today?';
 
   return (
-    <Card elevated className="p-5">
+    <Card elevated className="p-3 sm:p-5">
       <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-4">Widget Preview</h3>
-      <div className="relative bg-[var(--bg-input)] border border-[var(--border-soft)] rounded-2xl p-4 min-h-[220px] flex items-end justify-end">
-        <div className="bg-[var(--bg-card)] border border-[var(--border-soft)] rounded-2xl w-72 shadow-2xl shadow-[var(--black-alpha-50)] overflow-hidden">
+      <div className="relative bg-[var(--bg-input)] border border-[var(--border-soft)] rounded-2xl p-4 min-h-[220px] flex items-end sm:justify-end overflow-x-auto">
+        <div className="bg-[var(--bg-card)] border border-[var(--border-soft)] rounded-2xl w-[288px] shrink-0 shadow-2xl shadow-[var(--black-alpha-50)] overflow-hidden">
           <div className="flex items-center gap-2.5 px-4 py-3 border-b border-[var(--border-soft)]">
             <div className="w-7 h-7 rounded-lg bg-white flex items-center justify-center">
               <Bot size={14} className="text-black" />

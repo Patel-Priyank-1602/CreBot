@@ -22,7 +22,7 @@ export default function WorkflowSection() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="font-display text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-white"
+              className="font-display text-3xl sm:text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-white"
             >
               RAW DATA.<br />
               <span className="text-stroke">TO GROUNDED</span><br />
@@ -46,7 +46,7 @@ export default function WorkflowSection() {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-5 gap-6 border-t border-[var(--border-soft)] pt-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 border-t border-[var(--border-soft)] pt-12">
           {steps.map((step, i) => (
             <motion.div
               key={step.num}
