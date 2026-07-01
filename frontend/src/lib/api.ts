@@ -76,6 +76,7 @@ export const api = {
     removeMember: (botId: string, memberId: string) => fetchApi(`/bots/${botId}/members/${memberId}`, { method: 'DELETE' }),
     addMember: (botId: string, email: string) => fetchApi(`/bots/${botId}/members/add`, { method: 'POST', body: JSON.stringify({ email }) }),
     join: (code: string) => fetchApi('/bots/join', { method: 'POST', body: JSON.stringify({ code }) }),
+    listJoined: () => fetchApi('/bots/joined'),
     generateInvite: (botId: string, access: 'view' | 'edit') => fetchApi('/bots/generate-invite', { method: 'POST', body: JSON.stringify({ bot_id: botId, access }) }),
   },
   members: {

@@ -1,5 +1,6 @@
 import secrets
 import hashlib
+from datetime import datetime, timezone
 from utils.supabase_client import supabase
 from fastapi import HTTPException
 
@@ -28,7 +29,7 @@ def get_workspace_settings(workspace_id: str):
         "email": "",
         "role": "user",
         "plan": "free",
-        "chatbot_limit": 1,
+        "chatbot_limit": 5,
         "storage_limit": 52428800,
         "created_at": "",
         "updated_at": "",
@@ -40,7 +41,7 @@ def update_workspace_settings(workspace_id: str, data: dict):
     if "name" in data:
         update["name"] = data["name"]
     if update:
-        update["updated_at"] = "now()"
+        update["updated_at"] = datetime.now(timezone.utc).isoformat()
         try:
             supabase.table("workspaces").update(update).eq("id", workspace_id).execute()
         except Exception:

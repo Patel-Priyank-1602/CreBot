@@ -66,7 +66,7 @@ export default function FeatureGrid() {
         <div className="grid lg:grid-cols-12 gap-8 mb-20">
           <div className="lg:col-span-7">
             <div className="section-marker mb-6">
-              <span>02 — Features</span>
+              <span>01 — Features</span>
             </div>
             <motion.h2 
               initial={{ opacity: 0, y: 30 }}

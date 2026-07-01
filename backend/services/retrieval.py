@@ -19,8 +19,8 @@ def retrieve_relevant_chunks(
     Embed the visitor's question, then run cosine-similarity search
     against stored FAQ chunks for the given bot.
     """
-    top_k = top_k or settings.TOP_K_CHUNKS
-    threshold = threshold or settings.SIMILARITY_THRESHOLD
+    top_k = top_k if top_k is not None else settings.TOP_K_CHUNKS
+    threshold = threshold if threshold is not None else settings.SIMILARITY_THRESHOLD
 
     question_vector = embed_text(question)
 

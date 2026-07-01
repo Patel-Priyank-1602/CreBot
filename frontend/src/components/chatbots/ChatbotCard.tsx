@@ -11,6 +11,7 @@ interface ChatbotCardProps {
   filesCount: number;
   conversationsCount: number;
   lastUpdated: string;
+  accessTag?: 'view' | 'edit';
   onDelete?: () => void;
   onRename?: (newName: string) => void;
 }
@@ -22,6 +23,7 @@ function ChatbotCard({
   filesCount,
   conversationsCount,
   lastUpdated,
+  accessTag,
   onDelete,
   onRename,
 }: ChatbotCardProps) {
@@ -53,6 +55,8 @@ function ChatbotCard({
     }
   };
 
+  const isOwned = !accessTag;
+
   return (
     <motion.div
       whileHover={{ y: -2 }}
@@ -64,7 +68,7 @@ function ChatbotCard({
             <Bot size={20} />
           </div>
           <div>
-            {isEditing ? (
+            {isEditing && isOwned ? (
               <input
                 ref={inputRef}
                 value={editName}
@@ -74,14 +78,25 @@ function ChatbotCard({
                 className="text-sm font-semibold text-[var(--text-primary)] bg-transparent border-b border-[var(--border-default)] focus:border-[var(--btn-bg)] focus:outline-none w-full"
               />
             ) : (
-              <div className="flex items-center gap-2 group cursor-pointer" onClick={() => setIsEditing(true)}>
+              <div className="flex items-center gap-2 group cursor-pointer" onClick={() => isOwned && setIsEditing(true)}>
                 <h3 className="text-sm font-semibold text-[var(--text-primary)]">{name}</h3>
-                <Edit2 size={12} className="text-[var(--text-muted)] opacity-0 group-hover:opacity-100 transition-opacity" />
+                {isOwned && <Edit2 size={12} className="text-[var(--text-muted)] opacity-0 group-hover:opacity-100 transition-opacity" />}
               </div>
             )}
-            <span className={`text-xs ${status === 'active' ? 'text-white/60' : 'text-[var(--text-muted)]'}`}>
-              {status === 'active' ? 'Active' : 'Draft'}
-            </span>
+            <div className="flex items-center gap-2 mt-0.5">
+              <span className={`text-xs ${status === 'active' ? 'text-white/60' : 'text-[var(--text-muted)]'}`}>
+                {status === 'active' ? 'Active' : 'Draft'}
+              </span>
+              {accessTag && (
+                <span className={`text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded-md ${
+                  accessTag === 'edit'
+                    ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/25'
+                    : 'bg-sky-500/15 text-sky-400 border border-sky-500/25'
+                }`}>
+                  {accessTag}
+                </span>
+              )}
+            </div>
           </div>
         </div>
         <div className={`px-2 py-1 rounded-md text-xs ${
@@ -104,7 +119,7 @@ function ChatbotCard({
         <Button variant="secondary" size="sm" onClick={() => navigate(`/dashboard/embed?bot=${id}`)}>
           <ExternalLink size={14} />
         </Button>
-        {onDelete && (
+        {isOwned && onDelete && (
           <Button variant="danger" size="sm" onClick={onDelete}>
             <Trash2 size={14} />
           </Button>
@@ -115,3 +130,4 @@ function ChatbotCard({
 }
 
 export default memo(ChatbotCard);
+

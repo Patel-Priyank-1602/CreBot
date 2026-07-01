@@ -16,7 +16,7 @@ export default function WorkflowSection() {
         <div className="grid lg:grid-cols-12 gap-8 mb-20">
           <div className="lg:col-span-5">
             <div className="section-marker mb-6">
-              <span>03 — Workflow</span>
+              <span>02 — Workflow</span>
             </div>
             <motion.h2 
               initial={{ opacity: 0, y: 30 }}

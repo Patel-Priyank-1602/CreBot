@@ -1,22 +1,7 @@
+from datetime import datetime, timezone
 from utils.supabase_client import supabase
 from config import settings
 from fastapi import HTTPException
-
-
-def _get_bot_safe(chatbot_id: str, workspace_id: str):
-    try:
-        result = supabase.table("bots").select("*").eq("id", chatbot_id).eq("workspace_id", workspace_id).execute()
-        if result.data:
-            return result.data[0]
-    except Exception:
-        pass
-    try:
-        result = supabase.table("bots").select("*").eq("id", chatbot_id).execute()
-        if result.data:
-            return result.data[0]
-    except Exception:
-        pass
-    return None
 
 
 from routes.bots import _get_bot_for_user
@@ -50,7 +35,7 @@ def update_embed_settings(workspace_id: str, chatbot_id: str, data: dict, user_i
         update_data["allowed_domains"] = data["allowed_domains"]
 
     if update_data:
-        update_data["updated_at"] = "now()"
+        update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
         try:
             supabase.table("bots").update(update_data).eq("id", chatbot_id).execute()
         except Exception:

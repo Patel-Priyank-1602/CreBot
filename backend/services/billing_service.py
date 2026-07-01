@@ -1,9 +1,10 @@
+from datetime import datetime, timezone
 from utils.supabase_client import supabase
 
 
 PLANS = {
     "free": {"name": "Free", "price": 0, "chatbots": 5, "storage": 52428800, "queries": 500},
-    "starter": {"name": "Starter", "price": 29, "chatbots": 3, "storage": 52428800, "queries": 1000},
+    "starter": {"name": "Starter", "price": 29, "chatbots": 5, "storage": 52428800, "queries": 1000},
     "pro": {"name": "Pro", "price": 79, "chatbots": 10, "storage": 524288000, "queries": 10000},
     "enterprise": {"name": "Enterprise", "price": 199, "chatbots": 999999, "storage": 5368709120, "queries": 999999999},
 }
@@ -73,7 +74,7 @@ def get_current_billing(workspace_id: str):
 
 def get_plans():
     return [
-        {"name": "Starter", "price": 29, "chatbots": 3, "storage": 52428800, "queries": 1000},
+        {"name": "Starter", "price": 29, "chatbots": 5, "storage": 52428800, "queries": 1000},
         {"name": "Pro", "price": 79, "chatbots": 10, "storage": 524288000, "queries": 10000},
         {"name": "Enterprise", "price": 199, "chatbots": 999999, "storage": 5368709120, "queries": 999999999},
     ]
@@ -84,7 +85,7 @@ def upgrade_plan(workspace_id: str, plan: str):
         return {"success": False, "message": "Invalid plan"}
 
     try:
-        supabase.table("workspaces").update({"plan": plan, "updated_at": "now()"}).eq("id", workspace_id).execute()
+        supabase.table("workspaces").update({"plan": plan, "updated_at": datetime.now(timezone.utc).isoformat()}).eq("id", workspace_id).execute()
     except Exception:
         pass
     return {"success": True, "message": f"Upgraded to {PLANS[plan]['name']} plan"}

@@ -22,7 +22,7 @@ export default function SecuritySection() {
             viewport={{ once: true }}
           >
             <div className="section-marker mb-6">
-              <span>04 — Collaboration</span>
+              <span>03 — Security</span>
             </div>
 
             <h2 className="font-display text-3xl sm:text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-white mb-8">

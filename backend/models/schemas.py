@@ -26,6 +26,7 @@ class BotResponse(BaseModel):
     theme: str = 'dark'
     position: str = 'bottom-right'
     updated_at: str = ''
+    access: str = ''
 
 
 class BotMemberResponse(BaseModel):

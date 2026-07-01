@@ -39,7 +39,7 @@ export default function FAQSection() {
         <div className="grid lg:grid-cols-12 gap-16 lg:gap-24">
           <div className="lg:col-span-5">
             <div className="section-marker mb-6">
-              <span>08 — Intel</span>
+              <span>09 — FAQ</span>
             </div>
             <motion.h2
               initial={{ opacity: 0, y: 30 }}

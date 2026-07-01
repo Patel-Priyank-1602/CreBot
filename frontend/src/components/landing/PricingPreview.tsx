@@ -8,7 +8,7 @@ const plans = [
     name: 'Starter',
     price: '$29',
     desc: 'For individuals and small projects.',
-    features: ['Up to 3 chatbots', '50 MB storage', '1,000 queries/month', 'Basic support'],
+    features: ['Up to 5 chatbots', '50 MB storage', '1,000 queries/month', 'Basic support'],
   },
   {
     name: 'Pro',

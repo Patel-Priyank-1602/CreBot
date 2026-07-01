@@ -16,10 +16,15 @@ export interface Bot {
   theme: string;
   position: string;
   updated_at: string;
+  access?: string;
 }
 
 export async function listBots(): Promise<Bot[]> {
   return api.bots.list();
+}
+
+export async function listJoinedBots(): Promise<Bot[]> {
+  return api.bots.listJoined();
 }
 
 export async function getBot(botId: string): Promise<Bot> {

@@ -1,6 +1,8 @@
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import HeroSection from '../components/landing/HeroSection';
+import WhyChooseSection from '../components/landing/WhyChooseSection';
+import UsagePolicySection from '../components/landing/UsagePolicySection';
 import FeatureGrid from '../components/landing/FeatureGrid';
 import WorkflowSection from '../components/landing/WorkflowSection';
 import SecuritySection from '../components/landing/SecuritySection';
@@ -19,6 +21,8 @@ export default function LandingPage() {
       <SecuritySection />
       <UseCasesSection />
       <AboutSection />
+      <WhyChooseSection />
+      <UsagePolicySection />
       <ContactSection />
       <FAQSection />
       <Footer />

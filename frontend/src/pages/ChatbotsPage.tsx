@@ -122,8 +122,9 @@ export default function ChatbotsPage() {
                 filesCount={bot.total_files}
                 conversationsCount={bot.total_chats}
                 lastUpdated={formatTimeAgo(bot.updated_at || bot.created_at)}
-                onDelete={() => handleDelete(bot.id)}
-                onRename={(newName) => handleRename(bot.id, newName)}
+                accessTag={bot.access ? (bot.access as 'view' | 'edit') : undefined}
+                onDelete={!bot.access ? () => handleDelete(bot.id) : undefined}
+                onRename={!bot.access ? (newName) => handleRename(bot.id, newName) : undefined}
               />
             ))}
           </div>

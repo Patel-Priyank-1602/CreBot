@@ -42,7 +42,7 @@ def _validate_bot_ownership(bot_id: str, user_id: str, workspace_id: Optional[st
 
 def _is_missing_table_error(e: Exception) -> bool:
     msg = str(e)
-    return "PGRST205" in msg or "Could not find the table" in msg or "relation" in msg and "does not exist" in msg
+    return "PGRST205" in msg or "Could not find the table" in msg or ("relation" in msg and "does not exist" in msg)
 
 
 def _set_status(file_id: str, status: str, error: Optional[str] = None):
@@ -244,7 +244,7 @@ def delete_file(file_id: str, user_id: str, bot_id: str):
         file_path.unlink()
     try:
         supabase.table("knowledge_files").delete().eq("id", file_id).eq("bot_id", bot_id).execute()
-        supabase.table("knowledge_chunks").delete().eq("file_id", file_id).eq("bot_id", bot_id).execute()
+        supabase.table("documents").delete().eq("bot_id", bot_id).execute()
     except Exception:
         pass
     return True

@@ -4,9 +4,10 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "rm -rf node_modules/.vite && vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "clean": "rm -rf node_modules package-lock.json node_modules/.vite && npm install"
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.61.8",

@@ -12,6 +12,18 @@ from services.chatlog_service import (
 router = APIRouter(dependencies=[Depends(workspace_middleware)])
 
 
+@router.get("/export/all")
+async def export_all_logs(request: Request):
+    ws_id = request.state.workspace_id
+    return export_logs(ws_id)
+
+
+@router.get("/filters/chatbots")
+async def get_chatbot_filters(request: Request):
+    ws_id = request.state.workspace_id
+    return {"chatbots": get_chatbots_for_filter(ws_id)}
+
+
 @router.get("/")
 async def get_chat_logs(
     request: Request,
@@ -51,15 +63,3 @@ async def delete_chat_log(request: Request, log_id: str):
     user_id = request.state.clerk_user_id
     delete_log(log_id, ws_id, user_id)
     return {"message": "Log deleted successfully"}
-
-
-@router.get("/export/all")
-async def export_all_logs(request: Request):
-    ws_id = request.state.workspace_id
-    return export_logs(ws_id)
-
-
-@router.get("/filters/chatbots")
-async def get_chatbot_filters(request: Request):
-    ws_id = request.state.workspace_id
-    return {"chatbots": get_chatbots_for_filter(ws_id)}

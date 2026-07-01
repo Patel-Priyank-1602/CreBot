@@ -14,8 +14,15 @@ const navLinks = [
   { label: 'Collaboration', href: '/#collaboration' },
   { label: 'Use Case', href: '/#use-cases' },
   { label: 'About', href: '/#about' },
+  { label: 'Why Choose', href: '/#why-choose' },
+  { label: 'API Usage', href: '/#api-usage' },
   { label: 'Contact', href: '/#contact' },
   { label: 'FAQ', href: '/#faq' },
+];
+
+const signedInLinks = [
+  { label: 'Join Bot', href: '/dashboard/join' },
+  { label: 'Admin', href: '/dashboard/admin' },
 ];
 
 export default function Navbar() {
@@ -94,6 +101,33 @@ export default function Navbar() {
               </a>
             );
           })}
+          {isSignedIn && (
+            <div className="mx-2 w-px h-6 bg-[var(--border-soft)]" />
+          )}
+          {isSignedIn && signedInLinks.map((link) => {
+            const isActive = location.pathname === link.href;
+            return (
+              <Link
+                key={link.label}
+                to={link.href}
+                className={cn(
+                  'relative px-4 py-2 text-base rounded-lg transition-colors',
+                  isActive
+                    ? 'text-[var(--text-primary)] font-medium'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                )}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="nav-pill"
+                    className="absolute inset-0 bg-[var(--hover-bg)] rounded-lg z-0"
+                    transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+                <span className="relative z-10">{link.label}</span>
+              </Link>
+            );
+          })}
         </div>
 
         <div className="hidden md:flex items-center gap-5">
@@ -144,6 +178,24 @@ export default function Navbar() {
               >
                 {link.label}
               </a>
+            );
+          })}
+          {isSignedIn && signedInLinks.map((link) => {
+            const isActive = location.pathname === link.href;
+            return (
+              <Link
+                key={link.label}
+                to={link.href}
+                className={cn(
+                  'block px-3 py-2 text-sm rounded-lg',
+                  isActive
+                    ? 'text-[var(--text-primary)] bg-[var(--hover-bg)] font-medium'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                )}
+                onClick={() => setMobileOpen(false)}
+              >
+                {link.label}
+              </Link>
             );
           })}
           <div className="pt-2 flex gap-3">

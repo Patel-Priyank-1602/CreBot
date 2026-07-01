@@ -1,5 +1,6 @@
 import secrets
 import time
+from datetime import datetime, timezone
 from fastapi import APIRouter, HTTPException, Request, Depends
 from middlewares.auth import workspace_middleware, get_workspace_id
 from models.schemas import (
@@ -50,7 +51,16 @@ def _batch_insert_documents(documents: list[dict]) -> None:
                 time.sleep(1 * attempt)
 
 
-def _format_bot(bot: dict, is_owner: bool = True, can_edit: bool = False) -> BotResponse:
+def _parse_access(member_email: str) -> str:
+    """Extract access level from member_email like 'Joined via code [edit]'."""
+    if "[edit]" in member_email:
+        return "edit"
+    if "[view]" in member_email:
+        return "view"
+    return "view"
+
+
+def _format_bot(bot: dict, is_owner: bool = True, can_edit: bool = False, access: str = "") -> BotResponse:
     # Dynamically compute total_files and total_chats
     total_files = 0
     total_chats = 0
@@ -82,6 +92,7 @@ def _format_bot(bot: dict, is_owner: bool = True, can_edit: bool = False) -> Bot
         theme=bot.get("theme", "dark"),
         position=bot.get("position", "bottom-right"),
         updated_at=bot.get("updated_at", ""),
+        access=access,
     )
 
 
@@ -145,7 +156,7 @@ async def create_bot(request: Request, body: CreateBotRequest):
         except Exception:
             current_count = 0
 
-    limits = {"free": 5, "starter": 3, "pro": 10, "enterprise": 999999}
+    limits = {"free": 5, "starter": 10, "pro": 25, "enterprise": 999999}
     limit = limits.get(plan.get("plan", "free"), 5)
 
     if current_count >= limit:
@@ -165,10 +176,13 @@ async def create_bot(request: Request, body: CreateBotRequest):
             "workspace_id": ws_id,
             "embed_id": widget_key,
         }).eq("id", bot["id"]).execute()
+        # Re-fetch to get updated data including workspace_id
+        updated = supabase.table("bots").select("*").eq("id", bot["id"]).execute()
+        if updated.data:
+            bot = updated.data[0]
     except Exception:
         pass
 
-    bot = result.data[0]
     return _format_bot(bot)
 
 
@@ -204,15 +218,42 @@ async def list_bots(request: Request):
 
     member_bots = []
     try:
-        member_result = supabase.table("bot_members").select("bot_id").eq("clerk_user_id", user_id).execute()
+        member_result = supabase.table("bot_members").select("bot_id, member_email").eq("clerk_user_id", user_id).execute()
         member_bot_ids = [m["bot_id"] for m in member_result.data if m["bot_id"] not in owned_bots_map]
+        # Build a map of bot_id -> access level
+        access_map = {m["bot_id"]: _parse_access(m.get("member_email", "")) for m in member_result.data}
         if member_bot_ids:
             shared_result = supabase.table("bots").select("*").in_("id", member_bot_ids).execute()
-            member_bots = [_format_bot(bot, is_owner=False) for bot in shared_result.data]
+            member_bots = [_format_bot(bot, is_owner=False, access=access_map.get(bot["id"], "view")) for bot in shared_result.data]
     except Exception:
         pass
 
     return owned_bots + member_bots
+
+
+@router.get("/joined", response_model=list[BotResponse])
+async def list_joined_bots(request: Request):
+    """Return only bots the current user has joined (not owned), with access level."""
+    user_id = get_clerk_user_id(request)
+
+    try:
+        member_result = supabase.table("bot_members").select("bot_id, member_email").eq("clerk_user_id", user_id).execute()
+        if not member_result.data:
+            return []
+
+        access_map = {m["bot_id"]: _parse_access(m.get("member_email", "")) for m in member_result.data}
+        bot_ids = list(access_map.keys())
+
+        bots_result = supabase.table("bots").select("*").in_("id", bot_ids).execute()
+        # Filter out bots that this user actually owns
+        joined = [
+            _format_bot(bot, is_owner=False, access=access_map.get(bot["id"], "view"))
+            for bot in bots_result.data
+            if bot.get("clerk_user_id") != user_id
+        ]
+        return joined
+    except Exception:
+        return []
 
 
 @router.get("/{bot_id}", response_model=BotResponse)
@@ -222,14 +263,16 @@ async def get_bot(request: Request, bot_id: str):
     bot_data = _get_bot_for_user(bot_id, user_id, ws_id)
     is_owner = bot_data.get("clerk_user_id") == user_id
     can_edit = is_owner
+    access = ""
     if not is_owner:
         try:
             member = supabase.table("bot_members").select("*").eq("bot_id", bot_id).eq("clerk_user_id", user_id).execute()
             if member.data:
                 can_edit = "[edit]" in member.data[0].get("member_email", "")
+                access = _parse_access(member.data[0].get("member_email", ""))
         except Exception:
             pass
-    return _format_bot(bot_data, is_owner, can_edit)
+    return _format_bot(bot_data, is_owner, can_edit, access=access)
 
 
 @router.patch("/{bot_id}", response_model=BotResponse)
@@ -240,11 +283,11 @@ async def update_bot(request: Request, bot_id: str, body: UpdateBotRequest):
 
     update = body.model_dump(exclude_none=True)
     if update:
-        update["updated_at"] = "now()"
+        update["updated_at"] = datetime.now(timezone.utc).isoformat()
         try:
             supabase.table("bots").update(update).eq("id", bot_id).execute()
-        except Exception:
-            pass
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Failed to update bot: {str(e)}")
 
     try:
         bot_data = supabase.table("bots").select("*").eq("id", bot_id).execute().data[0]
@@ -284,8 +327,8 @@ async def retrain_bot(request: Request, bot_id: str, body: TrainBotRequest):
 
     try:
         supabase.table("documents").delete().eq("bot_id", bot_id).execute()
-    except Exception:
-        pass
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to clear existing documents for retrain: {str(e)}")
 
     chunks = chunk_faq_text(body.faq_text)
     if not chunks:
@@ -363,8 +406,8 @@ async def delete_bot(request: Request, bot_id: str):
 
     try:
         supabase.table("bots").delete().eq("id", bot_id).execute()
-    except Exception:
-        pass
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to delete bot: {str(e)}")
     return {"message": "Bot deleted successfully."}
 
 
@@ -399,8 +442,8 @@ async def remove_bot_member(request: Request, bot_id: str, member_id: str):
 
     try:
         supabase.table("bot_members").delete().eq("id", member_id).eq("bot_id", bot_id).execute()
-    except Exception:
-        pass
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to remove member: {str(e)}")
     return {"message": "Member removed successfully."}
 
 

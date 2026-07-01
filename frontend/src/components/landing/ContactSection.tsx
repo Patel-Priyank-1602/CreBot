@@ -10,7 +10,7 @@ export default function ContactSection() {
         <div className="grid lg:grid-cols-12 gap-16 lg:gap-24 items-start">
           <div className="lg:col-span-5">
             <div className="section-marker mb-6">
-              <span>07 — Contact</span>
+              <span>08 — Contact</span>
             </div>
             <motion.h2 
               initial={{ opacity: 0, y: 30 }}
