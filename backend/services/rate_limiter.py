@@ -14,7 +14,7 @@ from collections import defaultdict
 from fastapi import HTTPException
 
 # ── Configuration ────────────────────────────────────────────────
-CREBOT_KEY_LIMIT = 7         # max requests per window per bot
+CREBOT_KEY_LIMIT = 10         # max requests per window per bot
 WINDOW_SECONDS = 60          # sliding window size (1 minute)
 
 # ── Internal State ───────────────────────────────────────────────
