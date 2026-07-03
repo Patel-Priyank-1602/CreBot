@@ -1,78 +1,148 @@
-# 🤖 CreBot — AI Customer Support Chatbot Builder
+<div align="center">
+  <img src="./frontend/public/CreBot_Tag.png" alt="CreBot Logo" width="120" />
+  <h1>CreBot — AI Customer Support Chatbot Builder</h1>
+  
+  <p>A self-serve SaaS platform that empowers businesses to create, train, and embed ultra-fast AI customer support chatbots in minutes. Powered by Groq's high-speed inference and Local Vector Embeddings.</p>
 
-A self-serve SaaS platform where any business uploads its FAQ and gets an AI-powered chat widget — built on a **fully free tech stack** — that it can embed on its website within minutes.
+  <div>
+    <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
+    <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+    <img src="https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E" alt="Vite" />
+    <img src="https://img.shields.io/badge/Supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase" />
+    <img src="https://img.shields.io/badge/Groq-FF6B35?style=for-the-badge&logoColor=white" alt="Groq" />
+  </div>
+</div>
 
-![Tech Stack](https://img.shields.io/badge/FastAPI-009688?style=flat&logo=fastapi&logoColor=white)
-![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat&logo=next.js&logoColor=white)
-![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?style=flat&logo=supabase&logoColor=white)
-![Groq](https://img.shields.io/badge/Groq-FF6B35?style=flat&logoColor=white)
-![HuggingFace](https://img.shields.io/badge/HuggingFace-FFD21E?style=flat&logo=huggingface&logoColor=black)
+<hr/>
+
+## ✨ Key Features
+
+* **⚡ Blazing Fast Responses:** Utilizes Groq's Llama 3 models for near-instant answer generation.
+* **🧠 Context-Aware Retrieval:** Intelligent RAG (Retrieval-Augmented Generation) pipeline using local sentence-transformers and `pgvector` for accurate FAQ searching.
+* **🌐 Universal Embed Widget:** Lightweight, vanilla JavaScript widget that can be embedded on *any* HTML/JS website with a single `<script>` tag.
+* **🔐 Secure Authentication:** Seamless user onboarding, profile management, and workspace security powered by **Clerk**.
+* **📊 Dashboard Analytics:** Track queries, view chat logs, and monitor bot usage directly from a sleek dark-mode React dashboard.
+* **🔑 Bring Your Own Key (BYOK):** Users can provide their own Groq API keys to bypass default rate limits (7 requests/minute).
 
 ---
 
-## 🏗️ Architecture
+## 🛠️ Tech Stack
 
+### Frontend Architecture
+* **Framework:** React 18 with Vite
+* **Language:** TypeScript
+* **Styling:** Tailwind CSS & Framer Motion (Micro-animations)
+* **Authentication:** Clerk
+* **Visuals & Charts:** Recharts & React Three Fiber (3D Elements)
+
+### Backend Architecture
+* **Framework:** FastAPI (Python)
+* **Database:** Supabase (PostgreSQL)
+* **Vector Store:** `pgvector` extension for Supabase
+* **Embedding Model:** Local `sentence-transformers/all-MiniLM-L6-v2`
+* **LLM Provider:** Groq (`llama-3.3-70b-versatile`)
+* **Rate Limiting:** In-memory sliding window algorithm
+
+---
+
+## 🔄 Sequence Diagram & Architecture
+
+Below is the complete sequence of how data flows through the CreBot system, from Bot Creation to answering an End-User's query.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    
+    actor Admin as Business Owner
+    participant Dash as React Dashboard
+    participant API as FastAPI Backend
+    participant Embed as Local Embeddings
+    participant DB as Supabase (pgvector)
+    
+    actor User as Website Visitor
+    participant Widget as Embedded JS Widget
+    participant LLM as Groq LLM API
+    
+    %% Bot Training Flow
+    rect rgb(20, 20, 20)
+    Note over Admin, DB: Phase 1: Bot Training
+    Admin->>Dash: Uploads FAQ / Knowledge Base
+    Dash->>API: POST /api/bots/{id}/train (FAQ Text)
+    API->>API: Chunk text into paragraphs
+    API->>Embed: Generate 384-dim vectors for chunks
+    Embed-->>API: Vector arrays
+    API->>DB: Store text chunks + vectors
+    DB-->>API: Success
+    API-->>Dash: Training Complete
+    end
+    
+    %% Chat Flow
+    rect rgb(30, 20, 20)
+    Note over User, LLM: Phase 2: User Chat
+    User->>Widget: "What is your refund policy?"
+    Widget->>API: POST /api/widget/{key}/chat (Query + History)
+    
+    API->>API: Rate Limit Check (7 req/min per bot)
+    
+    API->>LLM: Reformulate vague query (using history)
+    LLM-->>API: Standalone Query
+    
+    API->>Embed: Vectorize Standalone Query
+    Embed-->>API: Query Vector
+    
+    API->>DB: pgvector Similarity Search (Top 5 chunks)
+    DB-->>API: Most relevant FAQ chunks
+    
+    API->>LLM: Generate final answer based ONLY on chunks
+    LLM-->>API: "Our refund policy is 30 days..."
+    
+    API->>DB: Log Query & Answer (Analytics)
+    
+    API-->>Widget: JSON Response
+    Widget-->>User: Displays Answer UI
+    end
 ```
-Business Owner                    End Website Visitor
-      │                                   │
-      ▼                                   ▼
- [Next.js Dashboard]           [Embedded JS Widget]
-      │                                   │
-      │ upload FAQ / manage bots          │ asks questions
-      ▼                                   ▼
-      ──────────► [FastAPI Backend] ◄──────────
-                        │
-           ┌────────────┼────────────┐
-           ▼            ▼            ▼
-    [HuggingFace]  [Supabase]    [Groq LLM]
-    (embeddings)   (DB + pgvector) (answers)
-```
+
+---
 
 ## 📁 Project Structure
 
-```
+```text
 CreBot/
-├── schema.sql                    # Database schema (Supabase SQL)
+├── schema.sql                    # Essential Supabase PostgreSQL schema
 ├── backend/
-│   ├── main.py                   # FastAPI entry point
-│   ├── config.py                 # Environment config
-│   ├── requirements.txt          # Python dependencies
-│   ├── models/
-│   │   └── schemas.py            # Pydantic request/response models
-│   ├── routes/
-│   │   ├── auth.py               # Signup & login endpoints
-│   │   ├── bots.py               # Bot CRUD, train, retrain, logs
-│   │   └── widget.py             # Public chat endpoint
-│   ├── services/
-│   │   ├── chunking.py           # FAQ text → chunks
-│   │   ├── embedding.py          # Text → 384-dim vectors
-│   │   ├── retrieval.py          # pgvector similarity search
-│   │   └── groq_service.py       # Groq LLM answer generation
-│   └── utils/
-│       └── supabase_client.py    # Supabase client singleton
-├── frontend/                     # Next.js dashboard (TBD)
-├── widget/
-│   └── crebot-widget.js          # Embeddable chat widget
-├── .env.example                  # Environment variable template
-├── .gitignore
-└── README.md
+│   ├── main.py                   # FastAPI Application Entry
+│   ├── config.py                 # Environment configurations
+│   ├── routes/                   # API Endpoints (bots, chat, widget, auth)
+│   ├── services/                 # Core Logic (retrieval, rate_limiter, groq)
+│   ├── utils/                    # Supabase Client & Clerk Auth Helpers
+│   └── requirements.txt          # Python Dependencies
+├── frontend/
+│   ├── src/
+│   │   ├── components/           # Reusable React UI Components
+│   │   ├── pages/                # Dashboard, Profile, Billing views
+│   │   ├── services/             # API client services
+│   │   └── App.tsx               # React Router configuration
+│   ├── package.json              # Node Dependencies
+│   └── tailwind.config.js        # UI Styling Rules
+└── widget/
+    └── crebot-widget.js          # The deployable vanilla JS script
 ```
 
-## 🚀 Quick Start
+---
+
+## 🚀 Quick Start Guide
 
 ### 1. Database Setup (Supabase)
-
-1. Create a free project at [supabase.com](https://supabase.com)
-2. Enable the **pgvector** extension (Database → Extensions → search "vector")
-3. Open the **SQL Editor** and paste the contents of `schema.sql`
-4. Run the SQL to create all tables, indexes, RLS policies, and the similarity search function
+1. Create a free project at [supabase.com](https://supabase.com).
+2. Navigate to **Database → Extensions** and enable `vector` (pgvector).
+3. Open the **SQL Editor**, paste the contents of `schema_*.sql` and run it to configure tables, Row Level Security (RLS), and search functions.
 
 ### 2. Backend Setup
-
 ```bash
 cd backend
 
-# Create virtual environment
+# Create and activate virtual environment
 python -m venv venv
 venv\Scripts\activate        # Windows
 # source venv/bin/activate   # macOS/Linux
@@ -80,26 +150,28 @@ venv\Scripts\activate        # Windows
 # Install dependencies
 pip install -r requirements.txt
 
-# Configure environment
-copy ..\.env.example .env    # Windows
-# cp ../.env.example .env    # macOS/Linux
-# Edit .env with your Supabase, Groq keys
+# Configure environment variables
+# Copy .env.example to .env and fill in:
+# SUPABASE_URL, SUPABASE_SERVICE_KEY, GROQ_API_KEY, CLERK_FRONTEND_API
+copy .env.example .env
 
-# Run the server
+# Run the API server
 uvicorn main:app --reload --port 8000
 ```
 
-### 3. Frontend Setup (Next.js)
-
+### 3. Frontend Setup
 ```bash
 cd frontend
+
+# Install Node dependencies
 npm install
+
+# Start the Vite development server
 npm run dev
 ```
 
-### 4. Widget Testing
-
-Add this to any HTML file to test the widget:
+### 4. Test Your Chatbot Widget
+Embed the following code into the `<body>` of any HTML file to test your trained chatbot:
 
 ```html
 <script
@@ -110,32 +182,15 @@ Add this to any HTML file to test the widget:
 </script>
 ```
 
-## 🔌 API Endpoints
+---
 
-| Method | Endpoint | Auth | Purpose |
-|--------|----------|------|---------|
-| `POST` | `/api/auth/signup` | Public | Create account |
-| `POST` | `/api/auth/login` | Public | Login, get JWT |
-| `POST` | `/api/bots/` | JWT | Create a bot |
-| `GET` | `/api/bots/` | JWT | List your bots |
-| `POST` | `/api/bots/{id}/train` | JWT | Train with FAQ text |
-| `POST` | `/api/bots/{id}/retrain` | JWT | Replace FAQ content |
-| `GET` | `/api/bots/{id}/embed-snippet` | JWT | Get embed code |
-| `GET` | `/api/bots/{id}/logs` | JWT | View query logs |
-| `POST` | `/api/widget/{key}/chat` | Public | Chat (from widget) |
+## 🛡️ Security & Rate Limiting
 
-## 🛠️ Tech Stack
+To ensure platform stability, CreBot enforces a strict **Rate Limit of 10 requests per minute per bot** on the public widget endpoints when utilizing the shared platform Groq API Key. 
 
-| Layer | Technology | Purpose |
-|-------|-----------|---------|
-| Frontend | Next.js | Dashboard UI |
-| Backend | FastAPI (Python) | API + AI pipeline |
-| Database | Supabase (Postgres) | Data + Auth |
-| Vector Store | pgvector | Similarity search |
-| Embeddings | sentence-transformers | Text → vectors (local) |
-| LLM | Groq (Llama 3) | Answer generation |
-| Widget | Vanilla JS | Embeddable chat |
+Users who wish to scale beyond this can navigate to the **Own API** settings in the dashboard and securely input their own Groq API Key. Doing so automatically disables the platform rate limits and routes their bot's traffic directly through their private quota.
+
+---
 
 ## 📄 License
-
-MIT License — see [LICENSE](./LICENSE)
+MIT License. See `LICENSE` for more information.
