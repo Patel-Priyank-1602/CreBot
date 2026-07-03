@@ -35,17 +35,17 @@ export default function FAQSection() {
   return (
     <section id="faq" className="py-28 lg:py-36 bg-[var(--bg-main)] border-t border-[var(--border-default)]">
       <div className="w-full max-w-[1600px] mx-auto px-6 lg:px-10">
-        
-        <div className="grid lg:grid-cols-12 gap-16 lg:gap-24">
+
+        <div className="grid lg:grid-cols-12 gap-16 lg:gap-24 items-start">
           <div className="lg:col-span-5">
-            <div className="section-marker mb-6">
-              <span>09 — FAQ</span>
+            <div className="section-marker mb-8">
+              <span>07 — FAQ</span>
             </div>
             <motion.h2
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-3xl sm:text-5xl md:text-7xl font-display font-bold tracking-tight mb-6 text-white"
+              className="font-display text-3xl sm:text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-white"
             >
               FREQUENTLY<br />
               <span className="text-stroke">ASKED</span><br />

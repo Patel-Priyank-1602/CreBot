@@ -92,7 +92,7 @@ export default function WhyChooseSection() {
       <div className="relative z-10 max-w-[1600px] mx-auto px-6 lg:px-10">
         <motion.div ref={headingRef} initial="hidden" animate={isInViewHeading ? 'visible' : 'hidden'} variants={containerVariants} className="mb-12 lg:mb-14">
           <motion.div variants={fadeUpVariants} className="section-marker mb-6">
-            <span className="text-lg tracking-[0.2em]">06 — Why Choose</span>
+            <span className="text-lg tracking-[0.1em]">03 — Why Choose</span>
           </motion.div>
           <h2 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.9] text-white uppercase flex flex-wrap gap-x-5">
             <motion.span variants={itemVariants}>Why Choose</motion.span>

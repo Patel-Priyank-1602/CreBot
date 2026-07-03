@@ -6,13 +6,13 @@ export default function ContactSection() {
   return (
     <section id="contact" className="relative py-28 lg:py-36 border-t border-[var(--border-default)] bg-[var(--bg-main)] overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-6 lg:px-10 relative z-10">
-        
+
         <div className="grid lg:grid-cols-12 gap-16 lg:gap-24 items-start">
           <div className="lg:col-span-5">
             <div className="section-marker mb-6">
-              <span>08 — Contact</span>
+              <span>09 — Contact</span>
             </div>
-            <motion.h2 
+            <motion.h2
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -21,7 +21,7 @@ export default function ContactSection() {
               DEPLOY<br />
               <span className="text-[var(--btn-bg)]">CREBOT.</span>
             </motion.h2>
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -29,7 +29,7 @@ export default function ContactSection() {
             >
               Have questions about enterprise plans, custom integrations, or want to discuss a proof of concept? We respond within 4 hours.
             </motion.p>
-            
+
             <div className="space-y-8 pt-8 border-t border-[var(--border-soft)]">
               <div className="flex flex-col">
                 <span className="font-mono text-[10px] text-[var(--text-muted)] tracking-[0.2em] uppercase mb-1">Direct Line</span>
@@ -52,7 +52,7 @@ export default function ContactSection() {
               {/* Corner brackets */}
               <div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-l-2 border-[var(--btn-bg)] transition-all group-hover:w-16 group-hover:h-16" />
               <div className="absolute bottom-0 right-0 w-12 h-12 border-b-2 border-r-2 border-[var(--btn-bg)] transition-all group-hover:w-16 group-hover:h-16" />
-              
+
               <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
                 {state.succeeded ? (
                   <div className="flex flex-col items-center justify-center p-8 text-center bg-[var(--btn-bg)]/10 border border-[var(--btn-bg)]/30">
@@ -64,50 +64,50 @@ export default function ContactSection() {
                     <div className="grid md:grid-cols-2 gap-8">
                       <div className="flex flex-col">
                         <label htmlFor="firstName" className="font-mono text-[10px] text-[var(--btn-bg)] tracking-[0.2em] uppercase mb-2">First Name</label>
-                        <input 
+                        <input
                           id="firstName"
                           name="firstName"
-                          type="text" 
+                          type="text"
                           required
-                          className="bg-transparent border-0 border-b border-[var(--border-soft)] focus:border-[var(--btn-bg)] outline-none text-white font-heading text-xl py-2 px-0 transition-colors focus:ring-0" 
-                          placeholder="JOHN" 
+                          className="bg-transparent border-0 border-b border-[var(--border-soft)] focus:border-[var(--btn-bg)] outline-none text-white font-heading text-xl py-2 px-0 transition-colors focus:ring-0"
+                          placeholder="JOHN"
                         />
                         <ValidationError prefix="First Name" field="firstName" errors={state.errors} className="text-red-500 text-xs mt-1" />
                       </div>
                       <div className="flex flex-col">
                         <label htmlFor="lastName" className="font-mono text-[10px] text-[var(--btn-bg)] tracking-[0.2em] uppercase mb-2">Last Name</label>
-                        <input 
+                        <input
                           id="lastName"
                           name="lastName"
-                          type="text" 
+                          type="text"
                           required
-                          className="bg-transparent border-0 border-b border-[var(--border-soft)] focus:border-[var(--btn-bg)] outline-none text-white font-heading text-xl py-2 px-0 transition-colors focus:ring-0" 
-                          placeholder="DOE" 
+                          className="bg-transparent border-0 border-b border-[var(--border-soft)] focus:border-[var(--btn-bg)] outline-none text-white font-heading text-xl py-2 px-0 transition-colors focus:ring-0"
+                          placeholder="DOE"
                         />
                         <ValidationError prefix="Last Name" field="lastName" errors={state.errors} className="text-red-500 text-xs mt-1" />
                       </div>
                     </div>
                     <div className="flex flex-col">
                       <label htmlFor="email" className="font-mono text-[10px] text-[var(--btn-bg)] tracking-[0.2em] uppercase mb-2">Work Email</label>
-                      <input 
+                      <input
                         id="email"
                         name="email"
-                        type="email" 
+                        type="email"
                         required
-                        className="bg-transparent border-0 border-b border-[var(--border-soft)] focus:border-[var(--btn-bg)] outline-none text-white font-heading text-xl py-2 px-0 transition-colors focus:ring-0" 
-                        placeholder="JOHN@COMPANY.COM" 
+                        className="bg-transparent border-0 border-b border-[var(--border-soft)] focus:border-[var(--btn-bg)] outline-none text-white font-heading text-xl py-2 px-0 transition-colors focus:ring-0"
+                        placeholder="JOHN@COMPANY.COM"
                       />
                       <ValidationError prefix="Email" field="email" errors={state.errors} className="text-red-500 text-xs mt-1" />
                     </div>
                     <div className="flex flex-col">
                       <label htmlFor="message" className="font-mono text-[10px] text-[var(--btn-bg)] tracking-[0.2em] uppercase mb-2">Initiative Details</label>
-                      <textarea 
+                      <textarea
                         id="message"
                         name="message"
-                        rows={3} 
+                        rows={3}
                         required
-                        className="bg-transparent border-0 border-b border-[var(--border-soft)] focus:border-[var(--btn-bg)] outline-none text-white font-heading text-xl py-2 px-0 transition-colors resize-none focus:ring-0" 
-                        placeholder="DESCRIBE YOUR KNOWLEDGE BASE..." 
+                        className="bg-transparent border-0 border-b border-[var(--border-soft)] focus:border-[var(--btn-bg)] outline-none text-white font-heading text-xl py-2 px-0 transition-colors resize-none focus:ring-0"
+                        placeholder="DESCRIBE YOUR KNOWLEDGE BASE..."
                       />
                       <ValidationError prefix="Message" field="message" errors={state.errors} className="text-red-500 text-xs mt-1" />
                     </div>

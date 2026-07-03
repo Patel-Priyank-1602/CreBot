@@ -12,13 +12,13 @@ export default function WorkflowSection() {
   return (
     <section id="docs" className="relative py-28 lg:py-36 border-t border-[var(--border-default)] bg-[var(--bg-main)]">
       <div className="max-w-[1600px] mx-auto px-6 lg:px-10">
-        
+
         <div className="grid lg:grid-cols-12 gap-8 mb-20">
           <div className="lg:col-span-5">
             <div className="section-marker mb-6">
-              <span>02 — Workflow</span>
+              <span>05 — Workflow</span>
             </div>
-            <motion.h2 
+            <motion.h2
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -30,7 +30,7 @@ export default function WorkflowSection() {
             </motion.h2>
           </div>
           <div className="lg:col-span-6 lg:col-start-7 flex flex-col justify-end">
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}

@@ -62,13 +62,13 @@ export default function FeatureGrid() {
   return (
     <section id="features" className="relative py-28 lg:py-36 border-t border-[var(--border-default)] bg-[var(--bg-main)]">
       <div className="max-w-[1600px] mx-auto px-6 lg:px-10">
-        
+
         <div className="grid lg:grid-cols-12 gap-8 mb-20">
           <div className="lg:col-span-7">
             <div className="section-marker mb-6">
               <span>01 — Features</span>
             </div>
-            <motion.h2 
+            <motion.h2
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -80,7 +80,7 @@ export default function FeatureGrid() {
             </motion.h2>
           </div>
           <div className="lg:col-span-4 lg:col-start-9 flex flex-col justify-end">
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -93,7 +93,7 @@ export default function FeatureGrid() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {features.map((feature, i) => (
-            <motion.article 
+            <motion.article
               key={feature.title}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -102,22 +102,22 @@ export default function FeatureGrid() {
               className="group notch-corner border border-[var(--border-default)] bg-[var(--bg-card)] hover:border-[var(--btn-bg)] transition-colors duration-400"
             >
               <div className="relative h-48 sm:h-64 overflow-hidden">
-                <img 
-                  src={feature.image} 
-                  className="w-full h-full object-cover img-noir group-hover:scale-105 group-hover:grayscale-[80%] transition-all duration-700" 
-                  alt={feature.title} 
+                <img
+                  src={feature.image}
+                  className="w-full h-full object-cover img-noir group-hover:scale-105 group-hover:grayscale-[80%] transition-all duration-700"
+                  alt={feature.title}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-card)] via-transparent to-transparent"></div>
                 <div className="absolute top-4 left-4 font-mono text-[11px] text-[var(--btn-bg)] tracking-[0.2em]">{feature.num} / {feature.category}</div>
                 <div className="absolute top-4 right-4 px-2 py-1 bg-[var(--btn-bg)] text-black font-mono text-[10px] tracking-[0.15em] font-bold">CORE</div>
               </div>
-              
+
               <div className="p-7">
                 <h3 className="font-display text-3xl mb-3 text-white group-hover:text-[var(--btn-bg)] transition-colors">{feature.title}</h3>
                 <p className="text-[var(--text-secondary)] text-sm leading-relaxed mb-6 font-sans">
                   {feature.desc}
                 </p>
-                
+
                 <div className="grid grid-cols-2 gap-y-3 gap-x-4 mb-6 pb-6 border-b border-[var(--border-soft)]">
                   <div>
                     <div className="font-mono text-[10px] text-[var(--text-muted)] tracking-[0.2em] uppercase">{feature.meta1.label}</div>
@@ -128,7 +128,7 @@ export default function FeatureGrid() {
                     <div className="font-heading text-base text-[var(--text-primary)] tracking-wide mt-1">{feature.meta2.value}</div>
                   </div>
                 </div>
-                
+
                 {/* <a href="#product" className="flex items-center justify-between font-heading text-sm tracking-[0.15em] uppercase text-[var(--text-primary)] group/link">
                   <span className="relative after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[1px] after:bg-[var(--btn-bg)] after:transition-all group-hover/link:after:w-full">
                     Explore Capability

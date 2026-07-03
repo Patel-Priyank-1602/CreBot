@@ -72,7 +72,7 @@ export default function UsagePolicySection() {
                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 className="section-marker mb-12"
               >
-                <span className="text-lg tracking-[0.2em]">07 — API Usage</span>
+                <span className="text-lg tracking-[0.2em]">06 — API Usage</span>
               </motion.div>
 
               <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -120,37 +120,7 @@ export default function UsagePolicySection() {
           </div>
         </motion.div>
 
-        {/* ═══ Bottom CTA ═══ */}
-        <motion.div
-          ref={ctaRef}
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <div className="text-center max-w-4xl mx-auto">
-            <h2 className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-9xl text-white uppercase mb-8 leading-[1.1]">
-              Ready to Experience <span className="text-[var(--btn-bg)]">CreBot?</span>
-            </h2>
-            <p className="text-[var(--text-secondary)] text-2xl md:text-3xl leading-relaxed font-sans mb-12">
-              Join thousands of users using AI to learn faster, write better, and solve problems effortlessly.
-            </p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-              className="group relative inline-flex items-center gap-3 px-10 py-5 font-heading text-base tracking-[0.2em] uppercase text-white bg-[var(--btn-bg)] rounded-xl overflow-hidden hover:shadow-[0_0_40px_rgba(224,90,0,0.3)] transition-shadow duration-300"
-            >
-              <span className="relative z-10">Start Chatting</span>
-              <span className="relative z-10 text-xl group-hover:translate-x-1 transition-transform duration-300">{'\u2192'}</span>
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-[var(--btn-hover)] via-[var(--btn-bg)] to-[var(--btn-hover)]"
-                initial={{ opacity: 0 }}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              />
-            </motion.button>
-          </div>
-        </motion.div>
+
       </div>
     </section>
   );

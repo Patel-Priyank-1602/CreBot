@@ -1,23 +1,41 @@
 import { Link, useLocation } from 'react-router-dom';
 import { SignInButton, useUser } from '@clerk/clerk-react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../lib/utils';
 import Button from '../common/Button';
-import CreBotLogo from '../common/CreBotLogo';
 
-const navLinks = [
-  { label: 'Product', href: '/#product' },
-  { label: 'Features', href: '/#features' },
-  { label: 'Docs', href: '/#docs' },
-  { label: 'Collaboration', href: '/#collaboration' },
-  { label: 'Use Case', href: '/#use-cases' },
-  { label: 'About', href: '/#about' },
-  { label: 'Why Choose', href: '/#why-choose' },
-  { label: 'API Usage', href: '/#api-usage' },
-  { label: 'Contact', href: '/#contact' },
-  { label: 'FAQ', href: '/#faq' },
+const navGroups = [
+  {
+    title: 'Product',
+    links: [
+      { label: 'Features', href: '/#features' },
+      { label: 'Use Case', href: '/#use-cases' }
+    ]
+  },
+  {
+    title: 'Why CreBot',
+    links: [
+      { label: 'Why Choose', href: '/#why-choose' },
+      { label: 'Collaboration', href: '/#collaboration' }
+    ]
+  },
+  {
+    title: 'Resources',
+    links: [
+      { label: 'Docs', href: '/#docs' },
+      { label: 'API Usage', href: '/#api-usage' },
+      { label: 'FAQ', href: '/#faq' }
+    ]
+  },
+  {
+    title: 'Company',
+    links: [
+      { label: 'About', href: '/#about' },
+      { label: 'Contact', href: '/#contact' }
+    ]
+  }
 ];
 
 const signedInLinks = [
@@ -30,11 +48,12 @@ export default function Navbar() {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
+  const [openAccordion, setOpenAccordion] = useState<string | null>(null);
   const isLanding = location.pathname === '/';
 
   useEffect(() => {
     if (!isLanding) return;
-    const ids = navLinks.map(l => l.href.replace('#', ''));
+    const ids = navGroups.flatMap(g => g.links.map(l => l.href.replace('/#', '')));
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -65,44 +84,50 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 h-[90px] border-b border-[var(--border-soft)]"
-      style={{ background: '#000000', backdropFilter: 'blur(16px)' }}>
-      <div className="w-full px-4 md:px-8 h-full flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2.5">
-          <img src="/favtag.png" alt="CreBot Logo" className="h-12 w-auto object-contain" />
+    <nav className="fixed top-0 left-0 right-0 z-50 h-[90px] border-b border-[#222]"
+      style={{ background: '#000000' }}>
+      <div className="w-full max-w-[1600px] mx-auto px-4 lg:px-8 h-full flex items-center justify-between">
+        <Link to="/" className="flex items-center gap-2.5 z-50">
+          <img src="/favtag.png" alt="CreBot Logo" className="h-10 lg:h-12 w-auto object-contain" />
         </Link>
 
-        <div className="hidden md:flex items-center gap-2">
-          {navLinks.map((link) => {
-            const isActive = link.href.includes('#')
-              ? activeSection === link.href.replace('/#', '')
-              : location.pathname === link.href;
+        {/* Desktop Navigation (> 1024px) */}
+        <div className="hidden lg:flex items-center gap-2">
+          {navGroups.map((group) => (
+            <div key={group.title} className="relative group px-2 py-6">
+              <button className="flex items-center gap-1.5 px-3 py-2 text-[15px] font-medium text-[#a9a9a6] hover:text-white transition-colors">
+                {group.title}
+                <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-300" />
+              </button>
+              
+              <div className="absolute top-[80px] left-1/2 -translate-x-1/2 mt-0 w-56 bg-black border border-[#222] rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 translate-y-2 group-hover:translate-y-0 p-2 flex flex-col gap-1 before:absolute before:inset-x-0 before:-top-6 before:h-6 before:bg-transparent">
+                {group.links.map((link) => {
+                  const isActive = link.href.includes('#')
+                    ? activeSection === link.href.replace('/#', '')
+                    : location.pathname === link.href;
 
-            return (
-              <a
-                key={link.label}
-                href={link.href}
-                onClick={(e) => handleScroll(e, link.href)}
-                className={cn(
-                  'relative px-4 py-2 text-base rounded-lg transition-colors',
-                  isActive
-                    ? 'text-[var(--text-primary)] font-medium'
-                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
-                )}
-              >
-                {isActive && (
-                  <motion.div
-                    layoutId="nav-pill"
-                    className="absolute inset-0 bg-[var(--hover-bg)] rounded-lg z-0"
-                    transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-                <span className="relative z-10">{link.label}</span>
-              </a>
-            );
-          })}
+                  return (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      onClick={(e) => handleScroll(e, link.href)}
+                      className={cn(
+                        'block px-4 py-2.5 text-sm rounded-lg transition-colors',
+                        isActive
+                          ? 'bg-[#1a1a1a] text-white font-medium'
+                          : 'text-[#a9a9a6] hover:bg-[#151515] hover:text-white'
+                      )}
+                    >
+                      {link.label}
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+
           {isSignedIn && (
-            <div className="mx-2 w-px h-6 bg-[var(--border-soft)]" />
+            <div className="mx-2 w-px h-6 bg-[#222]" />
           )}
           {isSignedIn && signedInLinks.map((link) => {
             const isActive = location.pathname === link.href;
@@ -111,26 +136,20 @@ export default function Navbar() {
                 key={link.label}
                 to={link.href}
                 className={cn(
-                  'relative px-4 py-2 text-base rounded-lg transition-colors',
+                  'relative px-4 py-2 text-[15px] rounded-lg transition-colors',
                   isActive
-                    ? 'text-[var(--text-primary)] font-medium'
-                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                    ? 'text-white font-medium'
+                    : 'text-[#a9a9a6] hover:text-white'
                 )}
               >
-                {isActive && (
-                  <motion.div
-                    layoutId="nav-pill"
-                    className="absolute inset-0 bg-[var(--hover-bg)] rounded-lg z-0"
-                    transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-                <span className="relative z-10">{link.label}</span>
+                {link.label}
               </Link>
             );
           })}
         </div>
 
-        <div className="hidden md:flex items-center gap-5">
+        {/* Desktop CTA */}
+        <div className="hidden lg:flex items-center gap-4">
           {isSignedIn ? (
             <Link to="/dashboard">
               <Button variant="primary">Dashboard</Button>
@@ -138,86 +157,128 @@ export default function Navbar() {
           ) : (
             <>
               <SignInButton mode="modal">
-                <button className="px-5 py-2.5 text-base font-medium text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">
+                <button className="px-4 py-2.5 text-[15px] font-medium text-[#a9a9a6] hover:text-white transition-colors">
                   Login
                 </button>
               </SignInButton>
               <SignInButton mode="modal">
-                <Button variant="primary">Get Started</Button>
+                <button className="bg-[#e8672a] hover:bg-[#ff7533] text-black font-bold px-6 py-2.5 rounded-lg transition-colors text-[15px]">
+                  Get Started
+                </button>
               </SignInButton>
             </>
           )}
         </div>
 
+        {/* Mobile / Tablet Toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden w-8 h-8 flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+          className="lg:hidden relative z-50 w-10 h-10 flex items-center justify-center text-[#a9a9a6] hover:text-white bg-[#151515] border border-[#222] rounded-xl"
         >
           {mobileOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
-      {mobileOpen && (
-        <div className="md:hidden border-t border-[var(--border-soft)] bg-[var(--bg-main)] px-6 py-4 space-y-2">
-          {isLanding && navLinks.map((link) => {
-            const isActive = activeSection === link.href.replace('#', '');
-            return (
-              <a
-                key={link.label}
-                href={link.href}
-                className={cn(
-                  'block px-3 py-2 text-sm rounded-lg',
-                  isActive
-                    ? 'text-[var(--text-primary)] bg-[var(--hover-bg)] font-medium'
-                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
-                )}
-                onClick={(e) => {
-                  setMobileOpen(false);
-                  handleScroll(e, link.href);
-                }}
-              >
-                {link.label}
-              </a>
-            );
-          })}
-          {isSignedIn && signedInLinks.map((link) => {
-            const isActive = location.pathname === link.href;
-            return (
-              <Link
-                key={link.label}
-                to={link.href}
-                className={cn(
-                  'block px-3 py-2 text-sm rounded-lg',
-                  isActive
-                    ? 'text-[var(--text-primary)] bg-[var(--hover-bg)] font-medium'
-                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
-                )}
-                onClick={() => setMobileOpen(false)}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-          <div className="pt-2 flex gap-3">
-            {isSignedIn ? (
-              <Link to="/dashboard" className="flex-1" onClick={() => setMobileOpen(false)}>
-                <Button variant="primary" size="sm" className="w-full">Dashboard</Button>
-              </Link>
-            ) : (
-              <>
-                <SignInButton mode="modal">
-                  <button className="flex-1 px-4 py-2 text-sm text-[var(--text-muted)] border border-[var(--border-default)] rounded-xl hover:text-[var(--text-primary)] hover:bg-[var(--hover-bg)] transition-colors">
-                    Login
+      {/* Mobile / Tablet Menu */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="absolute top-[90px] left-0 right-0 border-b border-[#222] bg-black shadow-2xl lg:hidden flex flex-col max-h-[calc(100vh-90px)] overflow-y-auto"
+          >
+            <div className="px-6 py-4 flex flex-col">
+              {navGroups.map((group) => (
+                <div key={group.title} className="border-b border-[#222]/50 last:border-0 py-2">
+                  <button 
+                    onClick={() => setOpenAccordion(openAccordion === group.title ? null : group.title)}
+                    className="w-full flex items-center justify-between py-3 text-left text-[17px] font-medium text-[#a9a9a6] hover:text-white"
+                  >
+                    {group.title}
+                    <ChevronDown size={18} className={cn("transition-transform duration-300", openAccordion === group.title && "rotate-180")} />
                   </button>
-                </SignInButton>
-                <SignInButton mode="modal">
-                  <Button variant="primary" size="sm" className="flex-1">Get Started</Button>
-                </SignInButton>
-              </>
-            )}
-          </div>
-        </div>
-      )}
+                  <AnimatePresence>
+                    {openAccordion === group.title && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="flex flex-col gap-1 pb-3 pt-1">
+                          {group.links.map((link) => {
+                            const isActive = link.href.includes('#')
+                              ? activeSection === link.href.replace('/#', '')
+                              : location.pathname === link.href;
+
+                            return (
+                              <a
+                                key={link.label}
+                                href={link.href}
+                                onClick={(e) => {
+                                  setMobileOpen(false);
+                                  handleScroll(e, link.href);
+                                }}
+                                className={cn(
+                                  'px-4 py-3 rounded-xl text-[15px] transition-colors',
+                                  isActive
+                                    ? 'bg-[#1a1a1a] text-white font-medium'
+                                    : 'text-[#a9a9a6] hover:bg-[#151515] hover:text-white'
+                                )}
+                              >
+                                {link.label}
+                              </a>
+                            );
+                          })}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ))}
+
+              {isSignedIn && (
+                <div className="pt-4 mt-2 border-t border-[#222]/50 flex flex-col gap-2">
+                  {signedInLinks.map((link) => (
+                    <Link
+                      key={link.label}
+                      to={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      className="px-4 py-3 text-[17px] font-medium text-[#a9a9a6] hover:text-white rounded-xl hover:bg-[#151515]"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+
+              <div className="mt-6 pt-6 border-t border-[#222]/50 flex flex-col sm:flex-row gap-3 pb-6">
+                {isSignedIn ? (
+                  <Link to="/dashboard" onClick={() => setMobileOpen(false)} className="w-full">
+                    <button className="w-full bg-[#e8672a] hover:bg-[#ff7533] text-black font-bold px-6 py-3.5 rounded-xl transition-colors text-[16px]">
+                      Dashboard
+                    </button>
+                  </Link>
+                ) : (
+                  <>
+                    <SignInButton mode="modal">
+                      <button className="w-full sm:flex-1 px-6 py-3.5 text-[16px] font-medium text-[#a9a9a6] border border-[#222] rounded-xl hover:text-white hover:bg-[#1a1a1a] transition-colors">
+                        Login
+                      </button>
+                    </SignInButton>
+                    <SignInButton mode="modal">
+                      <button className="w-full sm:flex-1 bg-[#e8672a] hover:bg-[#ff7533] text-black font-bold px-6 py-3.5 rounded-xl transition-colors text-[16px]">
+                        Get Started
+                      </button>
+                    </SignInButton>
+                  </>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }

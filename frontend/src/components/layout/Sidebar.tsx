@@ -33,7 +33,6 @@ export const sidebarGroups = [
     title: 'System',
     items: [
       { label: 'Embed', icon: Code, href: '/dashboard/embed', color: 'text-indigo-500' },
-      { label: 'Admin', icon: Shield, href: '/dashboard/admin', color: 'text-red-500' },
       { label: 'Settings', icon: Settings, href: '/dashboard/settings', color: 'text-[var(--text-muted)]' },
     ]
   },

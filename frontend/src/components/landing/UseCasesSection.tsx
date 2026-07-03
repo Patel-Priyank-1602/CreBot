@@ -64,13 +64,13 @@ export default function UseCasesSection() {
   return (
     <section id="use-cases" className="relative py-28 lg:py-36 border-t border-[var(--border-default)] bg-[#050505]">
       <div className="max-w-[1600px] mx-auto px-6 lg:px-10">
-        
+
         <div className="grid lg:grid-cols-12 gap-8 mb-20">
           <div className="lg:col-span-7">
             <div className="section-marker mb-6">
-              <span>04 — Use Cases</span>
+              <span>02 — Use Cases</span>
             </div>
-            <motion.h2 
+            <motion.h2
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -81,7 +81,7 @@ export default function UseCasesSection() {
             </motion.h2>
           </div>
           <div className="lg:col-span-4 lg:col-start-9 flex flex-col justify-end">
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -103,14 +103,14 @@ export default function UseCasesSection() {
               className="group perspective-1000 h-[400px] sm:h-[500px]"
             >
               <div className="relative w-full h-full transition-transform duration-[800ms] transform-style-3d group-hover:rotate-y-180">
-                
+
                 {/* Front */}
                 <div className="absolute inset-0 backface-hidden bg-[var(--bg-card)] border border-[var(--border-default)] flex flex-col">
                   <div className="relative h-3/5 overflow-hidden">
-                    <img 
-                      src={useCase.image} 
-                      className="w-full h-full object-cover img-noir group-hover:grayscale-[70%] transition-all duration-700" 
-                      alt={useCase.title} 
+                    <img
+                      src={useCase.image}
+                      className="w-full h-full object-cover img-noir group-hover:grayscale-[70%] transition-all duration-700"
+                      alt={useCase.title}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-card)] to-transparent" />
                     <div className="absolute top-4 left-4 font-mono text-[10px] text-[var(--btn-bg)] tracking-[0.2em]">/ {useCase.num}</div>

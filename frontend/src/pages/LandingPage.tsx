@@ -17,16 +17,15 @@ export default function LandingPage() {
       <Navbar />
       <HeroSection />
       <FeatureGrid />
-      <WorkflowSection />
-      <SecuritySection />
       <UseCasesSection />
-      <AboutSection />
       <WhyChooseSection />
+      <SecuritySection />
+      <WorkflowSection />
       <UsagePolicySection />
-      <ContactSection />
       <FAQSection />
+      <AboutSection />
+      <ContactSection />
       <Footer />
     </div>
   );
 }
-
