@@ -22,6 +22,7 @@ from services.groq_service import (
     reformulate_question,
 )
 from services.settings_service import get_raw_groq_api_key
+from services.rate_limiter import check_bot_rate_limit
 from config import settings
 
 router = APIRouter()
@@ -72,6 +73,9 @@ async def widget_chat(request: Request, widget_key: str, body: ChatRequest):
     ]
 
     try:
+        # Enforce per-bot rate limit when using CreBot's shared key
+        check_bot_rate_limit(bot_id, uses_crebot_key=(user_groq_key is None))
+
         # 2. Reformulate the question using chat history
         standalone_question = reformulate_question(
             body.question, history, user_groq_api_key=user_groq_key
@@ -95,6 +99,18 @@ async def widget_chat(request: Request, widget_key: str, body: ChatRequest):
             source_type=source_type,
         )
 
+    except HTTPException as e:
+        if e.status_code == 429:
+            return ChatResponse(
+                answer=(
+                    "I appreciate your interest! Unfortunately, I've reached my "
+                    "response limit for the moment. Please wait about a minute "
+                    "and try again. Thank you for your patience! 😊"
+                ),
+                source_chunks=0,
+                source_type="rate_limited",
+            )
+        raise
     except Exception as e:
         print(f"[Widget Chat Error] {e}")
         return ChatResponse(
@@ -127,6 +143,9 @@ async def widget_chat_by_bot_id(request: Request, bot_id: str, body: ChatRequest
     ]
 
     try:
+        # Enforce per-bot rate limit when using CreBot's shared key
+        check_bot_rate_limit(bot_id, uses_crebot_key=(user_groq_key is None))
+
         standalone_question = reformulate_question(
             body.question, history, user_groq_api_key=user_groq_key
         )
@@ -145,6 +164,18 @@ async def widget_chat_by_bot_id(request: Request, bot_id: str, body: ChatRequest
             source_type=source_type,
         )
 
+    except HTTPException as e:
+        if e.status_code == 429:
+            return ChatResponse(
+                answer=(
+                    "I appreciate your interest! Unfortunately, I've reached my "
+                    "response limit for the moment. Please wait about a minute "
+                    "and try again. Thank you for your patience! 😊"
+                ),
+                source_chunks=0,
+                source_type="rate_limited",
+            )
+        raise
     except Exception as e:
         print(f"[Widget Chat Error] bot_id={bot_id}: {e}")
         return ChatResponse(

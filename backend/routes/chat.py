@@ -9,6 +9,7 @@ from services.groq_service import (
     reformulate_question,
 )
 from services.settings_service import get_raw_groq_api_key
+from services.rate_limiter import check_bot_rate_limit
 
 router = APIRouter(dependencies=[Depends(workspace_middleware)])
 
@@ -27,6 +28,9 @@ async def dashboard_chat(request: Request, body: DashboardChatRequest):
     user_groq_key = get_raw_groq_api_key(ws_id)
 
     try:
+        # Enforce per-bot rate limit when using CreBot's shared key
+        check_bot_rate_limit(body.bot_id, uses_crebot_key=(user_groq_key is None))
+
         standalone_question = reformulate_question(
             body.message, history, user_groq_api_key=user_groq_key
         )
@@ -52,7 +56,18 @@ async def dashboard_chat(request: Request, body: DashboardChatRequest):
             source_type=source_type,
             conversation_id="",
         )
-    except HTTPException:
+    except HTTPException as e:
+        if e.status_code == 429:
+            return DashboardChatResponse(
+                answer=(
+                    "I appreciate your interest! Unfortunately, I've reached my "
+                    "response limit for the moment. Please wait about a minute "
+                    "and try again. Thank you for your patience! 😊"
+                ),
+                sources=[],
+                source_chunks=0,
+                source_type="rate_limited",
+            )
         raise
     except Exception as e:
         print(f"[Dashboard Chat Error] bot_id={body.bot_id}: {e}")
