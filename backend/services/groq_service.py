@@ -6,6 +6,7 @@ Enhanced with:
 - Question reformulation for follow-up questions
 - Chain-of-thought reasoning for tricky questions
 - General knowledge fallback when FAQ context is insufficient
+- BYOK: Users can bring their own Groq API key
 """
 
 from __future__ import annotations
@@ -22,6 +23,29 @@ def _get_client() -> Groq:
     return _client
 
 
+def _get_client_for_key(api_key: str | None) -> Groq:
+    """Return a Groq client. If a user-provided key is given, create a
+    temporary client with that key; otherwise fall back to the default."""
+    if api_key:
+        return Groq(api_key=api_key)
+    return _get_client()
+
+
+def validate_groq_api_key(api_key: str) -> tuple[bool, str]:
+    """Validate a Groq API key by making a minimal test call.
+    Returns (is_valid, error_message)."""
+    try:
+        client = Groq(api_key=api_key)
+        client.chat.completions.create(
+            model=settings.GROQ_MODEL,
+            messages=[{"role": "user", "content": "Hi"}],
+            max_tokens=5,
+        )
+        return True, ""
+    except Exception as e:
+        return False, str(e)
+
+
 # ── Prompt: Reformulate vague follow-up questions ──────────────────────────
 REFORMULATION_PROMPT = """You are a question reformulation assistant.
 Given a chat history and a new user message, rewrite the user's message
@@ -35,7 +59,8 @@ Rules:
 
 
 def reformulate_question(
-    question: str, chat_history: list[dict]
+    question: str, chat_history: list[dict],
+    user_groq_api_key: str | None = None,
 ) -> str:
     """
     If chat history exists, rewrite the user's latest message into a
@@ -45,7 +70,7 @@ def reformulate_question(
     if not chat_history:
         return question
 
-    client = _get_client()
+    client = _get_client_for_key(user_groq_api_key)
 
     # Build the reformulation conversation
     messages = [
@@ -108,6 +133,7 @@ def generate_answer(
     question: str,
     context_chunks: list[str],
     chat_history: list[dict] | None = None,
+    user_groq_api_key: str | None = None,
 ) -> tuple[str, str]:
     """
     Send the question + retrieved context + chat history to Groq and
@@ -115,7 +141,7 @@ def generate_answer(
 
     source_type is one of: "faq", "general", "hybrid"
     """
-    client = _get_client()
+    client = _get_client_for_key(user_groq_api_key)
 
     context = "\n\n---\n\n".join(context_chunks) if context_chunks else ""
 

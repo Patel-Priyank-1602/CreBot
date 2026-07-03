@@ -2,7 +2,7 @@ import { NavLink, Link } from 'react-router-dom';
 import { UserButton } from '@clerk/clerk-react';
 import {
   LayoutDashboard, Bot, FileText, MessageSquare, Code, CreditCard, Settings, Shield,
-  ChevronLeft, MessageCircle, Users, PanelLeft
+  ChevronLeft, MessageCircle, Users, PanelLeft, Key
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import CreBotLogo from '../common/CreBotLogo';
@@ -33,6 +33,7 @@ export const sidebarGroups = [
     title: 'System',
     items: [
       { label: 'Embed', icon: Code, href: '/dashboard/embed', color: 'text-indigo-500' },
+      { label: 'Own API', icon: Key, href: '/dashboard/own-api', color: 'text-orange-500' },
       { label: 'Settings', icon: Settings, href: '/dashboard/settings', color: 'text-[var(--text-muted)]' },
     ]
   },

@@ -135,6 +135,9 @@ export const api = {
     createApiKey: () => fetchApi('/settings/api-keys', { method: 'POST' }),
     revokeApiKey: (keyId: string) => fetchApi(`/settings/api-keys/${keyId}`, { method: 'DELETE' }),
     export: () => fetchApi('/settings/export'),
+    getGroqKey: () => fetchApi('/settings/groq-key'),
+    saveGroqKey: (apiKey: string) => fetchApi('/settings/groq-key', { method: 'POST', body: JSON.stringify({ api_key: apiKey }) }),
+    deleteGroqKey: () => fetchApi('/settings/groq-key', { method: 'DELETE' }),
   },
   admin: {
     stats: () => fetchApi('/admin/stats'),

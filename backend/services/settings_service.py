@@ -20,6 +20,7 @@ def get_workspace_settings(workspace_id: str):
                 "storage_limit": w.get("storage_limit", 52428800),
                 "created_at": w["created_at"],
                 "updated_at": w.get("updated_at", w["created_at"]),
+                "has_groq_key": bool(w.get("groq_api_key")),
             }
     except Exception:
         pass
@@ -33,6 +34,7 @@ def get_workspace_settings(workspace_id: str):
         "storage_limit": 52428800,
         "created_at": "",
         "updated_at": "",
+        "has_groq_key": False,
     }
 
 
@@ -133,3 +135,51 @@ def export_workspace_data(workspace_id: str):
         "files": files_data,
         "recent_logs": logs_data,
     }
+
+
+def save_groq_api_key(workspace_id: str, api_key: str):
+    """Store the user's Groq API key in the workspaces table."""
+    try:
+        supabase.table("workspaces").update({
+            "groq_api_key": api_key,
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+        }).eq("id", workspace_id).execute()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to save Groq API key: {e}")
+    return {"message": "Groq API key saved successfully", "has_key": True}
+
+
+def get_groq_api_key(workspace_id: str) -> dict:
+    """Return info about the stored Groq API key (never expose the full key)."""
+    try:
+        result = supabase.table("workspaces").select("groq_api_key").eq("id", workspace_id).execute()
+        if result.data and result.data[0].get("groq_api_key"):
+            key = result.data[0]["groq_api_key"]
+            preview = key[:8] + "..." + key[-4:] if len(key) > 12 else "****"
+            return {"has_key": True, "key_preview": preview}
+    except Exception:
+        pass
+    return {"has_key": False, "key_preview": ""}
+
+
+def get_raw_groq_api_key(workspace_id: str) -> str | None:
+    """Return the actual Groq API key for internal use (chat routing)."""
+    try:
+        result = supabase.table("workspaces").select("groq_api_key").eq("id", workspace_id).execute()
+        if result.data and result.data[0].get("groq_api_key"):
+            return result.data[0]["groq_api_key"]
+    except Exception:
+        pass
+    return None
+
+
+def delete_groq_api_key(workspace_id: str):
+    """Remove the user's Groq API key."""
+    try:
+        supabase.table("workspaces").update({
+            "groq_api_key": None,
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+        }).eq("id", workspace_id).execute()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to remove Groq API key: {e}")
+    return {"message": "Groq API key removed", "has_key": False}

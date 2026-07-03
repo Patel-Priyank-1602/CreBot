@@ -10,6 +10,7 @@ export interface Workspace {
   storage_limit: number;
   created_at: string;
   updated_at: string;
+  has_groq_key: boolean;
 }
 
 export interface ApiKey {
@@ -25,6 +26,11 @@ export interface CreatedApiKey {
   key_preview: string;
   full_key: string;
   created_at: string;
+}
+
+export interface GroqKeyInfo {
+  has_key: boolean;
+  key_preview: string;
 }
 
 export async function getWorkspace(): Promise<Workspace> {
@@ -50,4 +56,16 @@ export async function revokeApiKey(keyId: string): Promise<void> {
 
 export async function exportData() {
   return api.settings.export();
+}
+
+export async function getGroqKeyInfo(): Promise<GroqKeyInfo> {
+  return api.settings.getGroqKey();
+}
+
+export async function saveGroqApiKey(apiKey: string): Promise<{ message: string; has_key: boolean }> {
+  return api.settings.saveGroqKey(apiKey);
+}
+
+export async function deleteGroqApiKey(): Promise<{ message: string; has_key: boolean }> {
+  return api.settings.deleteGroqKey();
 }

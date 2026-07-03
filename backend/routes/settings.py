@@ -7,8 +7,13 @@ from services.settings_service import (
     create_api_key,
     revoke_api_key,
     export_workspace_data,
+    save_groq_api_key,
+    get_groq_api_key,
+    delete_groq_api_key,
 )
-from models.schemas import UpdateWorkspaceRequest
+from services.groq_service import validate_groq_api_key
+from models.schemas import UpdateWorkspaceRequest, GroqKeyRequest
+from fastapi import HTTPException
 
 router = APIRouter(dependencies=[Depends(workspace_middleware)])
 
@@ -49,3 +54,27 @@ async def settings_revoke_api_key(request: Request, key_id: str):
 async def settings_export(request: Request):
     ws_id = request.state.workspace_id
     return export_workspace_data(ws_id)
+
+
+# ── Groq BYOK endpoints ──────────────────────────────────────────────
+
+@router.get("/groq-key")
+async def settings_get_groq_key(request: Request):
+    ws_id = request.state.workspace_id
+    return get_groq_api_key(ws_id)
+
+
+@router.post("/groq-key")
+async def settings_save_groq_key(request: Request, body: GroqKeyRequest):
+    ws_id = request.state.workspace_id
+    # Validate the key before saving
+    is_valid, error = validate_groq_api_key(body.api_key)
+    if not is_valid:
+        raise HTTPException(status_code=400, detail=f"Invalid Groq API key: {error}")
+    return save_groq_api_key(ws_id, body.api_key)
+
+
+@router.delete("/groq-key")
+async def settings_delete_groq_key(request: Request):
+    ws_id = request.state.workspace_id
+    return delete_groq_api_key(ws_id)

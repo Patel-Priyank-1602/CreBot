@@ -17,6 +17,7 @@ const RagChatPage = lazy(() => import('./pages/RagChatPage'));
 const EmbedPage = lazy(() => import('./pages/EmbedPage'));
 const ChatLogsPage = lazy(() => import('./pages/ChatLogsPage'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
+const OwnApiPage = lazy(() => import('./pages/OwnApiPage'));
 const BillingPage = lazy(() => import('./pages/BillingPage'));
 const JoinBotPage = lazy(() => import('./pages/JoinBotPage'));
 const AdminPage = lazy(() => import('./pages/AdminPage'));
@@ -69,6 +70,7 @@ function AppContent() {
               <Route path="embed" element={<EmbedPage />} />
               <Route path="logs" element={<ChatLogsPage />} />
               <Route path="settings" element={<SettingsPage />} />
+              <Route path="own-api" element={<OwnApiPage />} />
               <Route path="billing" element={<BillingPage />} />
               <Route path="join" element={<JoinBotPage />} />
               <Route path="admin" element={<AdminPage />} />

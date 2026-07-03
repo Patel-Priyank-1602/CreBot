@@ -226,6 +226,10 @@ class UpdateWorkspaceRequest(BaseModel):
     name: Optional[str] = None
 
 
+class GroqKeyRequest(BaseModel):
+    api_key: str = Field(..., min_length=1)
+
+
 class BillingPlanResponse(BaseModel):
     name: str
     price: int

@@ -8,6 +8,7 @@ from services.groq_service import (
     generate_fallback_answer,
     reformulate_question,
 )
+from services.settings_service import get_raw_groq_api_key
 
 router = APIRouter(dependencies=[Depends(workspace_middleware)])
 
@@ -22,12 +23,20 @@ async def dashboard_chat(request: Request, body: DashboardChatRequest):
 
     history = [{"role": m.role, "content": m.content} for m in body.chat_history]
 
+    # Check if the user has their own Groq API key
+    user_groq_key = get_raw_groq_api_key(ws_id)
+
     try:
-        standalone_question = reformulate_question(body.message, history)
+        standalone_question = reformulate_question(
+            body.message, history, user_groq_api_key=user_groq_key
+        )
         chunks = retrieve_relevant_chunks(body.bot_id, standalone_question)
         chunk_texts = [c["chunk_text"] for c in chunks] if chunks else []
 
-        answer, source_type = generate_answer(standalone_question, chunk_texts, history)
+        answer, source_type = generate_answer(
+            standalone_question, chunk_texts, history,
+            user_groq_api_key=user_groq_key
+        )
 
         source_list = [
             {"name": f"Source {i + 1}", "score": round(c.get("similarity", 0), 3)}

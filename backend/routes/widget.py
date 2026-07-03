@@ -6,6 +6,7 @@ Enhanced with:
 - Chat history support for follow-up questions
 - Question reformulation for vague queries
 - General knowledge fallback
+- BYOK: Uses bot owner's Groq API key if available
 """
 
 from fastapi import APIRouter, HTTPException, Request
@@ -20,10 +21,28 @@ from services.groq_service import (
     generate_fallback_answer,
     reformulate_question,
 )
+from services.settings_service import get_raw_groq_api_key
 from config import settings
 
 router = APIRouter()
 limiter = Limiter(key_func=get_remote_address)
+
+
+def _get_owner_groq_key(bot_id: str) -> str | None:
+    """Look up the bot owner's workspace and return their custom Groq key if any."""
+    try:
+        bot_result = (
+            supabase.table("bots")
+            .select("workspace_id")
+            .eq("id", bot_id)
+            .single()
+            .execute()
+        )
+        if bot_result.data and bot_result.data.get("workspace_id"):
+            return get_raw_groq_api_key(bot_result.data["workspace_id"])
+    except Exception:
+        pass
+    return None
 
 
 @router.post("/{widget_key}/chat", response_model=ChatResponse)
@@ -44,6 +63,9 @@ async def widget_chat(request: Request, widget_key: str, body: ChatRequest):
 
     bot_id = bot_result.data["id"]
 
+    # Check for owner's BYOK Groq key
+    user_groq_key = _get_owner_groq_key(bot_id)
+
     # Convert chat history to dicts
     history = [
         {"role": m.role, "content": m.content} for m in body.chat_history
@@ -51,18 +73,18 @@ async def widget_chat(request: Request, widget_key: str, body: ChatRequest):
 
     try:
         # 2. Reformulate the question using chat history
-        #    Turns vague follow-ups like "when was that?" into full questions.
-        standalone_question = reformulate_question(body.question, history)
+        standalone_question = reformulate_question(
+            body.question, history, user_groq_api_key=user_groq_key
+        )
 
         # 3. Retrieve relevant chunks using the reformulated question
         chunks = retrieve_relevant_chunks(bot_id, standalone_question)
         chunk_texts = [c["chunk_text"] for c in chunks] if chunks else []
 
-        # 4. Generate answer (works with or without FAQ context)
-        #    - If chunks found → uses FAQ context (may supplement with general knowledge)
-        #    - If no chunks   → uses general knowledge directly
+        # 4. Generate answer (with user's key if available)
         answer, source_type = generate_answer(
-            standalone_question, chunk_texts, history
+            standalone_question, chunk_texts, history,
+            user_groq_api_key=user_groq_key
         )
 
         # 5. Log and return
@@ -97,17 +119,23 @@ async def widget_chat_by_bot_id(request: Request, bot_id: str, body: ChatRequest
     if not bot_result.data:
         raise HTTPException(status_code=404, detail="Invalid bot ID.")
 
+    # Check for owner's BYOK Groq key
+    user_groq_key = _get_owner_groq_key(bot_id)
+
     history = [
         {"role": m.role, "content": m.content} for m in body.chat_history
     ]
 
     try:
-        standalone_question = reformulate_question(body.question, history)
+        standalone_question = reformulate_question(
+            body.question, history, user_groq_api_key=user_groq_key
+        )
         chunks = retrieve_relevant_chunks(bot_id, standalone_question)
         chunk_texts = [c["chunk_text"] for c in chunks] if chunks else []
 
         answer, source_type = generate_answer(
-            standalone_question, chunk_texts, history
+            standalone_question, chunk_texts, history,
+            user_groq_api_key=user_groq_key
         )
 
         _log_query(bot_id, body.question, answer, standalone_question)
