@@ -1,8 +1,14 @@
 <div align="center">
-  <img src="./frontend/public/CreBot_Tag.png" alt="CreBot Logo" width="120" />
+  <img src="./frontend/public/tag (2).png" alt="CreBot Logo" width="120" />
   <h1>CreBot — AI Customer Support Chatbot Builder</h1>
   
   <p>A self-serve SaaS platform that empowers businesses to create, train, and embed ultra-fast AI customer support chatbots in minutes. Powered by Groq's high-speed inference and Local Vector Embeddings.</p>
+
+  <p>
+    <strong>Live Demos:</strong><br/>
+    <a href="https://chatwithcrebot.netlify.app">chatwithcrebot.netlify.app</a> &nbsp;|&nbsp; 
+    <a href="https://crebot.pages.dev">crebot.pages.dev</a>
+  </p>
 
   <div>
     <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
