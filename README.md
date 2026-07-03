@@ -1,6 +1,6 @@
 <div align="center">
   <img src="./frontend/public/tag (2).png" alt="CreBot Logo" width="120" />
-  <h1>CreBot — AI Customer Support Chatbot Builder</h1>
+  <h1>CreBot - AI Customer Support Chatbot Builder</h1>
   
   <p>A self-serve SaaS platform that empowers businesses to create, train, and embed ultra-fast AI customer support chatbots in minutes. Powered by Groq's high-speed inference and Local Vector Embeddings.</p>
 
