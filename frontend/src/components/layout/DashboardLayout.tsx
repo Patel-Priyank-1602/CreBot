@@ -22,6 +22,17 @@ export default function DashboardLayout() {
   }, [getToken]);
 
   useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
+  useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
@@ -83,8 +94,9 @@ export default function DashboardLayout() {
             >
               <PanelLeft size={20} />
             </button>
-            <Link to="/dashboard" className="flex items-center shrink-0">
+            <Link to="/dashboard" className="flex items-center gap-2 shrink-0">
               <img src="/Fav.png" alt="CreBot Logo" className="h-7 w-auto object-contain" />
+              <span className="font-display font-bold text-xl text-[var(--text-primary)]">CreBot</span>
             </Link>
           </div>
           

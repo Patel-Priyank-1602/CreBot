@@ -31,7 +31,7 @@ function KnowledgeTable({ files, onRefresh, chatbotId }: KnowledgeTableProps) {
 
   return (
     <div className="bg-[var(--bg-card)] border border-[var(--border-soft)] rounded-2xl overflow-hidden">
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto custom-scrollbar">
         <table className="w-full">
           <thead>
             <tr className="border-b border-[var(--border-soft)]">

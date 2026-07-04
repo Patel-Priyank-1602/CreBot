@@ -26,15 +26,15 @@ async def dashboard_overview(request: Request):
 
 
 @router.get("/activity")
-async def dashboard_activity(request: Request):
+async def dashboard_activity(request: Request, limit: int = 100):
     ws_id = request.state.workspace_id
     uid = getattr(request.state, "clerk_user_id", "")
-    activities = get_activity(ws_id, uid)
+    activities = get_activity(ws_id, uid, limit=limit)
     return {"activities": activities}
 
 
 @router.get("/recent-chats")
-async def dashboard_recent_chats(request: Request):
+async def dashboard_recent_chats(request: Request, limit: int = 100):
     ws_id = request.state.workspace_id
-    chats = get_recent_chats(ws_id)
+    chats = get_recent_chats(ws_id, limit=limit)
     return {"chats": chats}

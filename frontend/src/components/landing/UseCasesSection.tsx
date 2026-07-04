@@ -92,7 +92,7 @@ export default function UseCasesSection() {
           </div>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
           {useCases.map((useCase, idx) => (
             <motion.div
               key={idx}
@@ -100,46 +100,50 @@ export default function UseCasesSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1, duration: 0.6 }}
-              className="group perspective-1000 h-[400px] sm:h-[500px]"
+              className="group perspective-1000 h-[280px] sm:h-[400px] md:h-[500px]"
             >
               <div className="relative w-full h-full transition-transform duration-[800ms] transform-style-3d group-hover:rotate-y-180">
 
                 {/* Front */}
                 <div className="absolute inset-0 backface-hidden bg-[var(--bg-card)] border border-[var(--border-default)] flex flex-col">
-                  <div className="relative h-3/5 overflow-hidden">
+                  <div className="relative flex-1 overflow-hidden">
                     <img
                       src={useCase.image}
                       className="w-full h-full object-cover img-noir group-hover:grayscale-[70%] transition-all duration-700"
                       alt={useCase.title}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-card)] to-transparent" />
-                    <div className="absolute top-4 left-4 font-mono text-[10px] text-[var(--btn-bg)] tracking-[0.2em]">/ {useCase.num}</div>
-                    <div className="absolute top-4 right-4 px-2 py-1 bg-black/60 backdrop-blur-sm font-mono text-[10px] text-white tracking-[0.15em]">{useCase.category}</div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-card)] via-[var(--bg-card)]/50 to-transparent opacity-90" />
+                    <div className="absolute top-2 left-2 md:top-4 md:left-4 font-mono text-[8px] md:text-[10px] text-[var(--btn-bg)] tracking-[0.2em]">/ {useCase.num}</div>
+                    <div className="absolute top-2 right-2 md:top-4 md:right-4 px-1.5 md:px-2 py-0.5 md:py-1 bg-black/60 backdrop-blur-sm font-mono text-[8px] md:text-[10px] text-white tracking-[0.15em]">{useCase.category}</div>
                   </div>
-                  <div className="p-6 flex-1 flex flex-col justify-between">
+                  <div className="p-3 md:p-6 shrink-0 flex flex-col">
                     <div>
-                      <h3 className="font-display text-3xl leading-none text-white">{useCase.title}</h3>
+                      <h3 className="font-display text-lg md:text-3xl leading-none text-white">{useCase.title}</h3>
                     </div>
-                    <div className="flex items-center justify-between mt-4 pt-4 border-t border-[var(--border-soft)]">
-                      <span className="font-mono text-[10px] text-[var(--text-muted)] tracking-[0.15em] uppercase">Use Case Detail</span>
-                      <span className="font-mono text-[10px] text-[var(--btn-bg)] tracking-[0.15em]">HOVER →</span>
+                    <div className="flex items-center justify-center md:justify-between mt-3 md:mt-5 pt-2 md:pt-4 border-t border-[var(--border-soft)]">
+                      <span className="hidden md:inline font-mono text-[10px] text-[var(--text-muted)] tracking-[0.15em] uppercase">Use Case Detail</span>
+                      <span className="font-mono text-[8px] md:text-[10px] text-[var(--btn-bg)] tracking-[0.15em]">HOVER →</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Back */}
-                <div className="absolute inset-0 backface-hidden rotate-y-180 bg-[var(--bg-elevated)] border border-[var(--border-default)] p-7 flex flex-col">
-                  <div className="font-mono text-[10px] text-[var(--btn-bg)] tracking-[0.2em] uppercase mb-4">/ {useCase.category} — Profile</div>
-                  <h3 className="font-display text-2xl mb-5 text-white">Capabilities</h3>
-                  <ul className="space-y-3 text-sm text-[var(--text-secondary)] font-sans mb-6">
-                    {useCase.details.map((detail, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <span className="w-1.5 h-1.5 bg-[var(--btn-bg)] rounded-sm mt-1.5 shrink-0" />
-                        <span>{detail}</span>
+                <div className="absolute inset-0 backface-hidden rotate-y-180 bg-[var(--bg-elevated)] border border-[var(--border-default)] p-3 md:p-7 flex flex-col">
+                  <div className="font-mono text-[8px] md:text-[10px] text-[var(--btn-bg)] tracking-[0.2em] uppercase mb-2 md:mb-4">/ {useCase.category}</div>
+                  <h3 className="font-display text-sm md:text-2xl mb-2 md:mb-5 text-white">Capabilities</h3>
+                  <ul className="space-y-1.5 md:space-y-3 text-[10px] md:text-sm text-[var(--text-secondary)] font-sans mb-2 md:mb-6">
+                    {useCase.details.slice(0, 3).map((detail, i) => (
+                      <li key={i} className="flex items-start gap-1.5 md:gap-3">
+                        <span className="w-1 h-1 md:w-1.5 md:h-1.5 bg-[var(--btn-bg)] rounded-sm mt-1 md:mt-1.5 shrink-0" />
+                        <span className="leading-tight">{detail}</span>
                       </li>
                     ))}
+                    <li className="hidden md:flex items-start gap-3">
+                      <span className="w-1.5 h-1.5 bg-[var(--btn-bg)] rounded-sm mt-1.5 shrink-0" />
+                      <span>{useCase.details[3]}</span>
+                    </li>
                   </ul>
-                  <div className="mt-auto pt-5 border-t border-[var(--border-soft)]">
+                  <div className="hidden md:block mt-auto pt-5 border-t border-[var(--border-soft)]">
                     <div className="font-mono text-[10px] text-[var(--text-muted)] tracking-[0.2em] uppercase mb-2">Description</div>
                     <p className="text-xs text-[var(--text-secondary)] font-sans leading-relaxed">
                       {useCase.description}

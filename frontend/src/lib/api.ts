@@ -88,8 +88,8 @@ export const api = {
     fetchApi('/chat/send', { method: 'POST', body: JSON.stringify({ bot_id: botId, message, chat_history }) }),
   dashboard: {
     overview: () => fetchApi('/dashboard/overview'),
-    activity: () => fetchApi('/dashboard/activity'),
-    recentChats: () => fetchApi('/dashboard/recent-chats'),
+    activity: (limit?: number) => fetchApi(`/dashboard/activity${limit ? `?limit=${limit}` : ''}`),
+    recentChats: (limit?: number) => fetchApi(`/dashboard/recent-chats${limit ? `?limit=${limit}` : ''}`),
     combined: () => fetchApi('/dashboard/combined'),
   },
   knowledge: {

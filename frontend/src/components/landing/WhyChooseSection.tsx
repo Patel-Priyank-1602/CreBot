@@ -92,7 +92,7 @@ export default function WhyChooseSection() {
       <div className="relative z-10 max-w-[1600px] mx-auto px-6 lg:px-10">
         <motion.div ref={headingRef} initial="hidden" animate={isInViewHeading ? 'visible' : 'hidden'} variants={containerVariants} className="mb-12 lg:mb-14">
           <motion.div variants={fadeUpVariants} className="section-marker mb-6">
-            <span className="text-lg tracking-[0.1em]">03 — Why Choose</span>
+            <span className="text-sm md:text-lg tracking-[0.1em]">03 — Why Choose</span>
           </motion.div>
           <h2 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.9] text-white uppercase flex flex-wrap gap-x-5">
             <motion.span variants={itemVariants}>Why Choose</motion.span>
@@ -105,7 +105,7 @@ export default function WhyChooseSection() {
 
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 mb-14 lg:mb-16">
           <div className="lg:col-span-7">
-            <motion.div ref={cardsContainerRef} initial="hidden" animate={isInViewCards ? 'visible' : 'hidden'} variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }} className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <motion.div ref={cardsContainerRef} initial="hidden" animate={isInViewCards ? 'visible' : 'hidden'} variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }} className="grid grid-cols-2 gap-3 md:gap-5">
               {features.map((feature) => {
                 const Icon = feature.icon;
                 return (
@@ -116,14 +116,14 @@ export default function WhyChooseSection() {
                     whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
                     transition={{ type: 'spring', stiffness: 300, damping: 18 }}
                   >
-                    <div className="rounded-xl bg-[var(--bg-card)] p-6 h-full relative overflow-hidden">
+                    <div className="rounded-xl bg-[var(--bg-card)] p-4 md:p-6 h-full relative overflow-hidden flex flex-col justify-center">
                       <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-[var(--btn-bg)]/5 via-transparent to-transparent pointer-events-none" />
-                      <div className="relative z-10">
-                        <Icon size={26} className="text-[var(--btn-bg)] mb-4" />
-                        <h3 className="font-heading text-base tracking-[0.15em] uppercase text-white mb-2 group-hover:text-[var(--btn-bg)] transition-colors duration-300">
+                      <div className="relative z-10 flex flex-col items-center md:items-start text-center md:text-left">
+                        <Icon size={24} className="text-[var(--btn-bg)] mb-2 md:mb-4 md:w-[26px] md:h-[26px]" />
+                        <h3 className="font-heading text-xs md:text-base tracking-[0.1em] md:tracking-[0.15em] uppercase text-white mb-0 md:mb-2 group-hover:text-[var(--btn-bg)] transition-colors duration-300">
                           {feature.title}
                         </h3>
-                        <p className="text-[var(--text-secondary)] text-base leading-relaxed font-sans">{feature.desc}</p>
+                        <p className="hidden md:block text-[var(--text-secondary)] text-base leading-relaxed font-sans">{feature.desc}</p>
                       </div>
                     </div>
                   </motion.article>
@@ -132,14 +132,14 @@ export default function WhyChooseSection() {
             </motion.div>
           </div>
 
-          <div className="lg:col-span-5 relative flex items-start justify-center pt-0 lg:pt-6">
-            <motion.div ref={floatingCardRef} initial={{ opacity: 0, x: 60 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: '-100px' }} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }} className="relative w-full">
-              <motion.div className="float-card-body" animate={shouldReduceMotion ? {} : { y: [0, -8, 0] }} transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}>
+          <div className="lg:col-span-5 relative flex items-start justify-center mt-10 lg:mt-0 lg:pt-6">
+            <div className="relative w-full">
+              <div className="float-card-body">
                 <div className="absolute -top-8 -right-8 w-36 h-36 rounded-full border border-[var(--btn-bg)]/20 animate-pulse" />
                 <div className="absolute -top-4 -right-4 w-24 h-24 rounded-full border border-[var(--btn-bg)]/10" />
                 <div className="absolute -bottom-6 -left-6 w-28 h-28 rounded-full border border-[var(--btn-bg)]/15" />
 
-                <div className="relative glass rounded-2xl p-8">
+                <div className="relative glass rounded-2xl p-6 md:p-8">
                   <h3 className="font-heading text-lg tracking-[0.2em] uppercase text-white mb-6">CreBot Usage</h3>
                   <div className="space-y-5">
                     {usageStats.map((stat) => {
@@ -148,16 +148,16 @@ export default function WhyChooseSection() {
                         <div key={stat.label} className="flex items-center justify-between pb-5 border-b border-[var(--border-soft)] last:border-b-0 last:pb-0">
                           <div className="flex items-center gap-3">
                             <StatIcon size={20} className="text-[var(--btn-bg)]" />
-                            <span className="font-mono text-sm text-[var(--text-muted)] uppercase tracking-[0.15em]">{stat.label}</span>
+                            <span className="font-mono text-xs md:text-sm text-[var(--text-muted)] uppercase tracking-[0.15em]">{stat.label}</span>
                           </div>
-                          <span className="font-heading text-base text-white tracking-wide">{stat.value}</span>
+                          <span className="font-heading text-sm md:text-base text-white tracking-wide">{stat.value}</span>
                         </div>
                       );
                     })}
                   </div>
                 </div>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@ import { NavLink, Link } from 'react-router-dom';
 import { UserButton } from '@clerk/clerk-react';
 import {
   LayoutDashboard, Bot, FileText, MessageSquare, Code, CreditCard, Settings, Shield,
-  ChevronLeft, MessageCircle, Users, PanelLeft, Key
+  ChevronLeft, MessageCircle, Users, PanelLeft, Key, User
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import CreBotLogo from '../common/CreBotLogo';
@@ -40,10 +40,12 @@ export const sidebarGroups = [
   {
     title: 'Account',
     items: [
+      { label: 'Profile', icon: User, href: '/user', color: 'text-blue-400' },
       { label: 'Billing', icon: CreditCard, href: '/dashboard/billing', color: 'text-teal-500' },
     ]
   }
 ];
+
 
 interface SidebarProps {
   collapsed: boolean;
@@ -90,7 +92,7 @@ export default function Sidebar({ collapsed, onToggle, className, isMobile }: Si
         )}
       </div>
 
-      <nav className="flex-1 py-3 px-2 space-y-3 overflow-y-auto overflow-x-hidden">
+      <nav className="flex-1 min-h-0 py-3 px-2 space-y-3 overflow-y-auto overflow-x-hidden">
         {sidebarGroups.map((group, index) => (
           <div key={group.title} className="space-y-0.5">
             {!collapsed ? (
@@ -142,7 +144,7 @@ export default function Sidebar({ collapsed, onToggle, className, isMobile }: Si
         ))}
       </nav>
 
-      <div className={cn("p-4 border-t border-[var(--border-soft)]", collapsed && "px-2 flex justify-center")}>
+      <div className={cn("mt-auto shrink-0 p-4 border-t border-[var(--border-soft)]", collapsed && "px-2 flex justify-center")}>
         <div className={cn("hover:bg-[var(--white-alpha-5)] rounded-2xl transition-all duration-300 cursor-pointer border border-transparent hover:border-[var(--white-alpha-10)] shadow-sm", collapsed ? "p-1" : "p-2 w-full")}>
           <UserButton showName={!collapsed} appearance={{
             elements: {

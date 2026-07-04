@@ -36,13 +36,13 @@ export async function getOverview(): Promise<DashboardOverview> {
   return api.dashboard.overview();
 }
 
-export async function getActivity(): Promise<ActivityItem[]> {
-  const res = await api.dashboard.activity();
+export async function getActivity(limit?: number): Promise<ActivityItem[]> {
+  const res = await api.dashboard.activity(limit);
   return res.activities;
 }
 
-export async function getRecentChats(): Promise<RecentChat[]> {
-  const res = await api.dashboard.recentChats();
+export async function getRecentChats(limit?: number): Promise<RecentChat[]> {
+  const res = await api.dashboard.recentChats(limit);
   return res.chats;
 }
 
