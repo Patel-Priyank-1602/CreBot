@@ -27,7 +27,7 @@ async function fetchApi(endpoint: string, options: RequestInit = {}, _retryCount
 
   // Retry on 401 — Clerk token may not be ready yet on initial page load
   if (response.status === 401 && _retryCount < 2) {
-    await new Promise((r) => setTimeout(r, 800 * (_retryCount + 1)));
+    await new Promise((r) => setTimeout(r, 300 * (_retryCount + 1)));
     return fetchApi(endpoint, options, _retryCount + 1);
   }
 
@@ -90,6 +90,7 @@ export const api = {
     overview: () => fetchApi('/dashboard/overview'),
     activity: () => fetchApi('/dashboard/activity'),
     recentChats: () => fetchApi('/dashboard/recent-chats'),
+    combined: () => fetchApi('/dashboard/combined'),
   },
   knowledge: {
     list: (chatbotId: string) => fetchApi(`/knowledge/files?chatbot_id=${chatbotId}`),

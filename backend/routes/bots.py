@@ -60,20 +60,51 @@ def _parse_access(member_email: str) -> str:
     return "view"
 
 
-def _format_bot(bot: dict, is_owner: bool = True, can_edit: bool = False, access: str = "") -> BotResponse:
-    # Dynamically compute total_files and total_chats
-    total_files = 0
-    total_chats = 0
+def _batch_get_bot_counts(bot_ids: list[str]) -> tuple[dict[str, int], dict[str, int]]:
+    """Batch-fetch file counts and chat counts for multiple bots in 2 queries instead of 2*N."""
+    file_counts = {}
+    chat_counts = {}
+    if not bot_ids:
+        return file_counts, chat_counts
     try:
-        f_res = supabase.table("knowledge_files").select("id", count="exact").eq("bot_id", bot["id"]).execute()
-        total_files = f_res.count or 0
+        kf = supabase.table("knowledge_files").select("bot_id").in_("bot_id", bot_ids).execute()
+        for f in kf.data:
+            bid = f.get("bot_id")
+            if bid:
+                file_counts[bid] = file_counts.get(bid, 0) + 1
     except Exception:
-        total_files = bot.get("total_files", 0)
+        pass
     try:
-        c_res = supabase.table("chat_logs").select("id", count="exact").eq("chatbot_id", bot["id"]).execute()
-        total_chats = c_res.count or 0
+        cl = supabase.table("chat_logs").select("chatbot_id").in_("chatbot_id", bot_ids).execute()
+        for c in cl.data:
+            cid = c.get("chatbot_id")
+            if cid:
+                chat_counts[cid] = chat_counts.get(cid, 0) + 1
     except Exception:
-        total_chats = bot.get("total_chats", 0)
+        pass
+    return file_counts, chat_counts
+
+
+def _format_bot(bot: dict, is_owner: bool = True, can_edit: bool = False, access: str = "",
+                precomputed_files: int | None = None, precomputed_chats: int | None = None) -> BotResponse:
+    # Use precomputed counts if available, otherwise fall back to individual queries
+    if precomputed_files is not None:
+        total_files = precomputed_files
+    else:
+        try:
+            f_res = supabase.table("knowledge_files").select("id", count="exact").eq("bot_id", bot["id"]).execute()
+            total_files = f_res.count or 0
+        except Exception:
+            total_files = bot.get("total_files", 0)
+
+    if precomputed_chats is not None:
+        total_chats = precomputed_chats
+    else:
+        try:
+            c_res = supabase.table("chat_logs").select("id", count="exact").eq("chatbot_id", bot["id"]).execute()
+            total_chats = c_res.count or 0
+        except Exception:
+            total_chats = bot.get("total_chats", 0)
 
     return BotResponse(
         id=bot["id"],
@@ -214,19 +245,35 @@ async def list_bots(request: Request):
     except Exception:
         pass
 
-    owned_bots = [_format_bot(bot, is_owner=True) for bot in owned_bots_map.values()]
-
-    member_bots = []
+    member_bots_data = []
+    access_map = {}
     try:
         member_result = supabase.table("bot_members").select("bot_id, member_email").eq("clerk_user_id", user_id).execute()
         member_bot_ids = [m["bot_id"] for m in member_result.data if m["bot_id"] not in owned_bots_map]
-        # Build a map of bot_id -> access level
         access_map = {m["bot_id"]: _parse_access(m.get("member_email", "")) for m in member_result.data}
         if member_bot_ids:
             shared_result = supabase.table("bots").select("*").in_("id", member_bot_ids).execute()
-            member_bots = [_format_bot(bot, is_owner=False, access=access_map.get(bot["id"], "view")) for bot in shared_result.data]
+            member_bots_data = shared_result.data or []
     except Exception:
         pass
+
+    # Batch-fetch counts for ALL bots at once (owned + member) — 2 queries instead of 2*N
+    all_bot_ids = list(owned_bots_map.keys()) + [b["id"] for b in member_bots_data]
+    file_counts, chat_counts = _batch_get_bot_counts(all_bot_ids)
+
+    owned_bots = [
+        _format_bot(bot, is_owner=True,
+                    precomputed_files=file_counts.get(bot["id"], 0),
+                    precomputed_chats=chat_counts.get(bot["id"], 0))
+        for bot in owned_bots_map.values()
+    ]
+
+    member_bots = [
+        _format_bot(bot, is_owner=False, access=access_map.get(bot["id"], "view"),
+                    precomputed_files=file_counts.get(bot["id"], 0),
+                    precomputed_chats=chat_counts.get(bot["id"], 0))
+        for bot in member_bots_data
+    ]
 
     return owned_bots + member_bots
 

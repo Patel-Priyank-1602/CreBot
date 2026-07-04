@@ -72,7 +72,7 @@ export default function UsagePolicySection() {
                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 className="section-marker mb-12"
               >
-                <span className="text-lg tracking-[0.2em]">06 — API Usage</span>
+                <span className="text-lg tracking-[0.2em]">07 — API Usage</span>
               </motion.div>
 
               <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">

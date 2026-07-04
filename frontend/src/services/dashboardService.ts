@@ -45,3 +45,16 @@ export async function getRecentChats(): Promise<RecentChat[]> {
   const res = await api.dashboard.recentChats();
   return res.chats;
 }
+
+export async function getDashboardCombined(): Promise<{
+  overview: DashboardOverview;
+  activities: ActivityItem[];
+  chats: RecentChat[];
+}> {
+  const res = await api.dashboard.combined();
+  return {
+    overview: res.overview,
+    activities: res.activities,
+    chats: res.chats,
+  };
+}

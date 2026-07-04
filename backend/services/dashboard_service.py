@@ -84,22 +84,41 @@ def get_overview(workspace_id: str, user_id: str = ""):
         except Exception:
             pass
 
-    for bot in bots:
-        # Chat distribution
-        try:
-            b_chat_count = supabase.table("chat_logs").select("id", count="exact").eq("chatbot_id", bot["id"]).execute()
-            cc = b_chat_count.count or 0
-            chat_distribution.append({"name": bot["name"], "value": cc})
-        except Exception:
-            chat_distribution.append({"name": bot["name"], "value": 0})
+    if bots:
+        bot_ids = [bot["id"] for bot in bots]
+        bot_name_map = {bot["id"]: bot["name"] for bot in bots}
 
-        # Storage distribution - try bot_id first, then user_id for files linked to this bot
+        # Batch fetch: all chat logs for these bots in ONE query
+        chat_counts_map = {}
         try:
-            s_req = supabase.table("knowledge_files").select("file_size").eq("bot_id", bot["id"]).execute()
-            s_sum = sum(f.get("file_size", 0) for f in s_req.data)
-            storage_distribution.append({"name": bot["name"], "value": round(s_sum / 1024, 2)})
+            chat_logs = supabase.table("chat_logs").select("chatbot_id").in_("chatbot_id", bot_ids).execute()
+            for log in chat_logs.data:
+                cid = log.get("chatbot_id")
+                if cid:
+                    chat_counts_map[cid] = chat_counts_map.get(cid, 0) + 1
         except Exception:
-            storage_distribution.append({"name": bot["name"], "value": 0})
+            pass
+
+        for bot in bots:
+            chat_distribution.append({
+                "name": bot["name"],
+                "value": chat_counts_map.get(bot["id"], 0)
+            })
+
+        # Batch fetch: all knowledge_files for these bots in ONE query
+        storage_map = {}
+        try:
+            kf_result = supabase.table("knowledge_files").select("bot_id, file_size").in_("bot_id", bot_ids).execute()
+            for f in kf_result.data:
+                bid = f.get("bot_id")
+                if bid:
+                    storage_map[bid] = storage_map.get(bid, 0) + f.get("file_size", 0)
+        except Exception:
+            pass
+
+        for bot in bots:
+            s_sum = storage_map.get(bot["id"], 0)
+            storage_distribution.append({"name": bot["name"], "value": round(s_sum / 1024, 2)})
 
     # If no bot-level storage found but we have overall storage, show it as "Unlinked Files"
     bot_storage_total = sum(item["value"] for item in storage_distribution)
@@ -164,17 +183,22 @@ def get_recent_chats(workspace_id: str, limit: int = 5):
     except Exception:
         data = []
 
+    if not data:
+        return []
+
+    # Batch fetch all bot names in ONE query instead of N+1
+    chatbot_ids = list(set(entry.get("chatbot_id") for entry in data if entry.get("chatbot_id")))
+    bot_name_map = {}
+    if chatbot_ids:
+        try:
+            bots_result = supabase.table("bots").select("id, name").in_("id", chatbot_ids).execute()
+            bot_name_map = {b["id"]: b["name"] for b in bots_result.data}
+        except Exception:
+            pass
+
     logs = []
     for entry in data:
-        bot_name = ""
-        if entry.get("chatbot_id"):
-            try:
-                bot = supabase.table("bots").select("name").eq("id", entry["chatbot_id"]).execute()
-                if bot.data:
-                    bot_name = bot.data[0]["name"]
-            except Exception:
-                pass
-
+        bot_name = bot_name_map.get(entry.get("chatbot_id", ""), "")
         logs.append({
             "id": entry["id"],
             "user_question": entry["user_question"],

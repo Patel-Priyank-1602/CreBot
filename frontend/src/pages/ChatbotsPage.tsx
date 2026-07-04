@@ -9,7 +9,7 @@ import ErrorState from '../components/common/ErrorState';
 import EmptyState from '../components/common/EmptyState';
 import { Bot as BotIcon } from 'lucide-react';
 import { listBots, createBot, deleteBot, updateBot, Bot } from '../services/chatbotService';
-import { getOverview } from '../services/dashboardService';
+import { api } from '../lib/api';
 
 export default function ChatbotsPage() {
   const [bots, setBots] = useState<Bot[]>([]);
@@ -22,10 +22,14 @@ export default function ChatbotsPage() {
   const load = () => {
     setLoading(true);
     setError('');
-    Promise.all([listBots(), getOverview()])
-      .then(([botList, ov]) => {
+    // Fetch bots list + just the workspace limits (lightweight) in parallel
+    Promise.all([
+      listBots(),
+      api.billing.current().catch(() => ({ chatbot_limit: 5 }))
+    ])
+      .then(([botList, billing]) => {
         setBots(botList);
-        setLimit({ used: botList.length, total: ov.chatbot_limit });
+        setLimit({ used: botList.length, total: billing.chatbot_limit ?? 5 });
       })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));

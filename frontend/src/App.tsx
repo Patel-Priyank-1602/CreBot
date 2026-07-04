@@ -2,7 +2,8 @@ import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { SignedIn, SignedOut } from '@clerk/clerk-react';
 import { useTheme } from './context/ThemeContext';
-import DashboardLayout from './components/layout/DashboardLayout';
+
+const DashboardLayout = lazy(() => import('./components/layout/DashboardLayout'));
 
 const LandingPage = lazy(() => import('./pages/LandingPage'));
 const SignInPage = lazy(() => import('./pages/SignInPage'));

@@ -3,18 +3,38 @@ import { FileText, MessageSquare, Bot } from 'lucide-react';
 import { formatTimeAgo } from '../../lib/utils';
 import { getActivity, ActivityItem } from '../../services/dashboardService';
 
-function RecentActivity() {
-  const [activities, setActivities] = useState<ActivityItem[]>([]);
-  const [loading, setLoading] = useState(true);
+interface RecentActivityProps {
+  activities?: ActivityItem[];
+  loading?: boolean;
+}
+
+function RecentActivity({ activities: propActivities, loading: propLoading }: RecentActivityProps) {
+  const [activities, setActivities] = useState<ActivityItem[]>(propActivities || []);
+  const [loading, setLoading] = useState(propLoading ?? !propActivities);
   const [showAll, setShowAll] = useState(false);
   const displayedActivities = showAll ? activities : activities.slice(0, 5);
 
+  // Sync from parent props when provided
   useEffect(() => {
+    if (propActivities !== undefined) {
+      setActivities(propActivities);
+    }
+  }, [propActivities]);
+
+  useEffect(() => {
+    if (propLoading !== undefined) {
+      setLoading(propLoading);
+    }
+  }, [propLoading]);
+
+  // Only fetch independently if no props are provided
+  useEffect(() => {
+    if (propActivities !== undefined) return;
     getActivity()
       .then(setActivities)
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, []);
+  }, [propActivities]);
 
   const iconMap: Record<string, React.ElementType> = {
     upload: FileText,
@@ -72,5 +92,3 @@ function RecentActivity() {
 }
 
 export default memo(RecentActivity);
-
-

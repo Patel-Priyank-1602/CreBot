@@ -6,6 +6,7 @@ import UsagePolicySection from '../components/landing/UsagePolicySection';
 import FeatureGrid from '../components/landing/FeatureGrid';
 import WorkflowSection from '../components/landing/WorkflowSection';
 import SecuritySection from '../components/landing/SecuritySection';
+import BYOKSection from '../components/landing/BYOKSection';
 import UseCasesSection from '../components/landing/UseCasesSection';
 import AboutSection from '../components/landing/AboutSection';
 import ContactSection from '../components/landing/ContactSection';
@@ -20,6 +21,7 @@ export default function LandingPage() {
       <UseCasesSection />
       <WhyChooseSection />
       <SecuritySection />
+      <BYOKSection />
       <WorkflowSection />
       <UsagePolicySection />
       <FAQSection />

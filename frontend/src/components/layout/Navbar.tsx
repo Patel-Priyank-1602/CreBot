@@ -18,7 +18,8 @@ const navGroups = [
     title: 'Why CreBot',
     links: [
       { label: 'Why Choose', href: '/#why-choose' },
-      { label: 'Collaboration', href: '/#collaboration' }
+      { label: 'Collaboration', href: '/#collaboration' },
+      { label: 'Bring Your Own Key', href: '/#byok' }
     ]
   },
   {

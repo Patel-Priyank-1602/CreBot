@@ -140,20 +140,49 @@ const AnimatedMockChat = () => {
   );
 };
 
+const ImageBackgroundReel = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const images = ['/reel1.webp', '/reel2.webp', '/reel3.webp'];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="absolute inset-0 z-0 overflow-hidden">
+      <AnimatePresence initial={false}>
+        <motion.img
+          key={currentIndex}
+          src={images[currentIndex]}
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.5, ease: 'easeInOut' }}
+          className="absolute inset-0 w-full h-full object-cover"
+          alt=""
+        />
+      </AnimatePresence>
+      {/* Dark orange shade overlay - adjusted to let more image through */}
+      <div className="absolute inset-0 bg-[var(--btn-bg)] opacity-30 mix-blend-color" />
+      {/* Reduced black overlay from 80% to 40% for better visibility */}
+      <div className="absolute inset-0 bg-black/40" />
+    </div>
+  );
+};
+
 export default function HeroSection() {
   return (
     <section id="product" className="relative min-h-screen min-h-[600px] w-full overflow-hidden bg-black flex items-center pt-[90px] pb-16 lg:pt-0 lg:pb-0">
       
-      {/* Lightweight CSS background replacing external Unsplash images */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_30%,rgba(224,90,0,0.12)_0%,transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_80%,rgba(255,255,255,0.03)_0%,transparent_40%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_90%_90%,rgba(224,90,0,0.06)_0%,transparent_30%)]" />
-      </div>
+      {/* Image Reel Background */}
+      <ImageBackgroundReel />
 
-      {/* Overlays */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-r from-black via-black/80 to-black/20"></div>
-      <div className="absolute inset-0 z-10 bg-[radial-gradient(ellipse_at_25%_60%,rgba(224,90,0,0.1)_0%,transparent_50%)]"></div>
+      {/* Overlays - reduced opacity */}
+      <div className="absolute inset-0 z-10 bg-gradient-to-r from-black/90 via-black/50 to-transparent"></div>
+      <div className="absolute inset-0 z-10 bg-[radial-gradient(ellipse_at_25%_60%,rgba(224,90,0,0.2)_0%,transparent_60%)]"></div>
 
       {/* Content */}
       <div className="relative z-30 w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
@@ -198,9 +227,9 @@ export default function HeroSection() {
               
               <div className="flex items-center gap-4 sm:border-l sm:border-white/10 sm:pl-8">
                 <div className="flex -space-x-3">
-                  <div className="w-8 h-8 rounded-full border-2 border-black bg-[var(--bg-elevated)] flex items-center justify-center z-30 font-mono text-[10px] text-white">JD</div>
-                  <div className="w-8 h-8 rounded-full border-2 border-black bg-[var(--bg-elevated)] flex items-center justify-center z-20 font-mono text-[10px] text-white">SK</div>
-                  <div className="w-8 h-8 rounded-full border-2 border-black bg-[var(--bg-elevated)] flex items-center justify-center z-10 font-mono text-[10px] text-white">AL</div>
+                  <div className="w-8 h-8 rounded-full border-2 border-black bg-[var(--bg-elevated)] flex items-center justify-center z-30 font-mono text-[10px] text-white">PP</div>
+                  <div className="w-8 h-8 rounded-full border-2 border-black bg-[var(--bg-elevated)] flex items-center justify-center z-20 font-mono text-[10px] text-white">MP</div>
+                  <div className="w-8 h-8 rounded-full border-2 border-black bg-[var(--bg-elevated)] flex items-center justify-center z-10 font-mono text-[10px] text-white">ST</div>
                   <div className="w-8 h-8 rounded-full border-2 border-black bg-[var(--btn-bg)] flex items-center justify-center font-display text-xs text-black">1K+</div>
                 </div>
                 <div>

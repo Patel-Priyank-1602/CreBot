@@ -10,7 +10,7 @@ export default function ContactSection() {
         <div className="grid lg:grid-cols-12 gap-16 lg:gap-24 items-start">
           <div className="lg:col-span-5">
             <div className="section-marker mb-6">
-              <span>09 — Contact</span>
+              <span>10 — Contact</span>
             </div>
             <motion.h2
               initial={{ opacity: 0, y: 30 }}
@@ -32,12 +32,8 @@ export default function ContactSection() {
 
             <div className="space-y-8 pt-8 border-t border-[var(--border-soft)]">
               <div className="flex flex-col">
-                <span className="font-mono text-[10px] text-[var(--text-muted)] tracking-[0.2em] uppercase mb-1">Direct Line</span>
-                <span className="font-heading text-2xl text-white tracking-wide">ENTERPRISE@CREBOT.AI</span>
-              </div>
-              <div className="flex flex-col">
                 <span className="font-mono text-[10px] text-[var(--text-muted)] tracking-[0.2em] uppercase mb-1">HQ Location</span>
-                <span className="font-heading text-2xl text-white tracking-wide">SAN FRANCISCO, CA</span>
+                <span className="font-heading text-2xl text-white tracking-wide">GANDHINAGAR, GJ</span>
               </div>
             </div>
           </div>

@@ -6,12 +6,13 @@ import RecentActivity from '../components/dashboard/RecentActivity';
 import ErrorState from '../components/common/ErrorState';
 import { CardSkeleton } from '../components/common/LoadingSkeleton';
 import { formatTimeAgo } from '../lib/utils';
-import { getOverview, getRecentChats } from '../services/dashboardService';
-import type { DashboardOverview, RecentChat } from '../services/dashboardService';
+import { getDashboardCombined } from '../services/dashboardService';
+import type { DashboardOverview, RecentChat, ActivityItem } from '../services/dashboardService';
 
 export default function DashboardOverview() {
   const [overview, setOverview] = useState<DashboardOverview | null>(null);
   const [recentChats, setRecentChats] = useState<RecentChat[]>([]);
+  const [activities, setActivities] = useState<ActivityItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showAllChats, setShowAllChats] = useState(false);
@@ -21,9 +22,10 @@ export default function DashboardOverview() {
   const load = () => {
     setLoading(true);
     setError('');
-    Promise.all([getOverview(), getRecentChats()])
-      .then(([ov, chats]) => {
+    getDashboardCombined()
+      .then(({ overview: ov, activities: acts, chats }) => {
         setOverview(ov);
+        setActivities(acts);
         setRecentChats(chats);
       })
       .catch((e) => setError(e.message))
@@ -143,7 +145,7 @@ export default function DashboardOverview() {
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">
-        <RecentActivity />
+        <RecentActivity activities={activities} loading={loading} />
         <div className="bg-[var(--bg-card)] border border-[var(--border-soft)] rounded-2xl p-5">
           <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-4">Recent Chats</h3>
           {loading ? (
@@ -192,5 +194,3 @@ export default function DashboardOverview() {
     </div>
   );
 }
-
-

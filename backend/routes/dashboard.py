@@ -6,6 +6,18 @@ from models.schemas import DashboardOverviewResponse, DashboardActivityResponse,
 router = APIRouter(dependencies=[Depends(workspace_middleware)])
 
 
+@router.get("/combined")
+async def dashboard_combined(request: Request):
+    """Return overview + activity + recent chats in a single request to reduce round-trips."""
+    ws_id = request.state.workspace_id
+    uid = getattr(request.state, "clerk_user_id", "")
+    return {
+        "overview": get_overview(ws_id, uid),
+        "activities": get_activity(ws_id, uid),
+        "chats": get_recent_chats(ws_id),
+    }
+
+
 @router.get("/overview", response_model=DashboardOverviewResponse)
 async def dashboard_overview(request: Request):
     ws_id = request.state.workspace_id
