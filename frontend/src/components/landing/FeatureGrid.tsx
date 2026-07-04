@@ -163,7 +163,8 @@ export default function FeatureGrid() {
                     opacity,
                   }}
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  className={`absolute w-[85%] max-w-[360px] aspect-[4/5] rounded-[24px] overflow-hidden shadow-2xl border ${isTop ? 'border-white/20 shadow-[0_0_40px_rgba(224,90,0,0.15)]' : 'border-white/5'} bg-[#0a0a0a]`}
+                  onClick={isTop ? handleNext : undefined}
+                  className={`absolute w-[85%] max-w-[360px] aspect-[4/5] rounded-[24px] overflow-hidden shadow-2xl border ${isTop ? 'border-white/20 shadow-[0_0_40px_rgba(224,90,0,0.15)] cursor-pointer' : 'border-white/5'} bg-[#0a0a0a]`}
                 >
                   <img
                     src={feature.image}
