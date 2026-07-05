@@ -10,7 +10,7 @@ const points = [
 export default function SecuritySection() {
   return (
     <section
-      className="relative py-28 lg:py-36 bg-[#000000] overflow-hidden"
+      className="relative py-28 lg:py-36 bg-[#000000] overflow-hidden" id="collaboration"
     >
       <AnimatedDivider />
       <div className="w-full max-w-[1600px] mx-auto px-6 lg:px-10">

@@ -23,7 +23,7 @@
     background: rgba(255, 255, 255, 0.1);
   }
 
-  @media (pointer: fine) {
+  @media (pointer: fine) and (min-width: 1024px) {
     .custom-cursor-active, .custom-cursor-active * {
       cursor: none !important;
     }
