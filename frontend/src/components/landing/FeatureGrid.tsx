@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import AnimatedDivider from '../common/AnimatedDivider';
 import { ArrowLeft, ArrowRight, Database, Search, Code2, ShieldCheck, Activity, Download } from 'lucide-react';
 
 const features = [
@@ -95,10 +96,26 @@ export default function FeatureGrid() {
   const Icon = activeFeature.icon;
 
   return (
-    <section id="features" className="relative py-20 lg:py-24 border-t border-[var(--border-default)] bg-[#030303] overflow-hidden">
+    <section id="features" className="relative py-20 lg:py-24 bg-[#030303] overflow-hidden">
+      <AnimatedDivider />
       
+      {/* Background Image with Fade Mask */}
+      <div 
+        className="absolute inset-0 w-full h-full pointer-events-none z-0" 
+        style={{
+          backgroundImage: 'url("/bgd.png")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: 0.25,
+          filter: 'blur(2px)',
+          maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)'
+        }}
+      />
+
       {/* Background Ambience */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[var(--btn-bg)]/5 blur-[100px] rounded-full pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[var(--btn-bg)]/5 blur-[100px] rounded-full pointer-events-none z-0" />
 
       <div className="max-w-[1600px] mx-auto px-6 lg:px-10 relative z-10">
 

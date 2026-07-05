@@ -23,6 +23,12 @@
     background: rgba(255, 255, 255, 0.1);
   }
 
+  @media (pointer: fine) {
+    .custom-cursor-active, .custom-cursor-active * {
+      cursor: none !important;
+    }
+  }
+
   :focus-visible {
     outline: none;
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);

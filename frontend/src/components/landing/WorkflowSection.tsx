@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import AnimatedDivider from '../common/AnimatedDivider';
 
 const steps = [
   { num: '01', title: 'UPLOAD KNOWLEDGE', desc: 'Securely ingest your PDFs, Word documents, and text files. We instantly parse, chunk, and prepare your data.' },
@@ -10,7 +11,8 @@ const steps = [
 
 export default function WorkflowSection() {
   return (
-    <section id="docs" className="relative py-28 lg:py-36 border-t border-[var(--border-default)] bg-[var(--bg-main)]">
+    <section id="docs" className="relative py-28 lg:py-36 bg-[#000000]">
+      <AnimatedDivider />
       <div className="max-w-[1600px] mx-auto px-6 lg:px-10">
 
         <div className="grid lg:grid-cols-12 gap-8 mb-20">

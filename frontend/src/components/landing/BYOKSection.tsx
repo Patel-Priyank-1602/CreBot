@@ -1,12 +1,14 @@
 import { motion } from 'framer-motion';
 import { KeyRound, ShieldCheck, TrendingUp, ArrowUpRight } from 'lucide-react';
+import AnimatedDivider from '../common/AnimatedDivider';
 
 export default function BYOKSection() {
   return (
     <section
       id="byok"
-      className="relative py-28 lg:py-36 bg-[#050505] overflow-hidden border-t border-[var(--border-default)]"
+      className="relative py-28 lg:py-36 bg-[#030303] overflow-hidden"
     >
+      <AnimatedDivider />
       <div className="w-full max-w-[1600px] mx-auto px-6 lg:px-10 relative z-10 flex flex-col items-center">
         
         {/* Title Area - Exactly as requested */}

@@ -59,10 +59,12 @@ const useCases = [
     ]
   }
 ];
+import AnimatedDivider from '../common/AnimatedDivider';
 
 export default function UseCasesSection() {
   return (
-    <section id="use-cases" className="relative py-28 lg:py-36 border-t border-[var(--border-default)] bg-[#050505]">
+    <section id="use-cases" className="relative py-28 lg:py-36 bg-[#000000]">
+      <AnimatedDivider />
       <div className="max-w-[1600px] mx-auto px-6 lg:px-10">
 
         <div className="grid lg:grid-cols-12 gap-8 mb-20">

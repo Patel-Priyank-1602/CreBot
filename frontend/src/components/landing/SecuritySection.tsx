@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Share2, Eye, Edit3 } from 'lucide-react';
+import AnimatedDivider from '../common/AnimatedDivider';
 
 const points = [
   { icon: Eye, title: 'VIEW ACCESS', desc: 'Grants access to view the bot, chat with it, and copy the embed code. No configuration changes permitted.' },
@@ -9,9 +10,9 @@ const points = [
 export default function SecuritySection() {
   return (
     <section
-      id="collaboration"
-      className="relative py-28 lg:py-36 border-t border-[var(--border-default)] bg-[var(--bg-main)] overflow-hidden"
+      className="relative py-28 lg:py-36 bg-[#000000] overflow-hidden"
     >
+      <AnimatedDivider />
       <div className="w-full max-w-[1600px] mx-auto px-6 lg:px-10">
 
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">

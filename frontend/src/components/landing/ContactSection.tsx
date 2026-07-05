@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion';
 import { useForm, ValidationError } from '@formspree/react';
+import AnimatedDivider from '../common/AnimatedDivider';
 
 export default function ContactSection() {
   const [state, handleSubmit] = useForm('xykqedwn');
   return (
-    <section id="contact" className="relative py-28 lg:py-36 border-t border-[var(--border-default)] bg-[var(--bg-main)] overflow-hidden">
+    <section id="contact" className="relative py-28 lg:py-36 bg-[#000000] overflow-hidden">
+      <AnimatedDivider />
       <div className="max-w-[1600px] mx-auto px-6 lg:px-10 relative z-10">
 
         <div className="grid lg:grid-cols-12 gap-16 lg:gap-24 items-start">

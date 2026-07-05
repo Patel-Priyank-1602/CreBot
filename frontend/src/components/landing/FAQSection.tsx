@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Plus, Minus } from 'lucide-react';
+import AnimatedDivider from '../common/AnimatedDivider';
 
 const faqs = [
   {
@@ -33,7 +35,8 @@ export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="py-28 lg:py-36 bg-[var(--bg-main)] border-t border-[var(--border-default)]">
+    <section id="faq" className="relative py-28 lg:py-36 bg-[#000000]">
+      <AnimatedDivider />
       <div className="w-full max-w-[1600px] mx-auto px-6 lg:px-10">
 
         <div className="grid lg:grid-cols-12 gap-16 lg:gap-24 items-start">

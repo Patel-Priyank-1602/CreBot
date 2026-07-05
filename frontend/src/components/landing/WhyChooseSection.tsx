@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import AnimatedDivider from '../common/AnimatedDivider';
 import { motion, useInView, useMotionValue, useSpring, useReducedMotion } from 'framer-motion';
 import { Zap, Bot, Shield, Sparkles, Globe, Gift, Gauge, Cpu, Wifi } from 'lucide-react';
 
@@ -67,8 +68,9 @@ export default function WhyChooseSection() {
     <section
       ref={sectionRef}
       id="why-choose"
-      className="relative pt-20 lg:pt-24 pb-28 lg:pb-36 border-t border-[var(--border-default)] bg-[var(--bg-main)] overflow-hidden"
+      className="relative pt-20 lg:pt-24 pb-28 lg:pb-36 bg-[#030303] overflow-hidden"
     >
+      <AnimatedDivider />
       <div className="absolute inset-0 z-0 pointer-events-none">
         <ParallaxBlob className="absolute top-20 -left-20 w-[400px] h-[400px] rounded-full opacity-30 bg-[radial-gradient(circle,rgba(224,90,0,0.06)_0%,transparent_70%)]" mouseX={smoothX} mouseY={smoothY} factor={0.08} />
         <ParallaxBlob className="absolute bottom-40 -right-20 w-[300px] h-[300px] rounded-full opacity-30 bg-[radial-gradient(circle,rgba(224,90,0,0.04)_0%,transparent_70%)]" mouseX={smoothX} mouseY={smoothY} factor={-0.05} />

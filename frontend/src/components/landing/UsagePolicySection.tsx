@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView, animate } from 'framer-motion';
 import { Activity, Zap, ShieldCheck } from 'lucide-react';
+import AnimatedDivider from '../common/AnimatedDivider';
 
 const rateLimitItems = [
   'Prevent spam',
@@ -42,8 +43,9 @@ export default function UsagePolicySection() {
     <section
       ref={sectionRef}
       id="api-usage"
-      className="relative pt-16 md:pt-20 lg:pt-24 pb-12 md:pb-16 lg:pb-20 border-t border-[var(--border-default)] bg-[var(--bg-main)] overflow-hidden"
+      className="py-24 bg-[#030303] overflow-hidden relative"
     >
+      <AnimatedDivider />
       {/* Background */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,rgba(224,90,0,0.05)_0%,transparent_70%)]" />

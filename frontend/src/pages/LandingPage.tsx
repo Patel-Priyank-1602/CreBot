@@ -1,4 +1,6 @@
+import { ReactLenis } from '@studio-freight/react-lenis';
 import Navbar from '../components/layout/Navbar';
+import CustomCursor from '../components/common/CustomCursor';
 import Footer from '../components/layout/Footer';
 import HeroSection from '../components/landing/HeroSection';
 import WhyChooseSection from '../components/landing/WhyChooseSection';
@@ -14,20 +16,23 @@ import FAQSection from '../components/landing/FAQSection';
 
 export default function LandingPage() {
   return (
-    <div className="dark bg-black min-h-screen">
-      <Navbar />
-      <HeroSection />
-      <FeatureGrid />
-      <UseCasesSection />
-      <WhyChooseSection />
-      <SecuritySection />
-      <BYOKSection />
-      <WorkflowSection />
-      <UsagePolicySection />
-      <FAQSection />
-      <AboutSection />
-      <ContactSection />
-      <Footer />
-    </div>
+    <ReactLenis root options={{ lerp: 0.07, duration: 1.5, smoothWheel: true }}>
+      <div className="dark bg-[#000000] min-h-screen overflow-x-hidden w-full custom-cursor-active">
+        <CustomCursor />
+        <Navbar />
+        <HeroSection />
+        <FeatureGrid />
+        <UseCasesSection />
+        <WhyChooseSection />
+        <SecuritySection />
+        <BYOKSection />
+        <WorkflowSection />
+        <UsagePolicySection />
+        <FAQSection />
+        <AboutSection />
+        <ContactSection />
+        <Footer />
+      </div>
+    </ReactLenis>
   );
 }
