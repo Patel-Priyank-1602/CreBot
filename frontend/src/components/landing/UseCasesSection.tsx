@@ -111,7 +111,7 @@ export default function UseCasesSection() {
                   <div className="relative flex-1 overflow-hidden">
                     <img
                       src={useCase.image}
-                      className="w-full h-full object-cover img-noir group-hover:grayscale-[70%] transition-all duration-700"
+                      className="w-full h-full object-cover transition-all duration-700"
                       alt={useCase.title}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-card)] via-[var(--bg-card)]/50 to-transparent opacity-90" />
@@ -122,10 +122,10 @@ export default function UseCasesSection() {
                     <div>
                       <h3 className="font-display text-lg md:text-3xl leading-none text-white">{useCase.title}</h3>
                     </div>
-                    <div className="flex items-center justify-center md:justify-between mt-3 md:mt-5 pt-2 md:pt-4 border-t border-[var(--border-soft)]">
+                    {/* <div className="flex items-center justify-center md:justify-between mt-3 md:mt-5 pt-2 md:pt-4 border-t border-[var(--border-soft)]">
                       <span className="hidden md:inline font-mono text-[10px] text-[var(--text-muted)] tracking-[0.15em] uppercase">Use Case Detail</span>
                       <span className="font-mono text-[8px] md:text-[10px] text-[var(--btn-bg)] tracking-[0.15em]">HOVER →</span>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
 

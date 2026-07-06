@@ -132,8 +132,7 @@ export default function FeatureGrid() {
               className="font-display text-3xl sm:text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-white"
             >
               EVERYTHING YOU NEED.<br />
-              <span className="text-stroke">NOTHING YOU</span><br />
-              <span className="text-[var(--btn-bg)]">DON'T.</span>
+              <span className="text-stroke">NOTHING YOU</span> <span className="text-[var(--btn-bg)]">DON'T.</span>
             </motion.h2>
           </div>
           <div className="lg:col-span-4 lg:col-start-9 flex flex-col justify-end">
@@ -181,7 +180,7 @@ export default function FeatureGrid() {
                   }}
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                   onClick={isTop ? handleNext : undefined}
-                  className={`absolute w-[85%] max-w-[360px] aspect-[4/5] rounded-[24px] overflow-hidden shadow-2xl border ${isTop ? 'border-white/20 shadow-[0_0_40px_rgba(224,90,0,0.15)] cursor-pointer' : 'border-white/5'} bg-[#0a0a0a]`}
+                  className={`absolute w-[95%] max-w-[420px] aspect-[14/15] rounded-[24px] overflow-hidden shadow-2xl border ${isTop ? 'border-white/20 shadow-[0_0_40px_rgba(224,90,0,0.15)] cursor-pointer' : 'border-white/5'} bg-[#0a0a0a]`}
                 >
                   <img
                     src={feature.image}

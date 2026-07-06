@@ -27,7 +27,7 @@ function AnimatedCounter() {
 
   return (
     <div ref={ref} className="flex flex-col items-center">
-      <span className="counter-number font-display text-5xl md:text-7xl lg:text-8xl text-white leading-none">{count}</span>
+      <span className="counter-number font-display text-5xl md:text-7xl lg:text-7xl text-white leading-none">{count}</span>
       <span className="font-heading text-xs md:text-lg tracking-[0.1em] md:tracking-[0.15em] text-[var(--text-muted)] uppercase mt-2 md:mt-3">Requests</span>
       <span className="font-mono text-[10px] md:text-base tracking-[0.15em] md:tracking-[0.2em] text-[var(--btn-bg)] uppercase mt-1">Per Minute</span>
     </div>
@@ -63,7 +63,7 @@ export default function UsagePolicySection() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="relative mb-0"
         >
-          <div className="glass rounded-3xl p-6 md:p-12 lg:p-16 overflow-hidden">
+          <div className="glass rounded-3xl p-6 md:p-10 lg:p-12 overflow-hidden">
             <div className="absolute top-0 right-0 w-80 h-80 bg-[radial-gradient(circle,rgba(224,90,0,0.06)_0%,transparent_70%)]" />
 
             <div className="relative z-10">
@@ -84,16 +84,16 @@ export default function UsagePolicySection() {
                     <span className="font-mono text-xs md:text-base text-[var(--btn-bg)] uppercase tracking-[0.1em] md:tracking-[0.15em]">Rate Limits</span>
                   </div>
 
-                  <h3 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-8xl text-white uppercase mb-4 md:mb-6 leading-[1.1]">
+                  <h3 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white uppercase mb-4 md:mb-6 leading-[1.1]">
                     Fair Usage Policy
                   </h3>
 
-                  <p className="text-[var(--text-secondary)] text-base md:text-xl lg:text-2xl leading-relaxed font-sans mb-4 md:mb-6">
+                  <p className="text-[var(--text-secondary)] text-base md:text-xl lg:text-xl leading-relaxed font-sans mb-4 md:mb-6">
                     To ensure fast responses and a smooth experience for everyone, CreBot currently allows up to{' '}
                     <strong className="text-white font-medium">10 requests per minute</strong> for each user.
                   </p>
 
-                  <p className="text-[var(--text-secondary)] text-base md:text-xl lg:text-2xl leading-relaxed font-sans mb-6 md:mb-10">
+                  <p className="text-[var(--text-secondary)] text-base md:text-xl lg:text-xl leading-relaxed font-sans mb-6 md:mb-10">
                     If you reach the limit, simply wait one minute before sending another request.
                   </p>
 
@@ -110,7 +110,7 @@ export default function UsagePolicySection() {
                 <div className="flex items-center justify-center py-4 md:py-8 lg:py-0">
                   <div className="relative">
                     <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(224,90,0,0.12)_0%,transparent_70%)] blur-3xl scale-150" />
-                    <div className="relative w-48 h-48 sm:w-56 sm:h-56 lg:w-72 lg:h-72 rounded-full bg-gradient-to-br from-[var(--btn-bg)]/20 via-transparent to-[var(--btn-bg)]/10 p-[1px] shadow-[0_0_30px_rgba(224,90,0,0.1)]">
+                    <div className="relative w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64 rounded-full bg-gradient-to-br from-[var(--btn-bg)]/20 via-transparent to-[var(--btn-bg)]/10 p-[1px] shadow-[0_0_30px_rgba(224,90,0,0.1)]">
                       <div className="w-full h-full rounded-full bg-[var(--bg-card)]/80 backdrop-blur-sm flex flex-col items-center justify-center border border-[var(--border-soft)]/50">
                         <AnimatedCounter />
                       </div>

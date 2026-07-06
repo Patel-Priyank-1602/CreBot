@@ -91,7 +91,7 @@ export default function UseCasesAboutSection() {
                   className="group relative rounded-xl overflow-hidden bg-[var(--bg-card)] border border-[var(--border-default)] hover:border-[var(--btn-bg)]/40 transition-all duration-300"
                 >
                   <div className="relative h-28 sm:h-32 overflow-hidden">
-                    <img src={useCase.image} className="w-full h-full object-cover img-noir group-hover:scale-105 transition-transform duration-500" alt={useCase.title} />
+                    <img src={useCase.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={useCase.title} />
                     <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-card)] to-transparent" />
                     <div className="absolute top-2 left-3 font-mono text-[9px] text-[var(--btn-bg)] tracking-[0.2em]">/ {useCase.num}</div>
                     <div className="absolute top-2 right-3 px-2 py-0.5 bg-black/60 backdrop-blur-sm font-mono text-[9px] text-white tracking-[0.15em]">{useCase.category}</div>
