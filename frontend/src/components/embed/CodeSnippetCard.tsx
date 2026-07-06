@@ -22,12 +22,13 @@ export default function CodeSnippetCard({ chatbotId }: CodeSnippetCardProps) {
   useEffect(() => {
     if (!chatbotId) return;
     setLoading(true);
-    
+
     // Simulate loading for smooth transition
     setTimeout(() => {
       const apiUrl = import.meta.env.VITE_API_URL || (import.meta.env.MODE === 'production' ? 'https://crebot-ole4.onrender.com' : 'http://localhost:8000');
-      const widgetUrl = import.meta.env.VITE_WIDGET_URL || `${apiUrl}/widget/crebot-widget.js`;
-      
+      const widgetUrl =
+        (import.meta.env.VITE_WIDGET_URL || `${apiUrl}/widget/crebot-widget.js`) + '?v=2';
+
       setSnippets({
         html: `<script
   src="${widgetUrl}"
@@ -83,25 +84,25 @@ loadCreBot();`
           <h3 className="text-sm font-semibold text-[var(--text-primary)]">Embed Script</h3>
           <Button variant="primary" size="sm" onClick={handleCopy} disabled={!activeSnippet || loading}>
             {loading ? <Loader size={14} className="animate-spin" /> :
-             copied ? <><Check size={14} /> Copied</> : <><Copy size={14} /> Copy Script</>}
+              copied ? <><Check size={14} /> Copied</> : <><Copy size={14} /> Copy Script</>}
           </Button>
         </div>
-        
+
         {/* Tabs */}
         <div className="flex flex-wrap gap-1 bg-[var(--bg-input)] border border-[var(--border-default)] p-1 rounded-lg w-fit">
-          <button 
+          <button
             onClick={() => setActiveTab('html')}
             className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors flex items-center gap-1.5 ${activeTab === 'html' ? 'bg-[var(--bg-card)] text-[var(--text-primary)] shadow-sm' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'}`}
           >
             <Code size={14} /> HTML
           </button>
-          <button 
+          <button
             onClick={() => setActiveTab('react')}
             className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors flex items-center gap-1.5 ${activeTab === 'react' ? 'bg-[var(--bg-card)] text-[var(--text-primary)] shadow-sm' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'}`}
           >
             <FileCode2 size={14} /> React
           </button>
-          <button 
+          <button
             onClick={() => setActiveTab('ajax')}
             className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors flex items-center gap-1.5 ${activeTab === 'ajax' ? 'bg-[var(--bg-card)] text-[var(--text-primary)] shadow-sm' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'}`}
           >
@@ -109,7 +110,7 @@ loadCreBot();`
           </button>
         </div>
       </div>
-      
+
       <div className="bg-[var(--bg-input)] p-3 sm:p-5 overflow-x-auto min-h-[100px]">
         {loading ? (
           <div className="flex items-center justify-center py-8">
