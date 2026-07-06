@@ -40,7 +40,6 @@ export const sidebarGroups = [
   {
     title: 'Account',
     items: [
-      { label: 'Profile', icon: User, href: '/user', color: 'text-blue-400' },
       { label: 'Billing', icon: CreditCard, href: '/dashboard/billing', color: 'text-teal-500' },
     ]
   }
