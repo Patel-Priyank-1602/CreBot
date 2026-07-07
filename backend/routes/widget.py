@@ -54,7 +54,7 @@ async def widget_chat(request: Request, widget_key: str, body: ChatRequest):
     # 1. Look up the bot
     bot_result = (
         supabase.table("bots")
-        .select("id")
+        .select("id, workspace_id")
         .eq("widget_key", widget_key)
         .single()
         .execute()
@@ -63,6 +63,7 @@ async def widget_chat(request: Request, widget_key: str, body: ChatRequest):
         raise HTTPException(status_code=404, detail="Invalid widget key.")
 
     bot_id = bot_result.data["id"]
+    workspace_id = bot_result.data.get("workspace_id")
 
     # Check for owner's BYOK Groq key
     user_groq_key = _get_owner_groq_key(bot_id)
@@ -91,8 +92,13 @@ async def widget_chat(request: Request, widget_key: str, body: ChatRequest):
             user_groq_api_key=user_groq_key
         )
 
+        source_list = [
+            {"name": f"Source {i + 1}", "score": round(c.get("similarity", 0), 3)}
+            for i, c in enumerate(chunks[:3])
+        ] if chunks else []
+
         # 5. Log and return
-        _log_query(bot_id, body.question, answer, standalone_question)
+        _log_query(bot_id, workspace_id, body.question, answer, source_list)
         return ChatResponse(
             answer=answer,
             source_chunks=len(chunks),
@@ -127,13 +133,15 @@ async def widget_chat_by_bot_id(request: Request, bot_id: str, body: ChatRequest
 
     bot_result = (
         supabase.table("bots")
-        .select("id")
+        .select("id, workspace_id")
         .eq("id", bot_id)
         .single()
         .execute()
     )
     if not bot_result.data:
         raise HTTPException(status_code=404, detail="Invalid bot ID.")
+
+    workspace_id = bot_result.data.get("workspace_id")
 
     # Check for owner's BYOK Groq key
     user_groq_key = _get_owner_groq_key(bot_id)
@@ -157,7 +165,12 @@ async def widget_chat_by_bot_id(request: Request, bot_id: str, body: ChatRequest
             user_groq_api_key=user_groq_key
         )
 
-        _log_query(bot_id, body.question, answer, standalone_question)
+        source_list = [
+            {"name": f"Source {i + 1}", "score": round(c.get("similarity", 0), 3)}
+            for i, c in enumerate(chunks[:3])
+        ] if chunks else []
+
+        _log_query(bot_id, workspace_id, body.question, answer, source_list)
         return ChatResponse(
             answer=answer,
             source_chunks=len(chunks),
@@ -186,15 +199,28 @@ async def widget_chat_by_bot_id(request: Request, bot_id: str, body: ChatRequest
 
 
 def _log_query(
-    bot_id: str, question: str, answer: str, reformulated: str = ""
+    bot_id: str, workspace_id: str, question: str, answer: str, sources: list = None
 ) -> None:
-    """Insert a row into queries_log."""
+    """Insert a row into chat_logs and queries_log."""
     try:
+        if workspace_id:
+            supabase.table("chat_logs").insert({
+                "workspace_id": workspace_id,
+                "chatbot_id": bot_id,
+                "user_question": question,
+                "bot_answer": answer,
+                "sources": sources or [],
+                "status": "answered",
+            }).execute()
+
         supabase.table("queries_log").insert(
             {
                 "bot_id": bot_id,
+                "workspace_id": workspace_id,
                 "question": question,
                 "answer": answer,
+                "sources": sources or [],
+                "status": "answered",
             }
         ).execute()
     except Exception as e:
