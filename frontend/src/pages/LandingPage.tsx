@@ -13,6 +13,7 @@ import UseCasesSection from '../components/landing/UseCasesSection';
 import AboutSection from '../components/landing/AboutSection';
 import ContactSection from '../components/landing/ContactSection';
 import FAQSection from '../components/landing/FAQSection';
+import ChatbotWidget from '../components/landing/ChatbotWidget';
 
 export default function LandingPage() {
   return (
@@ -32,6 +33,7 @@ export default function LandingPage() {
         <AboutSection />
         <ContactSection />
         <Footer />
+        <ChatbotWidget />
       </div>
     </ReactLenis>
   );
