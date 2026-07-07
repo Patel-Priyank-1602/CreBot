@@ -27,7 +27,7 @@ export default function CodeSnippetCard({ chatbotId }: CodeSnippetCardProps) {
     setTimeout(() => {
       const apiUrl = import.meta.env.VITE_API_URL || (import.meta.env.MODE === 'production' ? 'https://crebot-ole4.onrender.com' : 'http://localhost:8000');
       const widgetUrl =
-        (import.meta.env.VITE_WIDGET_URL || `${apiUrl}/widget/crebot-widget.js`) + '?v=2';
+        (import.meta.env.VITE_WIDGET_URL || `${apiUrl}/widget/crebot-widget.js`) + '?v=3';
 
       setSnippets({
         html: `<script
