@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Upload, File as FileIcon, CheckCircle, AlertCircle, Loader, Type, FileUp } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { uploadFileWithProgress, uploadText } from '../../services/knowledgeService';
@@ -21,11 +21,31 @@ export default function UploadDropzone({ onUploadComplete, chatbotId: initialCha
   const [errorMsg, setErrorMsg] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [visualProgress, setVisualProgress] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Text input state
   const [textTitle, setTextTitle] = useState('');
   const [textContent, setTextContent] = useState('');
+
+  // Simulate progress during the "processing" phase
+  useEffect(() => {
+    let interval: ReturnType<typeof setInterval>;
+    if (status === 'processing') {
+      interval = setInterval(() => {
+        setVisualProgress(prev => {
+          const remaining = 99 - prev;
+          const increment = Math.max(0.1, remaining * 0.05); 
+          return Math.min(99, prev + increment);
+        });
+      }, 200);
+    } else if (status === 'success') {
+      setVisualProgress(100);
+    } else if (status === 'idle' || status === 'selected' || status === 'error') {
+      setVisualProgress(0);
+    }
+    return () => clearInterval(interval);
+  }, [status]);
 
   const validateFile = (file: File): string | null => {
     const ext = '.' + file.name.split('.').pop()?.toLowerCase();
@@ -61,10 +81,12 @@ export default function UploadDropzone({ onUploadComplete, chatbotId: initialCha
     }
     setStatus('uploading');
     setUploadProgress(0);
+    setVisualProgress(0);
     setErrorMsg('');
     try {
       await uploadFileWithProgress(selectedFile, initialChatbotId, (percent) => {
         setUploadProgress(percent);
+        setVisualProgress(percent * 0.4); // Network upload is 40% of the visual progress
         if (percent >= 100) {
           setStatus('processing');
         }
@@ -98,6 +120,7 @@ export default function UploadDropzone({ onUploadComplete, chatbotId: initialCha
       return;
     }
     setStatus('processing');
+    setVisualProgress(0);
     setErrorMsg('');
     try {
       await uploadText(textTitle.trim() || 'Pasted Text', textContent, initialChatbotId);
@@ -130,6 +153,7 @@ export default function UploadDropzone({ onUploadComplete, chatbotId: initialCha
     setErrorMsg('');
     setSelectedFile(null);
     setUploadProgress(0);
+    setVisualProgress(0);
   };
 
   const textCharCount = textContent.length;
@@ -220,49 +244,36 @@ export default function UploadDropzone({ onUploadComplete, chatbotId: initialCha
                 </div>
               </>
             )}
-            {status === 'uploading' && (
+            {(status === 'uploading' || status === 'processing') && (
               <>
                 <div className="w-14 h-14 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-soft)] flex items-center justify-center text-[var(--text-primary)] mb-4">
-                  <Upload size={24} className="animate-pulse" />
+                  {status === 'uploading' ? (
+                    <Upload size={24} className="animate-pulse" />
+                  ) : (
+                    <Loader size={24} className="animate-spin" />
+                  )}
                 </div>
                 <p className="text-base font-medium text-[var(--text-primary)] mb-1">
-                  Uploading… {uploadProgress}%
+                  {status === 'uploading' ? 'Uploading file…' : 'Processing document…'}
                 </p>
-                <p className="text-sm text-[var(--text-muted)] mb-4">Sending file to server</p>
-                {/* Progress Bar */}
+                <p className="text-sm text-[var(--text-muted)] mb-4">
+                  {status === 'uploading' 
+                    ? `Sending file to server (${uploadProgress}%)` 
+                    : 'Extracting text and generating embeddings'}
+                </p>
+                {/* Unified Progress Bar */}
                 <div className="w-full max-w-sm h-2.5 bg-[var(--white-alpha-5)] rounded-full overflow-hidden border border-[var(--border-soft)]">
                   <div
                     className="h-full rounded-full transition-all duration-300 ease-out"
                     style={{
-                      width: `${uploadProgress}%`,
+                      width: `${visualProgress}%`,
                       background: 'linear-gradient(90deg, #e05a00, #ff8c42)',
                     }}
                   />
                 </div>
                 <p className="text-xs text-[var(--text-muted)] mt-2">
-                  {selectedFile ? `${(selectedFile.size * uploadProgress / 100 / 1024).toFixed(0)} KB / ${(selectedFile.size / 1024).toFixed(0)} KB` : ''}
+                  {Math.round(visualProgress)}% Complete
                 </p>
-              </>
-            )}
-            {status === 'processing' && (
-              <>
-                <div className="w-14 h-14 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-soft)] flex items-center justify-center text-[var(--text-primary)] mb-4">
-                  <Loader size={24} className="animate-spin" />
-                </div>
-                <p className="text-base font-medium text-[var(--text-primary)] mb-1">Processing…</p>
-                <p className="text-sm text-[var(--text-muted)] mb-4">Extracting text and generating embeddings</p>
-                {/* Indeterminate shimmer bar */}
-                <div className="w-full max-w-sm h-2.5 bg-[var(--white-alpha-5)] rounded-full overflow-hidden border border-[var(--border-soft)]">
-                  <div
-                    className="h-full rounded-full animate-pulse"
-                    style={{
-                      width: '100%',
-                      background: 'linear-gradient(90deg, #e05a00, #ff8c42, #e05a00)',
-                      backgroundSize: '200% 100%',
-                      animation: 'shimmer 1.5s ease-in-out infinite',
-                    }}
-                  />
-                </div>
               </>
             )}
             {status === 'success' && (
@@ -374,17 +385,19 @@ export default function UploadDropzone({ onUploadComplete, chatbotId: initialCha
               </div>
               <p className="text-base font-medium text-[var(--text-primary)] mb-1">Processing text…</p>
               <p className="text-sm text-[var(--text-muted)] mb-4">Generating embeddings for your content</p>
+              {/* Unified Progress Bar */}
               <div className="w-full max-w-sm h-2.5 bg-[var(--white-alpha-5)] rounded-full overflow-hidden border border-[var(--border-soft)]">
                 <div
-                  className="h-full rounded-full"
+                  className="h-full rounded-full transition-all duration-300 ease-out"
                   style={{
-                    width: '100%',
-                    background: 'linear-gradient(90deg, #e05a00, #ff8c42, #e05a00)',
-                    backgroundSize: '200% 100%',
-                    animation: 'shimmer 1.5s ease-in-out infinite',
+                    width: `${visualProgress}%`,
+                    background: 'linear-gradient(90deg, #e05a00, #ff8c42)',
                   }}
                 />
               </div>
+              <p className="text-xs text-[var(--text-muted)] mt-2">
+                {Math.round(visualProgress)}% Complete
+              </p>
             </div>
           )}
 
@@ -421,13 +434,7 @@ export default function UploadDropzone({ onUploadComplete, chatbotId: initialCha
         </div>
       )}
 
-      {/* Shimmer animation keyframes */}
-      <style>{`
-        @keyframes shimmer {
-          0% { background-position: 200% 0; }
-          100% { background-position: -200% 0; }
-        }
-      `}</style>
+
     </div>
   );
 }
