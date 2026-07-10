@@ -32,8 +32,9 @@
   }
 
   :focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+    outline: 2px solid rgba(224, 90, 0, 0.8);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(224, 90, 0, 0.2);
   }
 
   ::-webkit-scrollbar {

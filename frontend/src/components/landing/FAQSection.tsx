@@ -78,6 +78,8 @@ export default function FAQSection() {
                   <button
                     onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
                     className="w-full py-8 flex items-center justify-between text-left focus:outline-none hover:pl-4 transition-all duration-300"
+                    aria-expanded={openIndex === idx}
+                    aria-controls={`faq-answer-${faq.num}`}
                   >
                     <div className="flex items-center gap-6">
                       <span className={`font-mono text-sm tracking-[0.2em] transition-colors ${openIndex === idx ? 'text-[var(--btn-bg)]' : 'text-[var(--text-muted)] group-hover:text-white'}`}>
@@ -99,6 +101,9 @@ export default function FAQSection() {
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.3 }}
+                        id={`faq-answer-${faq.num}`}
+                        role="region"
+                        aria-labelledby={`faq-question-${faq.num}`}
                       >
                         <div className="pl-14 pr-8 pb-10 text-[var(--text-secondary)] text-lg leading-relaxed font-sans">
                           {faq.answer}

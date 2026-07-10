@@ -1,0 +1,32 @@
+# Cloudflare Pages custom headers
+
+# All pages
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=(), usb=()
+
+# Cache hashed static assets aggressively (1 year)
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Cache images for 30 days
+/*.webp
+  Cache-Control: public, max-age=2592000
+/*.png
+  Cache-Control: public, max-age=2592000
+/*.jpg
+  Cache-Control: public, max-age=2592000
+/*.ico
+  Cache-Control: public, max-age=2592000
+
+# Cache fonts for 1 year
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+/*.woff
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML — no cache (always fresh)
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate

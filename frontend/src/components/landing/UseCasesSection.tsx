@@ -113,6 +113,9 @@ export default function UseCasesSection() {
                       src={useCase.image}
                       className="w-full h-full object-cover transition-all duration-700"
                       alt={useCase.title}
+                      width={400}
+                      height={500}
+                      loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-card)] via-[var(--bg-card)]/50 to-transparent opacity-90" />
                     <div className="absolute top-2 left-2 md:top-4 md:left-4 font-mono text-[8px] md:text-[10px] text-[var(--btn-bg)] tracking-[0.2em]">/ {useCase.num}</div>

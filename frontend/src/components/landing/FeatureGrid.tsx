@@ -131,7 +131,7 @@ export default function FeatureGrid() {
               viewport={{ once: true }}
               className="font-display text-3xl sm:text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-white"
             >
-              EVERYTHING YOU NEED.<br />
+              EVERYTHING YOU NEED.
               <span className="text-stroke">NOTHING YOU</span> <span className="text-[var(--btn-bg)]">DON'T.</span>
             </motion.h2>
           </div>
@@ -144,6 +144,7 @@ export default function FeatureGrid() {
             >
               From file upload to deployment - manage your entire RAG pipeline from one beautifully engineered interface. No bloat. Just speed and precision.
             </motion.p>
+            
           </div>
         </div>
 
@@ -185,6 +186,9 @@ export default function FeatureGrid() {
                   <img
                     src={feature.image}
                     alt={feature.title}
+                    width={420}
+                    height={450}
+                    loading="lazy"
                     className={`w-full h-full object-cover transition-all duration-700 ${isTop ? 'grayscale-[20%]' : 'grayscale-[80%] blur-[2px]'}`}
                     onError={(e) => { e.currentTarget.style.display = 'none'; }}
                   />
@@ -254,11 +258,14 @@ export default function FeatureGrid() {
                 <ArrowLeft size={16} />
               </button>
               
-              <div className="flex items-center gap-2 px-3">
-                {features.map((_, i) => (
-                  <div 
+              <div className="flex items-center gap-2 px-3" role="tablist" aria-label="Feature slides">
+                {features.map((f, i) => (
+                  <button 
                     key={i}
                     onClick={() => setActiveIdx(i)}
+                    aria-label={`Go to feature ${i + 1}: ${f.title}`}
+                    aria-selected={i === activeIdx}
+                    role="tab"
                     className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${i === activeIdx ? 'w-6 bg-[var(--btn-bg)]' : 'w-1.5 bg-white/20 hover:bg-white/40'}`}
                   />
                 ))}

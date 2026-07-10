@@ -130,7 +130,10 @@ const AnimatedMockChat = () => {
                 )}
               </AnimatePresence>
             </div>
-            <button className={`w-8 h-8 flex items-center justify-center transition-colors rounded-sm ${step === 1 ? 'bg-[var(--btn-bg)] text-black' : 'bg-[var(--border-soft)] text-white/30'}`}>
+            <button
+              aria-label="Send message"
+              className={`w-8 h-8 flex items-center justify-center transition-colors rounded-sm ${step === 1 ? 'bg-[var(--btn-bg)] text-black' : 'bg-[var(--border-soft)] text-white/30'}`}
+            >
               <Send size={14} />
             </button>
           </div>
@@ -152,7 +155,7 @@ const ImageBackgroundReel = () => {
   }, []);
 
   return (
-    <div className="absolute inset-0 z-0 overflow-hidden">
+    <div className="absolute inset-0 z-0 overflow-hidden" role="img" aria-label="CreBot dashboard screenshots">
       <AnimatePresence initial={false}>
         <motion.img
           key={currentIndex}
@@ -162,13 +165,15 @@ const ImageBackgroundReel = () => {
           exit={{ opacity: 0 }}
           transition={{ duration: 1.5, ease: 'easeInOut' }}
           className="absolute inset-0 w-full h-full object-cover"
-          alt=""
+          alt="CreBot platform interface preview"
+          width={1920}
+          height={1080}
         />
       </AnimatePresence>
       {/* Dark orange shade overlay - adjusted to let more image through */}
-      <div className="absolute inset-0 bg-[var(--btn-bg)] opacity-30 mix-blend-color" />
+      <div className="absolute inset-0 bg-[var(--btn-bg)] opacity-30 mix-blend-color" aria-hidden="true" />
       {/* Reduced black overlay from 80% to 40% for better visibility */}
-      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
     </div>
   );
 };
@@ -181,8 +186,8 @@ export default function HeroSection() {
       <ImageBackgroundReel />
 
       {/* Overlays - reduced opacity */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-r from-black/90 via-black/50 to-transparent"></div>
-      <div className="absolute inset-0 z-10 bg-[radial-gradient(ellipse_at_25%_60%,rgba(224,90,0,0.2)_0%,transparent_60%)]"></div>
+      <div className="absolute inset-0 z-10 bg-gradient-to-r from-black/90 via-black/50 to-transparent" aria-hidden="true"></div>
+      <div className="absolute inset-0 z-10 bg-[radial-gradient(ellipse_at_25%_60%,rgba(224,90,0,0.2)_0%,transparent_60%)]" aria-hidden="true"></div>
 
       {/* Content */}
       <div className="relative z-30 w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
@@ -207,12 +212,7 @@ export default function HeroSection() {
               </motion.div>
             </h1>
             
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.5 }}
-              className="max-w-xl text-[var(--text-secondary)] text-sm md:text-base leading-relaxed font-sans mb-6 sm:mb-10"
-            >
-              A private AI infrastructure for teams who refuse hallucination. Upload your knowledge base. Deploy instantly. One unrelenting standard - <span className="text-white font-medium">absolute precision</span>.
-            </motion.p>
+            
             
             {/* CTA & Social Proof */}
             <motion.div 

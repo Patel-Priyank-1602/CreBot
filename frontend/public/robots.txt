@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /login
+Disallow: /signup
+Disallow: /user
+Disallow: /bot
+
+Sitemap: https://crebot.pages.dev/sitemap.xml

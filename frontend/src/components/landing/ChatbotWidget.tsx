@@ -4,18 +4,28 @@ import { useLenis } from '@studio-freight/react-lenis';
 export default function ChatbotWidget() {
   const lenis = useLenis();
 
-  // 1. Script Injection Effect
+  // 1. Script Injection Effect — deferred to avoid blocking initial paint
   useEffect(() => {
     if (document.getElementById('crebot-widget-script')) {
       return;
     }
 
-    const script = document.createElement('script');
-    script.id = 'crebot-widget-script';
-    script.src = "https://crebot-ole4.onrender.com/widget/crebot-widget.js?v=3";
-    script.setAttribute('data-bot-id', "85060bce-2d50-46cf-aba2-2595c6603fa3");
-    script.setAttribute('data-api-url', "https://crebot-ole4.onrender.com");
-    document.body.appendChild(script);
+    const injectScript = () => {
+      const script = document.createElement('script');
+      script.id = 'crebot-widget-script';
+      script.src = "https://crebot-ole4.onrender.com/widget/crebot-widget.js?v=3";
+      script.setAttribute('data-bot-id', "85060bce-2d50-46cf-aba2-2595c6603fa3");
+      script.setAttribute('data-api-url', "https://crebot-ole4.onrender.com");
+      script.defer = true;
+      document.body.appendChild(script);
+    };
+
+    // Use requestIdleCallback if available, otherwise fallback to 3s delay
+    if ('requestIdleCallback' in window) {
+      (window as any).requestIdleCallback(injectScript, { timeout: 5000 });
+    } else {
+      setTimeout(injectScript, 3000);
+    }
   }, []);
 
   // 2. Lenis Scroll Freeze Effect

@@ -86,17 +86,22 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 h-[90px] border-b border-[#222]"
-      style={{ background: '#000000' }}>
+      style={{ background: '#000000' }}
+      aria-label="Main navigation">
       <div className="w-full max-w-[1600px] mx-auto px-4 lg:px-8 h-full flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2.5 z-50">
-          <img src="/favtag.png" alt="CreBot Logo" className="h-10 lg:h-12 w-auto object-contain" />
+          <img src="/favtag.png" alt="CreBot Logo" className="h-10 lg:h-12 w-auto object-contain" width={160} height={48} />
         </Link>
 
         {/* Desktop Navigation (> 1024px) */}
         <div className="hidden lg:flex items-center gap-2">
           {navGroups.map((group) => (
             <div key={group.title} className="relative group px-2 py-6">
-              <button className="flex items-center gap-1.5 px-3 py-2 text-[15px] font-medium text-[#a9a9a6] hover:text-white transition-colors">
+              <button
+                className="flex items-center gap-1.5 px-3 py-2 text-[15px] font-medium text-[#a9a9a6] hover:text-white transition-colors"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
                 {group.title}
                 <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-300" />
               </button>
@@ -174,6 +179,8 @@ export default function Navbar() {
         {/* Mobile / Tablet Toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label="Toggle navigation menu"
+          aria-expanded={mobileOpen}
           className="lg:hidden relative z-50 w-10 h-10 flex items-center justify-center text-[#a9a9a6] hover:text-white bg-[#151515] border border-[#222] rounded-xl"
         >
           {mobileOpen ? <X size={20} /> : <Menu size={20} />}

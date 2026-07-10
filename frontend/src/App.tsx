@@ -5,7 +5,7 @@ import { useTheme } from './context/ThemeContext';
 
 const DashboardLayout = lazy(() => import('./components/layout/DashboardLayout'));
 
-const LandingPage = lazy(() => import('./pages/LandingPage'));
+import LandingPage from './pages/LandingPage';
 const SignInPage = lazy(() => import('./pages/SignInPage'));
 const SignUpPage = lazy(() => import('./pages/SignUpPage'));
 const UserProfilePage = lazy(() => import('./pages/UserProfilePage'));
@@ -21,7 +21,7 @@ const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 const OwnApiPage = lazy(() => import('./pages/OwnApiPage'));
 const BillingPage = lazy(() => import('./pages/BillingPage'));
 const JoinBotPage = lazy(() => import('./pages/JoinBotPage'));
-const AdminPage = lazy(() => import('./pages/AdminPage'));
+// const AdminPage = lazy(() => import('./pages/AdminPage'));
 
 function AppContent() {
   const { theme } = useTheme();
@@ -74,7 +74,7 @@ function AppContent() {
               <Route path="own-api" element={<OwnApiPage />} />
               <Route path="billing" element={<BillingPage />} />
               <Route path="join" element={<JoinBotPage />} />
-              <Route path="admin" element={<AdminPage />} />
+              {/* <Route path="admin" element={<AdminPage />} /> */}
 
             </Route>
 
