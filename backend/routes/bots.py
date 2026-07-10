@@ -122,6 +122,7 @@ def _format_bot(bot: dict, is_owner: bool = True, can_edit: bool = False, access
         welcome_message=bot.get("welcome_message", "Hi! How can I help you today?"),
         theme=bot.get("theme", "dark"),
         position=bot.get("position", "bottom-right"),
+        strict_knowledge=bot.get("strict_knowledge", True),
         updated_at=bot.get("updated_at", ""),
         access=access,
     )
@@ -340,7 +341,11 @@ async def update_bot(request: Request, bot_id: str, body: UpdateBotRequest):
         bot_data = supabase.table("bots").select("*").eq("id", bot_id).execute().data[0]
     except Exception:
         raise HTTPException(status_code=404, detail="Bot not found after update.")
-    return _format_bot(bot_data)
+        
+    formatted = _format_bot(bot_data)
+    if "strict_knowledge" in update:
+        formatted.strict_knowledge = update["strict_knowledge"]
+    return formatted
 
 
 @router.post("/{bot_id}/train", response_model=TrainBotResponse)

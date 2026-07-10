@@ -1,10 +1,15 @@
 const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.MODE === 'production' ? 'https://crebot-ole4.onrender.com' : 'http://localhost:8000');
-const API_URL = `${API_BASE_URL}/api`;
+export const API_URL = `${API_BASE_URL}/api`;
 
 let _getToken: (() => Promise<string | null>) | null = null;
 
 export function setClerkTokenGetter(getter: () => Promise<string | null>) {
   _getToken = getter;
+}
+
+export async function getAuthToken(): Promise<string | null> {
+  if (_getToken) return _getToken();
+  return null;
 }
 
 async function fetchApi(endpoint: string, options: RequestInit = {}, _retryCount = 0): Promise<any> {
@@ -96,6 +101,8 @@ export const api = {
     list: (chatbotId: string) => fetchApi(`/knowledge/files?chatbot_id=${chatbotId}`),
     get: (fileId: string, chatbotId: string) => fetchApi(`/knowledge/files/${fileId}?chatbot_id=${chatbotId}`),
     upload: (formData: FormData) => fetchApiFormData('/knowledge/upload', formData),
+    uploadText: (data: { title: string; content: string; chatbot_id: string }) =>
+      fetchApi('/knowledge/upload-text', { method: 'POST', body: JSON.stringify(data) }),
     download: (fileId: string, chatbotId: string) => `${API_URL}/knowledge/files/${fileId}/download?chatbot_id=${chatbotId}`,
     reprocess: (fileId: string, chatbotId: string) => fetchApi(`/knowledge/files/${fileId}/reprocess?chatbot_id=${chatbotId}`, { method: 'POST' }),
     delete: (fileId: string, chatbotId: string) => fetchApi(`/knowledge/files/${fileId}?chatbot_id=${chatbotId}`, { method: 'DELETE' }),

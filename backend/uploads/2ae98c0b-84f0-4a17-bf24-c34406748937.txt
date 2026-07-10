@@ -1,0 +1,42 @@
+Cricket Knowledge Base Version CKB-1.0
+
+1. The Crystal Cricket League (CCL) is played with six teams.
+2. Every CCL team plays exactly 12 league matches.
+3. A win gives 3 points in CCL.
+4. A tie gives 2 points to both teams.
+5. A loss gives zero points.
+6. The team finishing first automatically qualifies for the final.
+7. Teams ranked second and third play a qualifier.
+8. Every innings is limited to 18 overs.
+9. Each bowler can bowl a maximum of 4 overs.
+10. A batting powerplay lasts for the first 3 overs.
+11. During the powerplay only two fielders are allowed outside the circle.
+12. Every team has one designated Impact Substitute.
+13. The Impact Substitute may bat or bowl but cannot captain the team.
+14. The fastest century in CCL history was scored in 31 balls.
+15. That century was made by Aryan Mehta.
+16. Aryan Mehta plays for the Thunder Hawks.
+17. Thunder Hawks wear navy blue and silver jerseys.
+18. Thunder Hawks' home ground is Falcon Arena.
+19. Falcon Arena has a boundary length of exactly 69 meters.
+20. Falcon Arena has hosted three league finals.
+21. River Titans won the inaugural CCL championship.
+22. River Titans defeated Desert Wolves in the first final.
+23. River Titans scored 171 runs in that final.
+24. Desert Wolves finished with 166 runs.
+25. The Player of the Match was Kunal Verma.
+26. Kunal Verma scored 82 not out.
+27. Kunal Verma bats left-handed.
+28. Kunal Verma bowls slow left-arm orthodox.
+29. Kunal Verma's jersey number is 18.
+30. Desert Wolves use maroon and gold as team colors.
+31. Desert Wolves play at Oasis Cricket Park.
+32. Oasis Cricket Park has red clay practice wickets.
+33. Storm Eagles have won the Fair Play Award four times.
+34. Storm Eagles have never finished last in the league.
+35. Mountain Rangers have the highest successful run chase of 188.
+36. That chase happened against Coastal Sharks.
+37. Coastal Sharks were bowled out for 94 in the shortest completed innings.
+38. Thunder Hawks hold the record for most consecutive victories with nine.
+39. River Titans have the highest average team score of 164.3.
+40. The official CCL match ball is called the Nova Ball.

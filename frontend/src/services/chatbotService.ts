@@ -15,6 +15,7 @@ export interface Bot {
   welcome_message: string;
   theme: string;
   position: string;
+  strict_knowledge: boolean;
   updated_at: string;
   access?: string;
 }

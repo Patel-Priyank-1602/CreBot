@@ -51,10 +51,9 @@ def _get_owner_groq_key(bot_id: str) -> str | None:
 async def widget_chat(request: Request, widget_key: str, body: ChatRequest):
     """Public chat endpoint called by the widget JS (using widget_key)."""
 
-    # 1. Look up the bot
     bot_result = (
         supabase.table("bots")
-        .select("id, workspace_id")
+        .select("id, workspace_id, strict_knowledge")
         .eq("widget_key", widget_key)
         .single()
         .execute()
@@ -64,6 +63,7 @@ async def widget_chat(request: Request, widget_key: str, body: ChatRequest):
 
     bot_id = bot_result.data["id"]
     workspace_id = bot_result.data.get("workspace_id")
+    is_strict = bot_result.data.get("strict_knowledge", True)
 
     # Check for owner's BYOK Groq key
     user_groq_key = _get_owner_groq_key(bot_id)
@@ -89,7 +89,8 @@ async def widget_chat(request: Request, widget_key: str, body: ChatRequest):
         # 4. Generate answer (with user's key if available)
         answer, source_type = generate_answer(
             standalone_question, chunk_texts, history,
-            user_groq_api_key=user_groq_key
+            user_groq_api_key=user_groq_key,
+            strict_knowledge=is_strict
         )
 
         source_list = [
@@ -133,7 +134,7 @@ async def widget_chat_by_bot_id(request: Request, bot_id: str, body: ChatRequest
 
     bot_result = (
         supabase.table("bots")
-        .select("id, workspace_id")
+        .select("id, workspace_id, strict_knowledge")
         .eq("id", bot_id)
         .single()
         .execute()
@@ -142,6 +143,7 @@ async def widget_chat_by_bot_id(request: Request, bot_id: str, body: ChatRequest
         raise HTTPException(status_code=404, detail="Invalid bot ID.")
 
     workspace_id = bot_result.data.get("workspace_id")
+    is_strict = bot_result.data.get("strict_knowledge", True)
 
     # Check for owner's BYOK Groq key
     user_groq_key = _get_owner_groq_key(bot_id)
@@ -162,7 +164,8 @@ async def widget_chat_by_bot_id(request: Request, bot_id: str, body: ChatRequest
 
         answer, source_type = generate_answer(
             standalone_question, chunk_texts, history,
-            user_groq_api_key=user_groq_key
+            user_groq_api_key=user_groq_key,
+            strict_knowledge=is_strict
         )
 
         source_list = [

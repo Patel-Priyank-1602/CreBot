@@ -5,12 +5,13 @@ from services.knowledge_service import (
     list_files,
     get_file as get_file_service,
     upload_file,
+    upload_text as upload_text_service,
     delete_file,
     reprocess_file,
     export_knowledge,
     _validate_bot_ownership,
 )
-from models.schemas import KnowledgeFileResponse, UploadResponse
+from models.schemas import KnowledgeFileResponse, UploadResponse, TextUploadRequest
 from fastapi.responses import FileResponse
 from pathlib import Path
 
@@ -54,6 +55,27 @@ async def upload_knowledge_file(
             "File uploaded successfully."
             if result.get("status") in ("embedded", "pending")
             else "File uploaded but processing failed."
+        ),
+    )
+
+
+@router.post("/upload-text", response_model=UploadResponse)
+async def upload_knowledge_text(request: Request, body: TextUploadRequest):
+    user_id = request.state.clerk_user_id
+    ws_id = request.state.workspace_id
+    _validate_bot_ownership(body.chatbot_id, user_id, ws_id)
+    result = upload_text_service(body.title, body.content, user_id, body.chatbot_id)
+    return UploadResponse(
+        success=True,
+        file_id=result["id"],
+        file_name=result.get("original_name", ""),
+        file_type=result.get("file_type", "").lower(),
+        file_size=result.get("file_size", 0),
+        status=result.get("status", "pending"),
+        message=(
+            "Text uploaded successfully."
+            if result.get("status") in ("embedded", "pending")
+            else "Text uploaded but processing failed."
         ),
     )
 

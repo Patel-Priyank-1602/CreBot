@@ -134,6 +134,7 @@ def generate_answer(
     context_chunks: list[str],
     chat_history: list[dict] | None = None,
     user_groq_api_key: str | None = None,
+    strict_knowledge: bool = True,
 ) -> tuple[str, str]:
     """
     Send the question + retrieved context + chat history to Groq and
@@ -145,8 +146,42 @@ def generate_answer(
 
     context = "\n\n---\n\n".join(context_chunks) if context_chunks else ""
 
+    # Adjust system prompt based on strict_knowledge flag
+    if strict_knowledge:
+        sys_prompt = """You are an advanced, highly intelligent AI assistant.
+Your primary goal is to provide direct, comprehensive, and accurate answers.
+
+================================================================
+KNOWLEDGE SOURCES
+================================================================
+1. Provided Context: This is retrieved from a knowledge base. You MUST ONLY use this context to answer the question.
+
+================================================================
+CORE DIRECTIVES
+================================================================
+- DIRECT ANSWERS ONLY: Never use conversational filler like "Based on the provided context...".
+- NO FALSE KNOWLEDGE: If the answer cannot be found in the provided context, you MUST state that you do not know. DO NOT use your internal general knowledge to answer.
+- BE CONCISE BUT COMPLETE: Do not ramble. Give the exact information requested."""
+    else:
+        sys_prompt = """You are an advanced, highly intelligent AI assistant.
+Your primary goal is to provide direct, comprehensive, and accurate answers.
+
+================================================================
+KNOWLEDGE SOURCES
+================================================================
+1. Provided Context: This is retrieved from a knowledge base and should be prioritized if it contains the answer.
+2. Internal Knowledge: If the provided context is irrelevant, incomplete, or missing, you MUST instantly seamlessly fallback to your own vast internal knowledge base. 
+
+================================================================
+CORE DIRECTIVES
+================================================================
+- DIRECT ANSWERS ONLY: Never use conversational filler like "Based on the provided context...".
+- NO APOLOGIES FOR MISSING DATA: If the context lacks the answer, DO NOT apologize. Just answer using internal knowledge.
+- NO FALSE REFUSALS: If a user asks a factual question, answer it. You are a powerful AI; do not feign ignorance.
+- BE CONCISE BUT COMPLETE: Do not ramble. Give the exact information requested."""
+
     # Build the message list
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    messages = [{"role": "system", "content": sys_prompt}]
 
     # Add chat history (last 8 messages max to stay within token limits)
     if chat_history:
@@ -157,18 +192,31 @@ def generate_answer(
 
     # Build the user message with context
     if context:
-        user_message = f"""Here is some reference information that MAY be relevant:
+        if strict_knowledge:
+            user_message = f"""Here is the reference information you must use:
+{context}
+
+Question: {question}
+
+Answer the question STRICTLY using the reference information above. If the information does not answer the question, state that you do not have enough information."""
+        else:
+            user_message = f"""Here is some reference information that MAY be relevant:
 {context}
 
 Question: {question}
 
 Answer the question. If the reference information above answers it, use that.
 If the reference information is NOT relevant to this specific question, ignore it
-completely and answer using your own knowledge. Do NOT say you cannot find the answer."""
+completely and answer using your own vast internal knowledge. Do NOT say you cannot find the answer."""
     else:
-        user_message = f"""Question: {question}
+        if strict_knowledge:
+            user_message = f"""Question: {question}
 
-Answer this question using your knowledge. Be helpful and accurate."""
+No reference information was provided. State that you do not have enough information to answer."""
+        else:
+            user_message = f"""Question: {question}
+
+Answer this question using your own general knowledge. Be helpful and accurate."""
 
     messages.append({"role": "user", "content": user_message})
 

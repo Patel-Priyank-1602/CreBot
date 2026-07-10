@@ -1,5 +1,9 @@
 import uuid
 import time
+import re
+import csv
+import io
+import json
 from pathlib import Path
 from typing import Optional
 from fastapi import UploadFile, HTTPException
@@ -14,7 +18,8 @@ ALLOWED_TYPES = {
     ".csv": "text/csv",
     ".json": "application/json",
 }
-MAX_FILE_SIZE = 50 * 1024 * 1024
+MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
+MAX_TEXT_LENGTH = 10 * 1024 * 1024  # 10 MB equivalent for pasted text
 MISSING_TABLE_MSG = "Database table knowledge_files is missing. Please run schema_new_tables.sql in Supabase SQL Editor."
 
 
@@ -62,14 +67,92 @@ def _extract_text_fallback(file_path: Path) -> str:
         return ""
 
 
+def _strip_markdown(text: str) -> str:
+    """Strip markdown syntax while preserving section boundaries."""
+    # Preserve heading text but mark boundaries
+    text = re.sub(r'^#{1,6}\s+(.+)$', r'\n\1\n', text, flags=re.MULTILINE)
+    # Remove bold/italic markers
+    text = re.sub(r'\*{1,3}(.+?)\*{1,3}', r'\1', text)
+    text = re.sub(r'_{1,3}(.+?)_{1,3}', r'\1', text)
+    # Convert links [text](url) -> text
+    text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)
+    # Remove images ![alt](url)
+    text = re.sub(r'!\[([^\]]*)\]\([^)]+\)', r'\1', text)
+    # Remove inline code backticks
+    text = re.sub(r'`([^`]+)`', r'\1', text)
+    # Remove code block fences
+    text = re.sub(r'^```[\s\S]*?```', '', text, flags=re.MULTILINE)
+    # Remove blockquote markers
+    text = re.sub(r'^>\s?', '', text, flags=re.MULTILINE)
+    # Remove horizontal rules
+    text = re.sub(r'^[-*_]{3,}\s*$', '\n', text, flags=re.MULTILINE)
+    # Remove list markers but keep text
+    text = re.sub(r'^\s*[-*+]\s+', '', text, flags=re.MULTILINE)
+    text = re.sub(r'^\s*\d+\.\s+', '', text, flags=re.MULTILINE)
+    # Clean up excessive newlines
+    text = re.sub(r'\n{3,}', '\n\n', text)
+    return text.strip()
+
+
+def _extract_csv(file_path: Path) -> str:
+    """Parse CSV into readable text rows."""
+    try:
+        raw = file_path.read_text(encoding="utf-8", errors="replace")
+        reader = csv.reader(io.StringIO(raw))
+        rows = list(reader)
+        if not rows:
+            return ""
+        headers = rows[0] if rows else []
+        lines = []
+        for row in rows[1:]:
+            parts = [f"{headers[i]}: {val}" if i < len(headers) else val for i, val in enumerate(row) if val.strip()]
+            if parts:
+                lines.append("; ".join(parts))
+        return "\n".join(lines).strip()
+    except Exception:
+        return file_path.read_text(encoding="utf-8", errors="replace").strip()
+
+
+def _extract_json(file_path: Path) -> str:
+    """Extract readable text values from JSON."""
+    try:
+        raw = file_path.read_text(encoding="utf-8", errors="replace")
+        data = json.loads(raw)
+
+        def _collect_strings(obj, depth=0):
+            parts = []
+            if isinstance(obj, str):
+                if obj.strip():
+                    parts.append(obj.strip())
+            elif isinstance(obj, dict):
+                for k, v in obj.items():
+                    nested = _collect_strings(v, depth + 1)
+                    if nested:
+                        parts.append(f"{k}: {nested}")
+            elif isinstance(obj, list):
+                for item in obj:
+                    nested = _collect_strings(item, depth + 1)
+                    if nested:
+                        parts.append(nested)
+            return "\n".join(parts) if depth == 0 else "; ".join(parts)
+
+        return _collect_strings(data)
+    except Exception:
+        return file_path.read_text(encoding="utf-8", errors="replace").strip()
+
+
 def _extract_text(file_path: Path, ext: str) -> str:
     if ext == ".pdf":
         try:
             import fitz
             doc = fitz.open(str(file_path))
-            text = "\n".join(page.get_text() for page in doc)
+            pages = []
+            for i, page in enumerate(doc):
+                page_text = page.get_text().strip()
+                if page_text:
+                    pages.append(f"\n\n--- Page {i + 1} ---\n\n{page_text}")
             doc.close()
-            return text.strip()
+            return "\n".join(pages).strip()
         except ImportError:
             text = _extract_text_fallback(file_path)
             if text:
@@ -81,8 +164,26 @@ def _extract_text(file_path: Path, ext: str) -> str:
         try:
             import docx
             doc = docx.Document(str(file_path))
-            text = "\n".join(p.text for p in doc.paragraphs)
-            return text.strip()
+            parts = []
+            for para in doc.paragraphs:
+                if para.text.strip():
+                    # Preserve heading structure
+                    if para.style and para.style.name and para.style.name.startswith('Heading'):
+                        parts.append(f"\n{para.text.strip()}\n")
+                    else:
+                        parts.append(para.text.strip())
+            # Extract tables
+            for table in doc.tables:
+                headers = [cell.text.strip() for cell in table.rows[0].cells] if table.rows else []
+                for row in table.rows[1:]:
+                    cells = [cell.text.strip() for cell in row.cells]
+                    row_parts = [
+                        f"{headers[i]}: {val}" if i < len(headers) and headers[i] else val
+                        for i, val in enumerate(cells) if val
+                    ]
+                    if row_parts:
+                        parts.append("; ".join(row_parts))
+            return "\n".join(parts).strip()
         except ImportError:
             text = _extract_text_fallback(file_path)
             if text:
@@ -90,6 +191,22 @@ def _extract_text(file_path: Path, ext: str) -> str:
             raise HTTPException(status_code=400, detail="No readable text found in this DOCX. Install python-docx (pip install python-docx) for better DOCX support.")
         except Exception as e:
             raise HTTPException(status_code=400, detail=f"Failed to extract text from DOCX: {e}")
+    elif ext == ".md":
+        try:
+            raw = file_path.read_text(encoding="utf-8", errors="replace").strip()
+            return _strip_markdown(raw)
+        except Exception as e:
+            raise HTTPException(status_code=400, detail=f"Failed to read markdown file: {e}")
+    elif ext == ".csv":
+        text = _extract_csv(file_path)
+        if not text:
+            raise HTTPException(status_code=400, detail="CSV file is empty or could not be parsed.")
+        return text
+    elif ext == ".json":
+        text = _extract_json(file_path)
+        if not text:
+            raise HTTPException(status_code=400, detail="JSON file is empty or could not be parsed.")
+        return text
     else:
         try:
             return file_path.read_text(encoding="utf-8", errors="replace").strip()
@@ -171,7 +288,7 @@ async def upload_file(file: UploadFile, user_id: str, uploaded_by: str, bot_id: 
 
     content = await file.read()
     if len(content) > MAX_FILE_SIZE:
-        raise HTTPException(status_code=400, detail="File exceeds 50 MB limit")
+        raise HTTPException(status_code=400, detail="File exceeds 10 MB limit")
 
     file_id = str(uuid.uuid4())
     safe_name = f"{file_id}{ext}"
@@ -298,3 +415,72 @@ def export_knowledge(user_id: str, bot_id: str):
             "content": content[:10000],
         })
     return {"files": export_data, "total": len(export_data)}
+
+
+def upload_text(title: str, content: str, user_id: str, bot_id: str):
+    """Upload pasted text directly as knowledge."""
+    if not bot_id:
+        raise HTTPException(status_code=400, detail="bot_id is required")
+    if not content or not content.strip():
+        raise HTTPException(status_code=400, detail="Content cannot be empty")
+    if len(content) > MAX_TEXT_LENGTH:
+        raise HTTPException(status_code=400, detail="Text exceeds 10 MB limit")
+
+    # Sanitize title
+    safe_title = re.sub(r'[^\w\s\-.]', '', title.strip())[:100] or "Pasted Text"
+    if not safe_title.endswith('.txt'):
+        safe_title += '.txt'
+
+    file_id = str(uuid.uuid4())
+    file_path = UPLOAD_DIR / f"{file_id}.txt"
+    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
+    content_bytes = content.encode("utf-8")
+    with open(file_path, "wb") as f:
+        f.write(content_bytes)
+
+    row = {
+        "id": file_id,
+        "bot_id": bot_id,
+        "user_id": user_id,
+        "file_name": f"{file_id}.txt",
+        "original_name": safe_title,
+        "file_type": "TXT",
+        "file_size": len(content_bytes),
+        "storage_path": str(file_path),
+        "status": "pending",
+    }
+
+    try:
+        result = supabase.table("knowledge_files").insert(row).execute()
+        record = result.data[0]
+    except Exception as e:
+        if file_path.exists():
+            file_path.unlink()
+        if _is_missing_table_error(e):
+            raise HTTPException(status_code=500, detail=MISSING_TABLE_MSG)
+        raise HTTPException(status_code=500, detail="Upload failed: " + str(e))
+
+    _set_status(file_id, "processing")
+    try:
+        # Remove null bytes
+        clean_text = content.replace("\x00", "").replace("\u0000", "").strip()
+        if not clean_text:
+            _set_status(file_id, "failed", "No text content found.")
+            return record
+
+        _process_file_text(file_id, bot_id, clean_text)
+    except HTTPException:
+        _set_status(file_id, "failed", "Processing failed")
+        raise
+    except Exception as e:
+        _set_status(file_id, "failed", str(e))
+        raise HTTPException(status_code=500, detail=f"Processing failed: {str(e)}")
+
+    try:
+        result = supabase.table("knowledge_files").select("*").eq("id", file_id).execute()
+        if result.data:
+            record = result.data[0]
+    except Exception:
+        pass
+    return record

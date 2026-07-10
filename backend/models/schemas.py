@@ -25,6 +25,7 @@ class BotResponse(BaseModel):
     welcome_message: str = 'Hi! How can I help you today?'
     theme: str = 'dark'
     position: str = 'bottom-right'
+    strict_knowledge: bool = True
     updated_at: str = ''
     access: str = ''
 
@@ -128,6 +129,7 @@ class UpdateBotRequest(BaseModel):
     welcome_message: Optional[str] = None
     theme: Optional[str] = None
     position: Optional[str] = None
+    strict_knowledge: Optional[bool] = None
 
 
 class DistributionItem(BaseModel):
@@ -181,6 +183,12 @@ class UploadResponse(BaseModel):
     file_size: int
     status: str = "pending"
     message: str = ""
+
+
+class TextUploadRequest(BaseModel):
+    title: str = Field(..., min_length=1, max_length=200)
+    content: str = Field(..., min_length=1)
+    chatbot_id: str = Field(..., min_length=1)
 
 
 class ChatLogResponse(BaseModel):
