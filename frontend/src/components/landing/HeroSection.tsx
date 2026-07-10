@@ -30,13 +30,27 @@ const AnimatedMockChat = () => {
     return () => { isMounted = false; };
   }, []);
 
+  const handleMockClick = () => {
+    // Try to find and click the real chatbot widget button injected by the script
+    const widgetBtn = document.getElementById('crebot-widget-btn') || 
+                      document.querySelector('button[aria-label="Open Chat"]') ||
+                      document.querySelector('.crebot-widget-button');
+    if (widgetBtn) {
+      (widgetBtn as HTMLElement).click();
+    }
+  };
+
   return (
-    <div className="relative w-full max-w-lg mx-auto lg:ml-auto">
+    <div 
+      className="relative w-full max-w-lg mx-auto lg:ml-auto cursor-pointer group"
+      onClick={handleMockClick}
+      title="Click to open the real CreBot!"
+    >
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="w-full bg-[var(--bg-card)] border border-[var(--border-default)] shadow-2xl relative overflow-hidden"
+        className="w-full bg-[var(--bg-card)] border border-[var(--border-default)] shadow-2xl relative overflow-hidden group-hover:border-[var(--btn-bg)] transition-colors duration-300"
       >
         {/* Chat Header */}
         <div className="flex items-center gap-3 px-5 py-4 border-b border-[var(--border-soft)] bg-black/40">

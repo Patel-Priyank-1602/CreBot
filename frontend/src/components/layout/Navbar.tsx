@@ -50,7 +50,15 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+  const [scrolled, setScrolled] = useState(false);
   const isLanding = location.pathname === '/';
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   useEffect(() => {
     if (!isLanding) return;
@@ -85,28 +93,84 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 h-[90px] border-b border-[#222]"
-      style={{ background: '#000000' }}
-      aria-label="Main navigation">
-      <div className="w-full max-w-[1600px] mx-auto px-4 lg:px-8 h-full flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2.5 z-50">
-          <img src="/favtag.png" alt="CreBot Logo" className="h-10 lg:h-12 w-auto object-contain" width={160} height={48} />
+    <nav
+      className="fixed left-0 right-0 z-50"
+      style={{
+        top: scrolled ? 12 : 0,
+        height: scrolled ? 56 : 90,
+        maxWidth: scrolled ? 900 : '100%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        borderRadius: scrolled ? 9999 : 0,
+        borderStyle: 'solid',
+        borderWidth: scrolled ? '1.2px' : '0px',
+        borderColor: 'rgba(232, 103, 42, 0.35)',
+        background: scrolled
+          ? 'linear-gradient(to bottom, rgba(10, 10, 10, 0.85) 0%, rgba(10, 10, 10, 0.85) 100%)'
+          : 'linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.7) 50%, rgba(0, 0, 0, 0) 100%)',
+        boxShadow: scrolled ? '0 8px 32px rgba(0,0,0,0.6)' : 'none',
+        backdropFilter: scrolled ? 'blur(20px) saturate(1.5)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(1.5)' : 'none',
+        transition: 'all 700ms cubic-bezier(0.4, 0, 0.2, 1)',
+      }}
+      aria-label="Main navigation"
+    >
+      <div
+        className="h-full flex items-center justify-between mx-auto relative"
+        style={{
+          maxWidth: scrolled ? 880 : 1600,
+          paddingLeft: scrolled ? 20 : undefined,
+          paddingRight: scrolled ? 20 : undefined,
+          transition: 'all 700ms cubic-bezier(0.4, 0, 0.2, 1)',
+        }}
+      >
+        <Link to="/" className="flex items-center gap-2.5 z-50 px-4 lg:px-8">
+          <img
+            src="/crebott.png"
+            alt="CreBot Logo"
+            className="w-auto object-contain"
+            style={{
+              height: scrolled ? 28 : 48,
+              transition: 'all 700ms cubic-bezier(0.4, 0, 0.2, 1)',
+            }}
+            width={160}
+            height={48}
+          />
         </Link>
 
         {/* Desktop Navigation (> 1024px) */}
-        <div className="hidden lg:flex items-center gap-2">
+        <div className="hidden lg:flex items-center gap-2 absolute left-1/2 -translate-x-1/2">
           {navGroups.map((group) => (
-            <div key={group.title} className="relative group px-2 py-6">
+            <div
+              key={group.title}
+              className="relative group px-1 lg:px-2"
+              style={{
+                paddingTop: scrolled ? 16 : 24,
+                paddingBottom: scrolled ? 16 : 24,
+                transition: 'all 700ms cubic-bezier(0.4, 0, 0.2, 1)',
+              }}
+            >
               <button
-                className="flex items-center gap-1.5 px-3 py-2 text-[15px] font-medium text-[#a9a9a6] hover:text-white transition-colors"
+                className="flex items-center gap-1.5 font-medium text-[#a9a9a6] hover:text-white whitespace-nowrap"
+                style={{
+                  fontSize: scrolled ? 13 : 15,
+                  paddingLeft: scrolled ? 8 : 12,
+                  paddingRight: scrolled ? 8 : 12,
+                  paddingTop: scrolled ? 4 : 8,
+                  paddingBottom: scrolled ? 4 : 8,
+                  transition: 'all 700ms cubic-bezier(0.4, 0, 0.2, 1)',
+                }}
                 aria-haspopup="true"
                 aria-expanded="false"
               >
                 {group.title}
-                <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-300" />
+                <ChevronDown size={scrolled ? 12 : 14} className="group-hover:rotate-180 transition-transform duration-300" />
               </button>
-              
-              <div className="absolute top-[80px] left-1/2 -translate-x-1/2 mt-0 w-56 bg-black border border-[#222] rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 translate-y-2 group-hover:translate-y-0 p-2 flex flex-col gap-1 before:absolute before:inset-x-0 before:-top-6 before:h-6 before:bg-transparent">
+
+              <div
+                className="absolute left-1/2 -translate-x-1/2 mt-0 w-56 bg-black border border-[#222] rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 translate-y-2 group-hover:translate-y-0 p-2 flex flex-col gap-1 before:absolute before:inset-x-0 before:-top-6 before:h-6 before:bg-transparent"
+                style={{ top: scrolled ? 48 : 80, transition: 'top 700ms cubic-bezier(0.4, 0, 0.2, 1)' }}
+              >
                 {group.links.map((link) => {
                   const isActive = link.href.includes('#')
                     ? activeSection === link.href.replace('/#', '')
@@ -142,11 +206,19 @@ export default function Navbar() {
                 key={link.label}
                 to={link.href}
                 className={cn(
-                  'relative px-4 py-2 text-[15px] rounded-lg transition-colors',
+                  'relative rounded-lg',
                   isActive
                     ? 'text-white font-medium'
                     : 'text-[#a9a9a6] hover:text-white'
                 )}
+                style={{
+                  fontSize: scrolled ? 13 : 15,
+                  paddingLeft: scrolled ? 12 : 16,
+                  paddingRight: scrolled ? 12 : 16,
+                  paddingTop: scrolled ? 6 : 8,
+                  paddingBottom: scrolled ? 6 : 8,
+                  transition: 'all 700ms cubic-bezier(0.4, 0, 0.2, 1)',
+                }}
               >
                 {link.label}
               </Link>
@@ -155,21 +227,33 @@ export default function Navbar() {
         </div>
 
         {/* Desktop CTA */}
-        <div className="hidden lg:flex items-center gap-4">
+        <div className="hidden lg:flex items-center gap-4 pr-4 lg:pr-8">
           {isSignedIn ? (
-            <Link to="/dashboard">
+            <Link
+              to="/dashboard"
+              style={{
+                transform: scrolled ? 'scale(0.9)' : 'scale(1)',
+                transformOrigin: 'right center',
+                transition: 'transform 700ms cubic-bezier(0.4, 0, 0.2, 1)',
+              }}
+            >
               <Button variant="primary">Dashboard</Button>
             </Link>
           ) : (
             <>
               <SignInButton mode="modal">
-                <button className="px-4 py-2.5 text-[15px] font-medium text-[#a9a9a6] hover:text-white transition-colors">
-                  Login
-                </button>
-              </SignInButton>
-              <SignInButton mode="modal">
-                <button className="bg-[#e8672a] hover:bg-[#ff7533] text-black font-bold px-6 py-2.5 rounded-lg transition-colors text-[15px]">
-                  Get Started
+                <button
+                  className="bg-[#e8672a] hover:bg-[#ff7533] text-white font-bold rounded-lg"
+                  style={{
+                    fontSize: scrolled ? 13 : 15,
+                    paddingLeft: scrolled ? 16 : 24,
+                    paddingRight: scrolled ? 16 : 24,
+                    paddingTop: scrolled ? 6 : 10,
+                    paddingBottom: scrolled ? 6 : 10,
+                    transition: 'all 700ms cubic-bezier(0.4, 0, 0.2, 1)',
+                  }}
+                >
+                  Create Bot
                 </button>
               </SignInButton>
             </>
@@ -194,12 +278,17 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="absolute top-[90px] left-0 right-0 border-b border-[#222] bg-black shadow-2xl lg:hidden flex flex-col max-h-[calc(100vh-90px)] overflow-y-auto"
+            className={cn(
+              'absolute left-0 right-0 border-b border-[#222] bg-black shadow-2xl lg:hidden flex flex-col overflow-y-auto',
+              scrolled
+                ? 'top-[56px] rounded-b-2xl max-h-[calc(100vh-56px)]'
+                : 'top-[90px] max-h-[calc(100vh-90px)]'
+            )}
           >
             <div className="px-6 py-4 flex flex-col">
               {navGroups.map((group) => (
                 <div key={group.title} className="border-b border-[#222]/50 last:border-0 py-2">
-                  <button 
+                  <button
                     onClick={() => setOpenAccordion(openAccordion === group.title ? null : group.title)}
                     className="w-full flex items-center justify-between py-3 text-left text-[17px] font-medium text-[#a9a9a6] hover:text-white"
                   >
@@ -271,13 +360,8 @@ export default function Navbar() {
                 ) : (
                   <>
                     <SignInButton mode="modal">
-                      <button className="w-full sm:flex-1 px-6 py-3.5 text-[16px] font-medium text-[#a9a9a6] border border-[#222] rounded-xl hover:text-white hover:bg-[#1a1a1a] transition-colors">
-                        Login
-                      </button>
-                    </SignInButton>
-                    <SignInButton mode="modal">
-                      <button className="w-full sm:flex-1 bg-[#e8672a] hover:bg-[#ff7533] text-black font-bold px-6 py-3.5 rounded-xl transition-colors text-[16px]">
-                        Get Started
+                      <button className="w-full bg-[#e8672a] hover:bg-[#ff7533] text-black font-bold px-6 py-3.5 rounded-xl transition-colors text-[16px]">
+                        Create Bot
                       </button>
                     </SignInButton>
                   </>

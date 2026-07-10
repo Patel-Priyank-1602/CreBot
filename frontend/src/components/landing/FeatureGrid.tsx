@@ -131,7 +131,7 @@ export default function FeatureGrid() {
               viewport={{ once: true }}
               className="font-display text-3xl sm:text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-white"
             >
-              EVERYTHING YOU NEED.
+              EVERYTHING YOU NEED.<br/>
               <span className="text-stroke">NOTHING YOU</span> <span className="text-[var(--btn-bg)]">DON'T.</span>
             </motion.h2>
           </div>

@@ -32,10 +32,6 @@ export default function SecuritySection() {
               <span className="text-[var(--btn-bg)]">ACCESS.</span>
             </h2>
 
-            <p className="text-[var(--text-secondary)] text-lg leading-relaxed font-sans mb-12 max-w-xl">
-              Engineered for teams. Distribute bots across departments while strictly controlling who dictates the system parameters.
-            </p>
-
             <div className="space-y-10 pt-8 border-t border-[var(--border-soft)]">
               {points.map((point) => (
                 <div key={point.title} className="flex gap-6 group">

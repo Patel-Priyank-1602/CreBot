@@ -100,9 +100,6 @@ export default function WhyChooseSection() {
             <motion.span variants={itemVariants}>Why Choose</motion.span>
             <motion.span variants={itemVariants} className="text-[var(--btn-bg)]">CreBot?</motion.span>
           </h2>
-          <motion.p variants={fadeUpVariants} className="mt-5 max-w-2xl text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed font-sans">
-            Fast, intelligent, and secure AI conversations designed for developers, students, creators, and professionals.
-          </motion.p>
         </motion.div>
 
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 mb-14 lg:mb-16">

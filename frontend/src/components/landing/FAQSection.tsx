@@ -54,14 +54,6 @@ export default function FAQSection() {
               <span className="text-stroke">ASKED</span><br />
               <span className="text-[var(--btn-bg)]">QUESTIONS.</span>
             </motion.h2>
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              className="text-lg text-[var(--text-secondary)] leading-relaxed font-sans mt-8"
-            >
-              Everything you need to know about the product, deployment, and security protocols.
-            </motion.p>
           </div>
 
           <div className="lg:col-span-7">
