@@ -1,15 +1,15 @@
-from fastapi import APIRouter, HTTPException, Request, Depends
+from fastapi import APIRouter, Depends, HTTPException, Request
+
 from middlewares.auth import workspace_middleware
 from models.schemas import DashboardChatRequest, DashboardChatResponse
-from utils.supabase_client import supabase
-from services.retrieval import retrieve_relevant_chunks
 from services.groq_service import (
     generate_answer,
-    generate_fallback_answer,
     reformulate_question,
 )
-from services.settings_service import get_raw_groq_api_key
 from services.rate_limiter import check_bot_rate_limit
+from services.retrieval import retrieve_relevant_chunks
+from services.settings_service import get_raw_groq_api_key
+from utils.supabase_client import supabase
 
 router = APIRouter(dependencies=[Depends(workspace_middleware)])
 

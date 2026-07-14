@@ -5,6 +5,7 @@ No PyTorch, no API calls, no internet needed after first model download.
 """
 
 from __future__ import annotations
+
 # pyrefly: ignore [missing-import]
 from fastembed import TextEmbedding
 

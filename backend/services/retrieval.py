@@ -4,9 +4,10 @@ Searches Supabase/pgvector for the most relevant FAQ chunks.
 """
 
 from __future__ import annotations
-from utils.supabase_client import supabase
-from services.embedding import embed_text
+
 from config import settings
+from services.embedding import embed_text
+from utils.supabase_client import supabase
 
 
 def retrieve_relevant_chunks(

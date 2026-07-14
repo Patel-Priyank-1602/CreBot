@@ -1,6 +1,11 @@
-from fastapi import APIRouter, Request, Depends
+from fastapi import APIRouter, Depends, Request
+
 from middlewares.auth import workspace_middleware
-from services.embed_service import get_embed_settings, update_embed_settings, get_embed_script
+from services.embed_service import (
+    get_embed_script,
+    get_embed_settings,
+    update_embed_settings,
+)
 
 router = APIRouter(dependencies=[Depends(workspace_middleware)])
 

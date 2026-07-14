@@ -1,19 +1,19 @@
-from fastapi import APIRouter, Request, Depends
+from fastapi import APIRouter, Depends, HTTPException, Request
+
 from middlewares.auth import workspace_middleware
-from services.settings_service import (
-    get_workspace_settings,
-    update_workspace_settings,
-    list_api_keys,
-    create_api_key,
-    revoke_api_key,
-    export_workspace_data,
-    save_groq_api_key,
-    get_groq_api_key,
-    delete_groq_api_key,
-)
+from models.schemas import GroqKeyRequest, UpdateWorkspaceRequest
 from services.groq_service import validate_groq_api_key
-from models.schemas import UpdateWorkspaceRequest, GroqKeyRequest
-from fastapi import HTTPException
+from services.settings_service import (
+    create_api_key,
+    delete_groq_api_key,
+    export_workspace_data,
+    get_groq_api_key,
+    get_workspace_settings,
+    list_api_keys,
+    revoke_api_key,
+    save_groq_api_key,
+    update_workspace_settings,
+)
 
 router = APIRouter(dependencies=[Depends(workspace_middleware)])
 

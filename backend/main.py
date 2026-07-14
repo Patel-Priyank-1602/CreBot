@@ -1,27 +1,26 @@
+import os
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-import os
 from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
 
-from config import settings
-from routes.bots import router as bots_router
-from routes.widget import router as widget_router
-from routes.invites import router as invites_router
-from routes.dashboard import router as dashboard_router
-from routes.knowledge import router as knowledge_router
-from routes.chatlogs import router as chatlogs_router
-from routes.embed import router as embed_router
-from routes.billing import router as billing_router
-from routes.settings import router as settings_router
 from routes.admin import router as admin_router
+from routes.billing import router as billing_router
+from routes.bots import router as bots_router
 from routes.chat import router as chat_router
+from routes.chatlogs import router as chatlogs_router
+from routes.dashboard import router as dashboard_router
+from routes.embed import router as embed_router
+from routes.invites import router as invites_router
+from routes.knowledge import router as knowledge_router
+from routes.settings import router as settings_router
+from routes.widget import router as widget_router
 
 limiter = Limiter(key_func=get_remote_address)
-
-from contextlib import asynccontextmanager
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

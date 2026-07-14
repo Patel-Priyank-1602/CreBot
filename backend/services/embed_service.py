@@ -1,10 +1,10 @@
 from datetime import datetime, timezone
-from utils.supabase_client import supabase
+
 from config import settings
-from fastapi import HTTPException
-
-
 from routes.bots import _get_bot_for_user
+from utils.supabase_client import supabase
+
+
 def get_embed_settings(workspace_id: str, chatbot_id: str, user_id: str):
     b = _get_bot_for_user(chatbot_id, user_id, workspace_id, require_edit=True)
 

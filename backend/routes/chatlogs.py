@@ -1,12 +1,14 @@
-from fastapi import APIRouter, Request, Query, Depends
 from typing import Optional
+
+from fastapi import APIRouter, Depends, Query, Request
+
 from middlewares.auth import workspace_middleware
 from services.chatlog_service import (
-    list_logs,
-    get_log,
     delete_log,
     export_logs,
     get_chatbots_for_filter,
+    get_log,
+    list_logs,
 )
 
 router = APIRouter(dependencies=[Depends(workspace_middleware)])

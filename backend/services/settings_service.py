@@ -1,8 +1,10 @@
-import secrets
 import hashlib
+import secrets
 from datetime import datetime, timezone
-from utils.supabase_client import supabase
+
 from fastapi import HTTPException
+
+from utils.supabase_client import supabase
 
 
 def get_workspace_settings(workspace_id: str):

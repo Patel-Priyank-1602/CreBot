@@ -1,8 +1,9 @@
-import os
 from dotenv import load_dotenv
+
 load_dotenv()
-from utils.supabase_client import supabase
-import uuid
+import uuid  # noqa: E402
+
+from utils.supabase_client import supabase  # noqa: E402
 
 file_id = str(uuid.uuid4())
 row = {

@@ -1,5 +1,7 @@
 import asyncio
+
 from utils.supabase_client import supabase
+
 
 async def main():
     try:

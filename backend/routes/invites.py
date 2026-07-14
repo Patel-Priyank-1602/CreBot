@@ -5,9 +5,10 @@ to any bot_members rows that were added by email (where clerk_user_id is NULL).
 """
 
 from fastapi import APIRouter, Request
+
 from models.schemas import SyncMembersRequest
-from utils.supabase_client import supabase
 from utils.clerk_auth import get_clerk_user_id
+from utils.supabase_client import supabase
 
 router = APIRouter()
 

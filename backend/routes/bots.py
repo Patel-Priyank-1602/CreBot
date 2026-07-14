@@ -1,28 +1,30 @@
 import secrets
 import time
 from datetime import datetime, timezone
-from fastapi import APIRouter, HTTPException, Request, Depends
-from middlewares.auth import workspace_middleware, get_workspace_id
+
+from fastapi import APIRouter, Depends, HTTPException, Request
+
+from config import settings
+from middlewares.auth import get_workspace_id, workspace_middleware
 from models.schemas import (
-    CreateBotRequest,
-    UpdateBotRequest,
     AddMemberRequest,
-    BotResponse,
-    TrainBotRequest,
-    TrainBotResponse,
-    EmbedSnippetResponse,
-    QueryLogsResponse,
-    QueryLogEntry,
     BotMemberResponse,
-    JoinBotRequest,
+    BotResponse,
+    CreateBotRequest,
+    EmbedSnippetResponse,
     GenerateInviteCodeRequest,
     InviteCodeResponse,
+    JoinBotRequest,
+    QueryLogEntry,
+    QueryLogsResponse,
+    TrainBotRequest,
+    TrainBotResponse,
+    UpdateBotRequest,
 )
-from utils.supabase_client import supabase
-from utils.clerk_auth import get_clerk_user_id
 from services.chunking import chunk_faq_text
 from services.embedding import embed_texts
-from config import settings
+from utils.clerk_auth import get_clerk_user_id
+from utils.supabase_client import supabase
 
 router = APIRouter(dependencies=[Depends(workspace_middleware)])
 
@@ -539,6 +541,7 @@ async def join_bot(request: Request, body: JoinBotRequest):
     user_id = get_clerk_user_id(request)
     
     import jwt
+
     from config import settings
     
     try:
@@ -602,6 +605,7 @@ async def generate_invite_code(request: Request, body: GenerateInviteCodeRequest
     bot_data = _get_bot_for_user(body.bot_id, user_id, ws_id, require_edit=True)
     
     import jwt
+
     from config import settings
     
     code = jwt.encode(

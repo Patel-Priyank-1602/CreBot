@@ -1,4 +1,5 @@
 from typing import Optional
+
 from utils.supabase_client import supabase
 
 

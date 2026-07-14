@@ -58,7 +58,6 @@ def list_users():
     except Exception:
         return []
 
-    ws_ids = [w["id"] for w in rows]
     users = []
     for w in rows:
         bot_count = _count_in("bots", "workspace_id", [w["id"]])

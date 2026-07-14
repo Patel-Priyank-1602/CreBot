@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Request, Depends
+from fastapi import APIRouter, Depends, Request
+
 from middlewares.auth import workspace_middleware
-from services.billing_service import get_current_billing, get_plans, upgrade_plan
 from models.schemas import UpgradeRequest
+from services.billing_service import get_current_billing, get_plans, upgrade_plan
 
 router = APIRouter(dependencies=[Depends(workspace_middleware)])
 

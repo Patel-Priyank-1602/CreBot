@@ -8,9 +8,10 @@ this limiter entirely.
 Uses an in-memory sliding-window approach (no external dependencies).
 """
 
-import time
 import threading
+import time
 from collections import defaultdict
+
 from fastapi import HTTPException
 
 # ── Configuration ────────────────────────────────────────────────

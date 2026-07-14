@@ -1,7 +1,9 @@
-from fastapi import Request, HTTPException
+import hashlib
+
+from fastapi import HTTPException, Request
+
 from utils.clerk_auth import get_clerk_user_id
 from utils.supabase_client import supabase
-import hashlib
 
 
 def get_workspace_id(request: Request) -> str:

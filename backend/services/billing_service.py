@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
-from utils.supabase_client import supabase
 
+from utils.supabase_client import supabase
 
 PLANS = {
     "free": {"name": "Free", "price": 0, "chatbots": 5, "storage": 52428800, "queries": 500},

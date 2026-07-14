@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Request, Depends
+from fastapi import APIRouter, Depends, Request
+
 from middlewares.auth import workspace_middleware
-from services.dashboard_service import get_overview, get_activity, get_recent_chats
-from models.schemas import DashboardOverviewResponse, DashboardActivityResponse, ChatLogResponse
+from models.schemas import DashboardOverviewResponse
+from services.dashboard_service import get_activity, get_overview, get_recent_chats
 
 router = APIRouter(dependencies=[Depends(workspace_middleware)])
 

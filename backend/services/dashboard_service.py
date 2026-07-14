@@ -86,7 +86,6 @@ def get_overview(workspace_id: str, user_id: str = ""):
 
     if bots:
         bot_ids = [bot["id"] for bot in bots]
-        bot_name_map = {bot["id"]: bot["name"] for bot in bots}
 
         # Batch fetch: all chat logs for these bots in ONE query
         chat_counts_map = {}

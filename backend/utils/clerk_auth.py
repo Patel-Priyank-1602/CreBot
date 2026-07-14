@@ -6,8 +6,9 @@ Uses PyJWT to decode and verify the token against Clerk's JWKS.
 """
 
 import jwt
-from jwt import PyJWKClient
 from fastapi import HTTPException, Request
+from jwt import PyJWKClient
+
 from config import settings
 
 # Clerk JWKS endpoint

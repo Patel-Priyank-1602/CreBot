@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Request, Depends
-from middlewares.auth import workspace_middleware, require_admin
-from services.admin_service import get_stats, list_users, update_user_status
+from fastapi import APIRouter, Depends, Request
+
+from middlewares.auth import require_admin, workspace_middleware
 from models.schemas import UpdateUserStatusRequest
+from services.admin_service import get_stats, list_users, update_user_status
 
 router = APIRouter(dependencies=[Depends(workspace_middleware), Depends(require_admin)])
 

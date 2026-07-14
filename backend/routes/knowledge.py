@@ -1,19 +1,33 @@
-from fastapi import APIRouter, Request, UploadFile, File, Form, Depends, HTTPException, Query
-from typing import Optional
-from middlewares.auth import workspace_middleware
-from services.knowledge_service import (
-    list_files,
-    get_file as get_file_service,
-    upload_file,
-    upload_text as upload_text_service,
-    delete_file,
-    reprocess_file,
-    export_knowledge,
-    _validate_bot_ownership,
-)
-from models.schemas import KnowledgeFileResponse, UploadResponse, TextUploadRequest
-from fastapi.responses import FileResponse
 from pathlib import Path
+
+from fastapi import (
+    APIRouter,
+    Depends,
+    File,
+    Form,
+    HTTPException,
+    Query,
+    Request,
+    UploadFile,
+)
+from fastapi.responses import FileResponse
+
+from middlewares.auth import workspace_middleware
+from models.schemas import KnowledgeFileResponse, TextUploadRequest, UploadResponse
+from services.knowledge_service import (
+    _validate_bot_ownership,
+    delete_file,
+    export_knowledge,
+    list_files,
+    reprocess_file,
+    upload_file,
+)
+from services.knowledge_service import (
+    get_file as get_file_service,
+)
+from services.knowledge_service import (
+    upload_text as upload_text_service,
+)
 
 router = APIRouter(dependencies=[Depends(workspace_middleware)])
 

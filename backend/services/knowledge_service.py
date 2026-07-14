@@ -1,12 +1,14 @@
-import uuid
-import time
-import re
 import csv
 import io
 import json
+import re
+import time
+import uuid
 from pathlib import Path
 from typing import Optional
-from fastapi import UploadFile, HTTPException
+
+from fastapi import HTTPException, UploadFile
+
 from utils.supabase_client import supabase
 
 UPLOAD_DIR = Path("uploads")
@@ -239,7 +241,7 @@ def _process_file_text(file_id: str, bot_id: Optional[str], text: str):
                 try:
                     supabase.table("documents").insert(batch).execute()
                     break
-                except Exception as e:
+                except Exception:
                     if attempt == 3:
                         raise
                     time.sleep(attempt)

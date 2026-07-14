@@ -1,10 +1,13 @@
 import asyncio
+
 from utils.supabase_client import supabase
+
 
 async def main():
     try:
         bots = supabase.table('bots').select('id').limit(1).execute()
-        if not bots.data: return
+        if not bots.data:
+            return
         print("Bot ID:", bots.data[0]['id'])
         res = supabase.table('bots').update({'strict_knowledge': False}).eq('id', bots.data[0]['id']).execute()
         print('SUCCESS', res)

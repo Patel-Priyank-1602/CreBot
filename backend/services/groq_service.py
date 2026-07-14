@@ -10,7 +10,9 @@ Enhanced with:
 """
 
 from __future__ import annotations
+
 from groq import Groq
+
 from config import settings
 
 _client: Groq | None = None

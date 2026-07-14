@@ -3,7 +3,8 @@ CreBot Backend — Supabase Client
 Initializes the Supabase client for use across the application.
 """
 
-from supabase import create_client, Client
+from supabase import Client, create_client
+
 from config import settings
 
 supabase: Client = create_client(
