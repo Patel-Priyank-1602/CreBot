@@ -31,8 +31,8 @@ export default function ChatbotDetail() {
     if (!bot) return;
 
     const actionText = checked 
-      ? "Enable 'Only Provided Data'?\n\nThe chatbot will now STRICTLY answer using only the documents you provide. It will not use general internet knowledge." 
-      : "Disable 'Only Provided Data'?\n\nThe chatbot will now use its general internet knowledge to answer questions if the provided documents do not contain the answer.";
+      ? "Set Data Source to 'Only Knowledge Base'?\n\nThe chatbot will now STRICTLY answer using only the documents you provide. It will not use general internet knowledge." 
+      : "Set Data Source to 'Knowledge Base + Internet'?\n\nThe chatbot will now use its general internet knowledge to answer questions if the provided documents do not contain the answer.";
     
     if (!window.confirm(actionText)) {
       return; // User cancelled
@@ -119,29 +119,53 @@ export default function ChatbotDetail() {
                     <h3 className="text-sm font-semibold text-[var(--text-primary)]">Knowledge Settings</h3>
                   </div>
                   
-                  <div className="flex items-center justify-between gap-4">
-                    <div>
-                      <h4 className="text-sm font-medium text-[var(--text-primary)]">Only Provided Data</h4>
-                      <p className="text-xs text-[var(--text-muted)] mt-1 max-w-md">
-                        If selected, the chatbot will strictly answer based on your provided database files only.
-                      </p>
-                      <p className="text-[11px] text-[var(--text-muted)] mt-2 max-w-md p-2 bg-[var(--bg-secondary)] rounded border border-[var(--border-soft)]">
-                        <strong className="text-[var(--text-primary)]">Note:</strong> If you do not select this, the chatbot will provide factual data because it scans its entire general knowledge (the internet) + your provided files.
-                      </p>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-sm font-medium text-[var(--text-primary)]">Data Source</h4>
+                      {updatingKnowledge && <Loader size={14} className="animate-spin text-[var(--text-muted)]" />}
                     </div>
-                    <div className="flex items-center gap-3 shrink-0">
-                    {updatingKnowledge && <Loader size={16} className="animate-spin text-[var(--text-muted)]" />}
-                    <label className={cn("relative inline-flex items-center cursor-pointer", updatingKnowledge && "opacity-50 pointer-events-none")}>
-                      <input 
-                        type="checkbox" 
-                        className="sr-only peer" 
-                        checked={bot.strict_knowledge ?? true}
-                        onChange={(e) => handleToggleStrictKnowledge(e.target.checked)}
-                        disabled={updatingKnowledge}
+                    
+                    <div className="relative flex p-1 bg-[var(--bg-input)] rounded-xl border border-[var(--border-soft)]">
+                      <div 
+                        className={cn(
+                          "absolute inset-y-1 w-[calc(50%-4px)] bg-[var(--bg-card)] border border-[var(--border-soft)] shadow-sm rounded-lg transition-all duration-300 ease-out",
+                          bot.strict_knowledge !== false ? "left-1" : "left-1/2"
+                        )}
                       />
-                      <div className="w-11 h-6 bg-[var(--bg-input)] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
-                    </label>
-                  </div>
+                      
+                      <button
+                        onClick={() => bot.strict_knowledge === false && handleToggleStrictKnowledge(true)}
+                        disabled={updatingKnowledge}
+                        className={cn(
+                          "flex-1 relative z-10 flex flex-col items-center justify-center py-2.5 px-3 rounded-lg transition-colors duration-200",
+                          bot.strict_knowledge !== false ? "text-[var(--text-primary)]" : "text-[var(--text-muted)] hover:text-[var(--text-primary)]",
+                          updatingKnowledge && "opacity-50 cursor-not-allowed"
+                        )}
+                      >
+                        <span className="text-sm font-semibold">Only Knowledge Base</span>
+                        <span className={cn("text-[10px] mt-0.5", bot.strict_knowledge !== false ? "opacity-80" : "opacity-60")}>Strictly use provided files</span>
+                      </button>
+                      
+                      <button
+                        onClick={() => bot.strict_knowledge !== false && handleToggleStrictKnowledge(false)}
+                        disabled={updatingKnowledge}
+                        className={cn(
+                          "flex-1 relative z-10 flex flex-col items-center justify-center py-2.5 px-3 rounded-lg transition-colors duration-200",
+                          bot.strict_knowledge === false ? "text-[var(--text-primary)]" : "text-[var(--text-muted)] hover:text-[var(--text-primary)]",
+                          updatingKnowledge && "opacity-50 cursor-not-allowed"
+                        )}
+                      >
+                        <span className="text-sm font-semibold">Knowledge Base + Internet</span>
+                        <span className={cn("text-[10px] mt-0.5", bot.strict_knowledge === false ? "opacity-80" : "opacity-60")}>Fallback to whole internet</span>
+                      </button>
+                    </div>
+
+                    <p className="text-[11px] text-[var(--text-muted)] p-3 bg-[var(--bg-secondary)] rounded-lg border border-[var(--border-soft)] leading-relaxed">
+                      {bot.strict_knowledge !== false 
+                        ? <><strong className="text-[var(--text-primary)]">Current Mode:</strong> The chatbot will strictly answer questions based on your Knowledge Base. It will refuse to answer if the information is not in the documents.</>
+                        : <><strong className="text-[var(--text-primary)]">Current Mode:</strong> The chatbot will first scan your Knowledge Base. If the answer is not found, it will use its general knowledge (the whole internet) to provide a response.</>
+                      }
+                    </p>
                   </div>
               </Card>
             </div>
