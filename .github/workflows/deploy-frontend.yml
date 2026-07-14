@@ -16,6 +16,9 @@ jobs:
   deploy:
     name: Build & Deploy to Netlify & Cloudflare
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
     defaults:
       run:
         working-directory: frontend
