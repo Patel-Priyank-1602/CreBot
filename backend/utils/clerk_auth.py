@@ -42,14 +42,17 @@ def get_clerk_user_id(request: Request) -> str:
     Raises HTTPException 401 if the token is missing or invalid.
     """
     auth_header = request.headers.get("Authorization", "")
+    token_param = request.query_params.get("token", "")
 
-    if not auth_header.startswith("Bearer "):
+    if auth_header.startswith("Bearer "):
+        token = auth_header[7:]
+    elif token_param:
+        token = token_param
+    else:
         raise HTTPException(
             status_code=401,
             detail="Missing or invalid Authorization header."
         )
-
-    token = auth_header[7:]  # Strip "Bearer "
 
     try:
         jwks_client = _get_jwks_client()

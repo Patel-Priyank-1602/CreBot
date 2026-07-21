@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { RefreshCw, Download, Trash2 } from 'lucide-react';
 import { formatTimeAgo, formatFileSize } from '../../lib/utils';
-import { KnowledgeFile, deleteFile, reprocessFile, getDownloadUrl } from '../../services/knowledgeService';
+import { KnowledgeFile, deleteFile, reprocessFile, downloadFile } from '../../services/knowledgeService';
 
 interface KnowledgeTableProps {
   files: KnowledgeFile[];
@@ -26,6 +26,14 @@ function KnowledgeTable({ files, onRefresh, chatbotId }: KnowledgeTableProps) {
       onRefresh();
     } catch (e: any) {
       alert(e.message);
+    }
+  };
+
+  const handleDownload = async (fileId: string, fileName: string) => {
+    try {
+      await downloadFile(fileId, fileName, chatbotId);
+    } catch (e: any) {
+      alert(e.message || 'Failed to download file');
     }
   };
 
@@ -73,10 +81,11 @@ function KnowledgeTable({ files, onRefresh, chatbotId }: KnowledgeTableProps) {
                         <RefreshCw size={14} />
                       </button>
                     )}
-                    <a href={getDownloadUrl(file.id, chatbotId)} download
-                      className="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--hover-soft)] transition-colors">
+                    <button onClick={() => handleDownload(file.id, file.original_name)}
+                      className="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--hover-soft)] transition-colors"
+                      title="Download file">
                       <Download size={14} />
-                    </a>
+                    </button>
                     <button onClick={() => handleDelete(file.id)}
                       className="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--hover-soft)] transition-colors">
                       <Trash2 size={14} />

@@ -96,6 +96,31 @@ export async function reprocessFile(fileId: string, chatbotId: string): Promise<
   await api.knowledge.reprocess(fileId, chatbotId);
 }
 
+export async function downloadFile(fileId: string, fileName: string, chatbotId: string): Promise<void> {
+  const token = await getAuthToken();
+  const url = `${API_URL}/knowledge/files/${fileId}/download?chatbot_id=${chatbotId}`;
+  const headers: Record<string, string> = {};
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  const response = await fetch(url, { headers });
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(data.detail || 'Download failed');
+  }
+
+  const blob = await response.blob();
+  const blobUrl = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = blobUrl;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(blobUrl);
+}
+
 export function getDownloadUrl(fileId: string, chatbotId: string): string {
   return api.knowledge.download(fileId, chatbotId);
 }
