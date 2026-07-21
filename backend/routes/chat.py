@@ -22,6 +22,8 @@ async def dashboard_chat(request: Request, body: DashboardChatRequest):
     from routes.bots import _get_bot_for_user
     bot_data = _get_bot_for_user(body.bot_id, user_id, ws_id)
     is_strict = bot_data.get("strict_knowledge", True)
+    bot_name = bot_data.get("name", "")
+    bot_desc = bot_data.get("description", "")
 
     history = [{"role": m.role, "content": m.content} for m in body.chat_history]
 
@@ -41,7 +43,9 @@ async def dashboard_chat(request: Request, body: DashboardChatRequest):
         answer, source_type = generate_answer(
             standalone_question, chunk_texts, history,
             user_groq_api_key=user_groq_key,
-            strict_knowledge=is_strict
+            strict_knowledge=is_strict,
+            bot_name=bot_name,
+            bot_description=bot_desc,
         )
 
         source_list = [

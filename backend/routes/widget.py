@@ -52,7 +52,7 @@ async def widget_chat(request: Request, widget_key: str, body: ChatRequest):
 
     bot_result = (
         supabase.table("bots")
-        .select("id, workspace_id, strict_knowledge")
+        .select("id, name, description, workspace_id, strict_knowledge")
         .eq("widget_key", widget_key)
         .single()
         .execute()
@@ -61,6 +61,8 @@ async def widget_chat(request: Request, widget_key: str, body: ChatRequest):
         raise HTTPException(status_code=404, detail="Invalid widget key.")
 
     bot_id = bot_result.data["id"]
+    bot_name = bot_result.data.get("name", "")
+    bot_desc = bot_result.data.get("description", "")
     workspace_id = bot_result.data.get("workspace_id")
     is_strict = bot_result.data.get("strict_knowledge", True)
 
@@ -89,7 +91,9 @@ async def widget_chat(request: Request, widget_key: str, body: ChatRequest):
         answer, source_type = generate_answer(
             standalone_question, chunk_texts, history,
             user_groq_api_key=user_groq_key,
-            strict_knowledge=is_strict
+            strict_knowledge=is_strict,
+            bot_name=bot_name,
+            bot_description=bot_desc,
         )
 
         source_list = [
@@ -133,7 +137,7 @@ async def widget_chat_by_bot_id(request: Request, bot_id: str, body: ChatRequest
 
     bot_result = (
         supabase.table("bots")
-        .select("id, workspace_id, strict_knowledge")
+        .select("id, name, description, workspace_id, strict_knowledge")
         .eq("id", bot_id)
         .single()
         .execute()
@@ -141,6 +145,8 @@ async def widget_chat_by_bot_id(request: Request, bot_id: str, body: ChatRequest
     if not bot_result.data:
         raise HTTPException(status_code=404, detail="Invalid bot ID.")
 
+    bot_name = bot_result.data.get("name", "")
+    bot_desc = bot_result.data.get("description", "")
     workspace_id = bot_result.data.get("workspace_id")
     is_strict = bot_result.data.get("strict_knowledge", True)
 
@@ -164,7 +170,9 @@ async def widget_chat_by_bot_id(request: Request, bot_id: str, body: ChatRequest
         answer, source_type = generate_answer(
             standalone_question, chunk_texts, history,
             user_groq_api_key=user_groq_key,
-            strict_knowledge=is_strict
+            strict_knowledge=is_strict,
+            bot_name=bot_name,
+            bot_description=bot_desc,
         )
 
         source_list = [
