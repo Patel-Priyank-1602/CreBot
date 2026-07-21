@@ -14,6 +14,7 @@ import BYOKSection from '../components/landing/BYOKSection';
 import UseCasesSection from '../components/landing/UseCasesSection';
 import AboutSection from '../components/landing/AboutSection';
 import ContactSection from '../components/landing/ContactSection';
+import VideoDemoSection from '../components/landing/VideoDemoSection';
 import FAQSection from '../components/landing/FAQSection';
 import ChatbotWidget from '../components/landing/ChatbotWidget';
 import LandingLoader from '../components/landing/LandingLoader';
@@ -43,6 +44,7 @@ export default function LandingPage() {
             <FAQSection />
             <AboutSection />
             <ContactSection />
+            <VideoDemoSection />
             <Footer />
             <ChatbotWidget />
           </div>

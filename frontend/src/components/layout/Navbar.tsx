@@ -34,6 +34,7 @@ const navGroups = [
     title: 'Company',
     links: [
       { label: 'About', href: '/#about' },
+      { label: 'Video', href: '/#demo-video' },
       { label: 'Contact', href: '/#contact' }
     ]
   }

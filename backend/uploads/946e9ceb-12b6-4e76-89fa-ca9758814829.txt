@@ -1,0 +1,132 @@
+# CreBot Team
+
+## Priyank Patel
+
+Contribution:
+Priyank transformed the original RAG concept into a complete SaaS platform that enables businesses to build, train, deploy, and manage AI-powered chatbots without writing code. He designed the overall system architecture, developed the backend APIs, integrated AI services, implemented authentication and security, designed the database, and deployed the production platform.
+
+Responsibilities:
+- SaaS Platform Architecture
+- AI & RAG Pipeline
+- Backend Development
+- Database Design
+- API Development
+- Authentication & Security
+- Multi-Tenant Workspace Architecture
+- Deployment & DevOps
+- Product Development
+
+Skills:
+- Python
+- FastAPI
+- React
+- TypeScript
+- Supabase
+- PostgreSQL
+- pgvector
+- Docker
+- GitHub Actions
+- AI Engineering
+- Retrieval-Augmented Generation (RAG)
+- LLM Integration
+
+GitHub:
+https://github.com/Patel-Priyank-1602
+
+
+---
+
+## Miral
+
+Contribution:
+Miral proposed the initial idea of creating a simple Retrieval-Augmented Generation (RAG) chatbot that could answer questions from uploaded documents. This idea evolved into CreBot, a complete SaaS platform offering chatbot creation, knowledge management, deployment, analytics, and workspace management for businesses.
+
+Responsibilities:
+- Product Ideation
+- AI Product Research
+- Feature Planning
+- User Experience Design
+- Product Validation
+- Documentation & Testing
+- Product Strategy
+
+Skills:
+- Product Design
+- AI Product Research
+- User Experience (UX)
+- Requirement Analysis
+- Product Management
+- Documentation
+
+---
+
+## Sujal
+
+Contribution:
+Sujal contributed to implementing platform features, backend services, frontend integration, database operations, testing, optimization, and deployment support to ensure a reliable and scalable product.
+
+Responsibilities:
+- Backend API Development
+- Database Integration
+- Frontend Feature Development
+- Performance Optimization
+- Testing & Bug Fixing
+- Deployment Support
+
+Skills:
+- Python
+- FastAPI
+- React
+- PostgreSQL
+- Supabase
+- REST APIs
+- Git
+- Docker
+
+---
+
+# Our Mission
+
+CreBot empowers businesses to create intelligent AI chatbots trained exclusively on their own knowledge base. Our philosophy, **Zero-Speculation**, ensures that every response is grounded in uploaded documents. If the required information is unavailable, the chatbot responds with **"I don't know"** instead of generating misleading or fabricated answers.
+
+---
+
+# Technology Stack
+
+## Frontend
+- React
+- TypeScript
+- Tailwind CSS
+- Vite
+
+## Backend
+- FastAPI
+- Python
+
+## Database
+- Supabase PostgreSQL
+- pgvector
+
+## Authentication
+- Clerk (JWT Authentication)
+
+## AI & Machine Learning
+- Groq LLM
+- HuggingFace Sentence Transformers
+- Retrieval-Augmented Generation (RAG)
+
+## Deployment
+- Cloudflare Pages
+- Render
+
+---
+
+# Core Team
+
+The CreBot core team consists of three members:
+
+- **Priyank Patel** 
+- **Miral** 
+- **Sujal** 
+
+Together, the team is focused on building reliable, scalable, and trustworthy AI solutions that help organizations manage and access their knowledge efficiently.
