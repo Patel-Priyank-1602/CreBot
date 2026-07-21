@@ -1,4 +1,17 @@
 import os
+
+# ── Memory optimization — MUST be set before any library imports ──────
+# Render runs this file directly (not via Docker), so these must live here.
+# Without these, ONNX Runtime / numpy / BLAS spawn threads that each eat RAM,
+# causing the 512MB Render instance to OOM and restart.
+os.environ.setdefault("OMP_NUM_THREADS", "1")
+os.environ.setdefault("MKL_NUM_THREADS", "1")
+os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
+os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
+# Tell glibc malloc to aggressively return freed memory to the OS
+os.environ.setdefault("MALLOC_TRIM_THRESHOLD_", "65536")
+os.environ.setdefault("MALLOC_MMAP_THRESHOLD_", "65536")
+
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI

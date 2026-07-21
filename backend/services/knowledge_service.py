@@ -1,4 +1,5 @@
 import csv
+import gc
 import io
 import json
 import re
@@ -234,6 +235,10 @@ def _process_file_text(file_id: str, bot_id: Optional[str], text: str):
         for chunk, emb in zip(chunks, embeddings)
     ] if bot_id else []
 
+    # Free the raw embeddings list — it can be large
+    del embeddings
+    gc.collect()
+
     if documents:
         for i in range(0, len(documents), 3):
             batch = documents[i:i + 3]
@@ -245,6 +250,10 @@ def _process_file_text(file_id: str, bot_id: Optional[str], text: str):
                     if attempt == 3:
                         raise
                     time.sleep(attempt)
+
+    # Free documents list after insert
+    del documents
+    gc.collect()
 
     supabase.table("knowledge_files").update({
         "status": "embedded",
