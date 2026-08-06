@@ -1,927 +1,1636 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<style>
-  * { box-sizing: border-box; }
-  html, body { margin:0; padding:0; }
-  body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    color: #1c2230;
-    font-size: 12.8px;
-    line-height: 1.6;
-  }
-  .sec { page-break-before: always; }
-  .toc-wrap { }
+  <meta charset="UTF-8">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-  .kicker { color: #ff7a34; font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
-  h1.section-title { font-size: 29px; font-weight: 800; color: #10152a; margin: 0 0 6px 0; }
-  .section-sub { color: #626c8c; font-size: 13px; margin-bottom: 26px; max-width: 640px; }
-  .rule { height: 3px; width: 46px; background: #ff7a34; border-radius: 2px; margin-bottom: 24px; }
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
 
-  h2.h { font-size: 16.5px; font-weight: 800; color: #131a33; margin: 28px 0 12px 0; padding-bottom: 8px; border-bottom: 2px solid #eef0f8; }
-  h3.h3 { font-size: 13.5px; font-weight: 800; color: #232b4a; margin: 20px 0 7px 0; }
-  p { margin: 0 0 11px 0; }
-  ul, ol { margin: 7px 0 15px 0; padding-left: 20px; }
-  li { margin-bottom: 6px; }
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      color: #1c2230;
+      font-size: 12.8px;
+      line-height: 1.6;
+    }
 
-  .callout { background: #fff5ee; border-left: 4px solid #ff7a34; border-radius: 6px; padding: 15px 19px; margin: 18px 0; font-size: 12.3px; color: #6b3a1a; }
-  .callout b { color: #a34d10; }
-  .callout-blue { background: #eef3ff; border-left: 4px solid #3d5aff; color: #2a3670; border-radius: 6px; padding: 15px 19px; margin: 18px 0; font-size: 12.3px; }
+    .sec {
+      page-break-before: always;
+    }
 
-  .grid2 { display: flex; flex-wrap: wrap; gap: 15px; margin: 6px 0 18px 0; }
-  .card { width: 47.5%; background: #f7f8fc; border: 1px solid #eceef7; border-radius: 10px; padding: 17px 19px; }
-  .card .num { display:inline-block; width:24px;height:24px;border-radius:6px;background:#ff7a34;color:#fff; font-size:11px;font-weight:800;text-align:center;line-height:24px;margin-bottom:9px; }
-  .card h4 { margin: 0 0 7px 0; font-size: 13.3px; font-weight:800; color:#171d38; }
-  .card p { margin:0; font-size: 11.6px; color:#57608a; }
+    .toc-wrap {}
 
-  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px 0; font-size: 11.6px; }
-  th { background: #131a33; color: #fff; text-align: left; padding: 10px 11px; font-size: 10.6px; text-transform: uppercase; letter-spacing: .5px; }
-  td { padding: 9px 11px; border-bottom: 1px solid #eceef4; vertical-align: top; }
-  tr:nth-child(even) td { background: #f8f9fd; }
-  code, .mono { font-family: 'Courier New', monospace; background: #eef0f8; color: #4029b0; padding: 1px 5px; border-radius: 4px; font-size: 11.3px; }
+    .kicker {
+      color: #ff7a34;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
 
-  .tree { background: #131a33; color: #d7e0ff; font-family: 'Courier New', monospace; font-size: 11.2px; padding: 20px 22px; border-radius: 10px; line-height: 1.75; white-space: pre; margin: 10px 0 20px 0;}
-  .tree .dir { color: #ff9a5c; font-weight: bold; }
-  .tree .cmt { color: #7c88b8; }
+    h1.section-title {
+      font-size: 29px;
+      font-weight: 800;
+      color: #10152a;
+      margin: 0 0 6px 0;
+    }
 
-  .toc-item { display:flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px dotted #dfe2ee; font-size: 13.3px; }
-  .toc-item .n { color: #ff7a34; font-weight: 800; margin-right: 10px; }
-  .toc-item .p { color: #9aa1bd; font-weight: 700; }
+    .section-sub {
+      color: #626c8c;
+      font-size: 13px;
+      margin-bottom: 26px;
+      max-width: 640px;
+    }
 
-  .flow { display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin: 16px 0 22px 0; }
-  .flow .step { background:#131a33; color:#fff; padding:11px 15px; border-radius:8px; font-size:11.6px; font-weight:700; text-align:center; }
-  .flow .arrow { color:#ff7a34; font-size:17px; font-weight:800; }
+    .rule {
+      height: 3px;
+      width: 46px;
+      background: #ff7a34;
+      border-radius: 2px;
+      margin-bottom: 24px;
+    }
 
-  .pill { display:inline-block; padding:3px 11px; border-radius:12px; font-size:10.3px; font-weight:800; letter-spacing:.4px; }
-  .pill-owner{ background:#ffe2d1; color:#a3450e; }
-  .pill-edit{ background:#e0e8ff; color:#293a99; }
-  .pill-view{ background:#e2f5e6; color:#1d6b34; }
+    h2.h {
+      font-size: 16.5px;
+      font-weight: 800;
+      color: #131a33;
+      margin: 28px 0 12px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #eef0f8;
+    }
 
-  .term { margin-bottom: 13px; }
-  .term .w { font-weight: 800; color: #131a33; font-size: 12.8px; }
-  .term .d { color: #4c5578; font-size: 11.8px; }
+    h3.h3 {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #232b4a;
+      margin: 20px 0 7px 0;
+    }
 
-  .code-block { display:block; background:#131a33; color:#d7e0ff; padding:15px 17px; border-radius:8px; white-space:pre; font-family:'Courier New',monospace; font-size:11.3px; margin: 10px 0 18px 0; line-height:1.6;}
-</style>
+    p {
+      margin: 0 0 11px 0;
+    }
+
+    ul,
+    ol {
+      margin: 7px 0 15px 0;
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    .callout {
+      background: #fff5ee;
+      border-left: 4px solid #ff7a34;
+      border-radius: 6px;
+      padding: 15px 19px;
+      margin: 18px 0;
+      font-size: 12.3px;
+      color: #6b3a1a;
+    }
+
+    .callout b {
+      color: #a34d10;
+    }
+
+    .callout-blue {
+      background: #eef3ff;
+      border-left: 4px solid #3d5aff;
+      color: #2a3670;
+      border-radius: 6px;
+      padding: 15px 19px;
+      margin: 18px 0;
+      font-size: 12.3px;
+    }
+
+    .grid2 {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin: 6px 0 18px 0;
+    }
+
+    .card {
+      width: 47.5%;
+      background: #f7f8fc;
+      border: 1px solid #eceef7;
+      border-radius: 10px;
+      padding: 17px 19px;
+    }
+
+    .card .num {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: #ff7a34;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      text-align: center;
+      line-height: 24px;
+      margin-bottom: 9px;
+    }
+
+    .card h4 {
+      margin: 0 0 7px 0;
+      font-size: 13.3px;
+      font-weight: 800;
+      color: #171d38;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 11.6px;
+      color: #57608a;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 20px 0;
+      font-size: 11.6px;
+    }
+
+    th {
+      background: #131a33;
+      color: #fff;
+      text-align: left;
+      padding: 10px 11px;
+      font-size: 10.6px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    td {
+      padding: 9px 11px;
+      border-bottom: 1px solid #eceef4;
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+      background: #f8f9fd;
+    }
+
+    code,
+    .mono {
+      font-family: 'Courier New', monospace;
+      background: #eef0f8;
+      color: #4029b0;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 11.3px;
+    }
+
+    .tree {
+      background: #131a33;
+      color: #d7e0ff;
+      font-family: 'Courier New', monospace;
+      font-size: 11.2px;
+      padding: 20px 22px;
+      border-radius: 10px;
+      line-height: 1.75;
+      white-space: pre;
+      margin: 10px 0 20px 0;
+    }
+
+    .tree .dir {
+      color: #ff9a5c;
+      font-weight: bold;
+    }
+
+    .tree .cmt {
+      color: #7c88b8;
+    }
+
+    .toc-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 11px 0;
+      border-bottom: 1px dotted #dfe2ee;
+      font-size: 13.3px;
+    }
+
+    .toc-item .n {
+      color: #ff7a34;
+      font-weight: 800;
+      margin-right: 10px;
+    }
+
+    .toc-item .p {
+      color: #9aa1bd;
+      font-weight: 700;
+    }
+
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin: 16px 0 22px 0;
+    }
+
+    .flow .step {
+      background: #131a33;
+      color: #fff;
+      padding: 11px 15px;
+      border-radius: 8px;
+      font-size: 11.6px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .flow .arrow {
+      color: #ff7a34;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 3px 11px;
+      border-radius: 12px;
+      font-size: 10.3px;
+      font-weight: 800;
+      letter-spacing: .4px;
+    }
+
+    .pill-owner {
+      background: #ffe2d1;
+      color: #a3450e;
+    }
+
+    .pill-edit {
+      background: #e0e8ff;
+      color: #293a99;
+    }
+
+    .pill-view {
+      background: #e2f5e6;
+      color: #1d6b34;
+    }
+
+    .term {
+      margin-bottom: 13px;
+    }
+
+    .term .w {
+      font-weight: 800;
+      color: #131a33;
+      font-size: 12.8px;
+    }
+
+    .term .d {
+      color: #4c5578;
+      font-size: 11.8px;
+    }
+
+    .code-block {
+      display: block;
+      background: #131a33;
+      color: #d7e0ff;
+      padding: 15px 17px;
+      border-radius: 8px;
+      white-space: pre;
+      font-family: 'Courier New', monospace;
+      font-size: 11.3px;
+      margin: 10px 0 18px 0;
+      line-height: 1.6;
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- ============ TABLE OF CONTENTS ============ -->
-<div class="toc-wrap">
-  <div class="kicker">Contents</div>
-  <h1 class="section-title">Table of Contents</h1>
-  <div class="rule"></div>
+  <!-- ============ TABLE OF CONTENTS ============ -->
+  <div class="toc-wrap">
+    <div class="kicker">Contents</div>
+    <h1 class="section-title">Table of Contents</h1>
+    <div class="rule"></div>
 
-  <div class="toc-item"><span><span class="n">01</span> What is CreBot? (In Plain Words)</span><span class="p">3</span></div>
-  <div class="toc-item"><span><span class="n">02</span> Who Is It For? &amp; The Problem It Solves</span><span class="p">4</span></div>
-  <div class="toc-item"><span><span class="n">03</span> Key Features</span><span class="p">5</span></div>
-  <div class="toc-item"><span><span class="n">04</span> How CreBot Works — The Big Picture</span><span class="p">6</span></div>
-  <div class="toc-item"><span><span class="n">05</span> Technology Stack Explained Simply</span><span class="p">7</span></div>
-  <div class="toc-item"><span><span class="n">06</span> Authentication Flow (Clerk + JWT)</span><span class="p">8</span></div>
-  <div class="toc-item"><span><span class="n">07</span> Frontend Architecture — Every Page &amp; Component</span><span class="p">9</span></div>
-  <div class="toc-item"><span><span class="n">08</span> Backend Architecture — Every Route &amp; Service</span><span class="p">11</span></div>
-  <div class="toc-item"><span><span class="n">09</span> Database Schema (Supabase + pgvector)</span><span class="p">13</span></div>
-  <div class="toc-item"><span><span class="n">10</span> The Embeddable Widget</span><span class="p">14</span></div>
-  <div class="toc-item"><span><span class="n">11</span> Complete Folder &amp; File Structure</span><span class="p">15</span></div>
-  <div class="toc-item"><span><span class="n">12</span> Step-by-Step: From Upload to Answer</span><span class="p">16</span></div>
-  <div class="toc-item"><span><span class="n">13</span> Security &amp; Privacy</span><span class="p">17</span></div>
-  <div class="toc-item"><span><span class="n">14</span> Access Control &amp; Team Roles</span><span class="p">18</span></div>
-  <div class="toc-item"><span><span class="n">15</span> Rate Limits, BYOK &amp; Pricing</span><span class="p">19</span></div>
-  <div class="toc-item"><span><span class="n">16</span> Roadmap — What's Coming Next</span><span class="p">20</span></div>
-  <div class="toc-item"><span><span class="n">17</span> Quick Start Guide</span><span class="p">21</span></div>
-  <div class="toc-item"><span><span class="n">18</span> Glossary — Every Technical Word Explained</span><span class="p">22</span></div>
-  <div class="toc-item"><span><span class="n">19</span> Company &amp; Contact</span><span class="p">24</span></div>
-
-  <div class="callout-blue" style="margin-top:34px;">
-    <b>How to read this document:</b> Every section is written in plain, simple English first.
-    Whenever a technical word shows up (like "API" or "vector"), you don't need to stop —
-    just keep reading, and flip to the <b>Glossary (Section 18)</b> whenever you want the plain-English
-    definition of any term used in this document.
-  </div>
-</div>
-
-<!-- ============ 01 WHAT IS CREBOT ============ -->
-<div class="sec" id="sec01">
-  <div class="kicker">Section 01</div>
-  <h1 class="section-title">What is CreBot?</h1>
-  <p class="section-sub">The elevator pitch, explained the way you'd explain it to a friend who has never written a line of code.</p>
-  <div class="rule"></div>
-
-  <p><b>CreBot is a website where any business owner can build their own AI chatbot in a few minutes — without writing any code.</b>
-  You upload your own documents (like your FAQ, product manual, or company policies), and CreBot turns that
-  into a smart chat assistant that can answer questions about <i>only</i> that information.</p>
-
-  <p>Then you copy a small piece of code and paste it into your own website. A chat bubble appears in the corner,
-  and any visitor can now click it and start asking questions — and get instant, accurate answers based on
-  your documents, 24 hours a day.</p>
-
-  <h2 class="h">The One Rule CreBot Never Breaks: "Zero-Speculation"</h2>
-  <p>Most general AI chatbots (like a generic assistant) will try to guess an answer even if they don't actually know it.
-  This is called <b>hallucination</b> — the AI makes something up that sounds correct but isn't. CreBot is built
-  specifically to avoid this. Its core philosophy is called <b>Zero-Speculation RAG</b>:</p>
-
-  <div class="callout">
-    <b>In simple words:</b> CreBot's chatbot is only allowed to answer using the documents you gave it.
-    If the answer isn't in your documents, it will say <i>"I don't know"</i> instead of making something up.
-    This makes it trustworthy enough to put in front of real customers.
-  </div>
-
-  <h2 class="h">The Two Sides of CreBot</h2>
-  <div class="grid2">
-    <div class="card">
-      <div class="num">1</div>
-      <h4>The Dashboard (for the business owner)</h4>
-      <p>A private control panel where you create bots, upload documents, customize how the chatbot looks and talks,
-      and review every conversation it has had.</p>
+    <div class="toc-item"><span><span class="n">01</span> What is CreBot? (In Plain Words)</span><span
+        class="p">3</span></div>
+    <div class="toc-item"><span><span class="n">02</span> Who Is It For? &amp; The Problem It Solves</span><span
+        class="p">4</span></div>
+    <div class="toc-item"><span><span class="n">03</span> Key Features</span><span class="p">5</span></div>
+    <div class="toc-item"><span><span class="n">04</span> How CreBot Works — The Big Picture</span><span
+        class="p">6</span></div>
+    <div class="toc-item"><span><span class="n">05</span> Technology Stack Explained Simply</span><span
+        class="p">7</span></div>
+    <div class="toc-item"><span><span class="n">06</span> Authentication Flow (Clerk + JWT)</span><span
+        class="p">8</span></div>
+    <div class="toc-item"><span><span class="n">07</span> Frontend Architecture — Every Page &amp; Component</span><span
+        class="p">9</span></div>
+    <div class="toc-item"><span><span class="n">08</span> Backend Architecture — Every Route &amp; Service</span><span
+        class="p">11</span></div>
+    <div class="toc-item"><span><span class="n">09</span> Database Schema (Supabase + pgvector)</span><span
+        class="p">13</span></div>
+    <div class="toc-item"><span><span class="n">10</span> The Embeddable Widget</span><span class="p">14</span></div>
+    <div class="toc-item"><span><span class="n">11</span> Complete Folder &amp; File Structure</span><span
+        class="p">15</span></div>
+    <div class="toc-item"><span><span class="n">12</span> Step-by-Step: From Upload to Answer</span><span
+        class="p">16</span></div>
+    <div class="toc-item"><span><span class="n">13</span> Security &amp; Privacy</span><span class="p">17</span></div>
+    <div class="toc-item"><span><span class="n">14</span> Access Control &amp; Team Roles</span><span
+        class="p">18</span></div>
+    <div class="toc-item"><span><span class="n">15</span> Rate Limits, BYOK &amp; Pricing</span><span
+        class="p">19</span></div>
+    <div class="toc-item"><span><span class="n">16</span> Roadmap — What's Coming Next</span><span class="p">20</span>
     </div>
-    <div class="card">
-      <div class="num">2</div>
-      <h4>The Widget (for the website visitor)</h4>
-      <p>A tiny, lightweight chat bubble that sits on the business's real website and lets any visitor talk
-      to the trained chatbot in real time.</p>
+    <div class="toc-item"><span><span class="n">17</span> Quick Start Guide</span><span class="p">21</span></div>
+    <div class="toc-item"><span><span class="n">18</span> Glossary — Every Technical Word Explained</span><span
+        class="p">22</span></div>
+    <div class="toc-item"><span><span class="n">19</span> Company &amp; Contact</span><span class="p">24</span></div>
+
+    <div class="callout-blue" style="margin-top:34px;">
+      <b>How to read this document:</b> Every section is written in plain, simple English first.
+      Whenever a technical word shows up (like "API" or "vector"), you don't need to stop —
+      just keep reading, and flip to the <b>Glossary (Section 18)</b> whenever you want the plain-English
+      definition of any term used in this document.
     </div>
   </div>
 
-  <h2 class="h">Company Vision</h2>
-  <p>CreBot's stated mission is <b>"Absolute Clarity"</b> — the idea of turning messy, scattered company documents into
-  one organized knowledge engine, so teams stop wasting time answering the same questions over and over, and
-  customers get instant, correct answers.</p>
-</div>
+  <!-- ============ 01 WHAT IS CREBOT ============ -->
+  <div class="sec" id="sec01">
+    <div class="kicker">Section 01</div>
+    <h1 class="section-title">What is CreBot?</h1>
+    <p class="section-sub">The elevator pitch, explained the way you'd explain it to a friend who has never written a
+      line of code.</p>
+    <div class="rule"></div>
 
-<!-- ============ 02 WHO IS IT FOR ============ -->
-<div class="sec" id="sec02">
-  <div class="kicker">Section 02</div>
-  <h1 class="section-title">Who Is It For? &amp; The Problem It Solves</h1>
-  <div class="rule"></div>
+    <p><b>CreBot is a website where any business owner can build their own AI chatbot in a few minutes — without writing
+        any code.</b>
+      You upload your own documents (like your FAQ, product manual, or company policies), and CreBot turns that
+      into a smart chat assistant that can answer questions about <i>only</i> that information.</p>
 
-  <p>Any business that has written documentation and gets repetitive questions from customers or employees can use CreBot.
-  Here are the main real-world situations it's built for:</p>
+    <p>Then you copy a small piece of code and paste it into your own website. A chat bubble appears in the corner,
+      and any visitor can now click it and start asking questions — and get instant, accurate answers based on
+      your documents, 24 hours a day.</p>
 
-  <h3 class="h3">1. SaaS Customer Support</h3>
-  <p>Software companies get the same questions again and again about pricing, features, or how to fix a common problem.
-  CreBot answers these instantly using the company's existing help docs — cutting down support tickets by roughly
-  <b>40%</b>, working 24/7, and handing off to a human when needed.</p>
+    <h2 class="h">The One Rule CreBot Never Breaks: "Zero-Speculation"</h2>
+    <p>Most general AI chatbots (like a generic assistant) will try to guess an answer even if they don't actually know
+      it.
+      This is called <b>hallucination</b> — the AI makes something up that sounds correct but isn't. CreBot is built
+      specifically to avoid this. Its core philosophy is called <b>Zero-Speculation RAG</b>:</p>
 
-  <h3 class="h3">2. Internal Knowledge &amp; Operations</h3>
-  <p>Instead of digging through a messy company wiki, employees can just <i>ask</i> the chatbot. It shortens onboarding time
-  for new hires and becomes a single, reliable source of truth for internal information.</p>
+    <div class="callout">
+      <b>In simple words:</b> CreBot's chatbot is only allowed to answer using the documents you gave it.
+      If the answer isn't in your documents, it will say <i>"I don't know"</i> instead of making something up.
+      This makes it trustworthy enough to put in front of real customers.
+    </div>
 
-  <h3 class="h3">3. E-Commerce FAQs &amp; Sales</h3>
-  <p>Online stores use it to instantly answer questions about shipping, returns, and product specifications — helping
-  turn browsers into buyers before they leave the page.</p>
+    <h2 class="h">The Two Sides of CreBot</h2>
+    <div class="grid2">
+      <div class="card">
+        <div class="num">1</div>
+        <h4>The Dashboard (for the business owner)</h4>
+        <p>A private control panel where you create bots, upload documents, customize how the chatbot looks and talks,
+          and review every conversation it has had.</p>
+      </div>
+      <div class="card">
+        <div class="num">2</div>
+        <h4>The Widget (for the website visitor)</h4>
+        <p>A tiny, lightweight chat bubble that sits on the business's real website and lets any visitor talk
+          to the trained chatbot in real time.</p>
+      </div>
+    </div>
 
-  <h3 class="h3">4. API &amp; Developer Docs</h3>
-  <p>Developer-facing companies let programmers ask questions directly against their technical documentation, including
-  generating code snippets and finding the right API endpoint.</p>
-
-  <h2 class="h">Other Great Fits</h2>
-  <ul>
-    <li>Small businesses that can't afford a full-time support team.</li>
-    <li>Solo entrepreneurs who need round-the-clock coverage without hiring anyone.</li>
-    <li>Agencies who manage support chat for many different clients from one place.</li>
-  </ul>
-
-  <div class="callout-blue">
-    <b>Why this matters for a presentation:</b> CreBot isn't a toy demo — it targets a real, expensive business
-    problem (support cost and response time) and solves it with a self-serve, no-code product.
-  </div>
-</div>
-
-<!-- ============ 03 KEY FEATURES ============ -->
-<div class="sec" id="sec03">
-  <div class="kicker">Section 03</div>
-  <h1 class="section-title">Key Features</h1>
-  <div class="rule"></div>
-
-  <div class="grid2">
-    <div class="card"><div class="num">1</div><h4>Intelligent Chatbot Creation (RAG)</h4>
-      <p>Every chatbot is fully grounded in the documents its owner uploads, using a technique called Retrieval-Augmented
-      Generation (RAG) — see the Glossary for a full explanation.</p></div>
-    <div class="card"><div class="num">2</div><h4>Knowledge Base Management</h4>
-      <p>Upload text, Markdown, PDF, or Word documents. CreBot automatically converts them into "vector embeddings"
-      so the AI can search them intelligently.</p></div>
-    <div class="card"><div class="num">3</div><h4>Embeddable Chat Widget</h4>
-      <p>A dependency-free JavaScript widget (<span class="mono">crebot-widget.js</span>) that can be pasted into any
-      website with one script tag — no framework required.</p></div>
-    <div class="card"><div class="num">4</div><h4>Chat Logs &amp; History</h4>
-      <p>Every conversation is recorded. Owners can review exactly what visitors asked and how the bot answered,
-      in real time.</p></div>
-    <div class="card"><div class="num">5</div><h4>API Access &amp; Data Export</h4>
-      <p>Generate secure API keys to connect CreBot into other tools, and export your full account data as JSON
-      whenever you want.</p></div>
-    <div class="card"><div class="num">6</div><h4>Authentication &amp; Security</h4>
-      <p>Sign-up, sign-in, and session management are handled by Clerk. Every account's data is fully isolated —
-      nobody can ever see another user's knowledge base.</p></div>
-    <div class="card"><div class="num">7</div><h4>Team Collaboration</h4>
-      <p>Owners can invite teammates with either full Edit access or read-only View access to a specific bot.</p></div>
-    <div class="card"><div class="num">8</div><h4>Bring Your Own Key (BYOK)</h4>
-      <p>Power users can plug in their own free Groq API key to remove the shared rate limit and get much faster
-      responses.</p></div>
-  </div>
-</div>
-
-<!-- ============ 04 HOW IT WORKS ============ -->
-<div class="sec" id="sec04">
-  <div class="kicker">Section 04</div>
-  <h1 class="section-title">How CreBot Works — The Big Picture</h1>
-  <div class="rule"></div>
-
-  <p>Forget the code for a second. Here is the entire product in five plain-English steps:</p>
-
-  <div class="flow">
-    <div class="step">1. Upload<br>Documents</div><div class="arrow">→</div>
-    <div class="step">2. AI Reads &amp;<br>Organizes Them</div><div class="arrow">→</div>
-    <div class="step">3. Get an<br>Embed Code</div><div class="arrow">→</div>
-    <div class="step">4. Visitor Asks<br>a Question</div><div class="arrow">→</div>
-    <div class="step">5. Bot Finds &amp;<br>Answers</div>
+    <h2 class="h">Company Vision</h2>
+    <p>CreBot's stated mission is <b>"Absolute Clarity"</b> — the idea of turning messy, scattered company documents
+      into
+      one organized knowledge engine, so teams stop wasting time answering the same questions over and over, and
+      customers get instant, correct answers.</p>
   </div>
 
-  <h3 class="h3">Step 1 — Upload</h3>
-  <p>The business owner uploads their documentation (a PDF, a Word doc, plain text, or Markdown) into the CreBot dashboard.</p>
+  <!-- ============ 02 WHO IS IT FOR ============ -->
+  <div class="sec" id="sec02">
+    <div class="kicker">Section 02</div>
+    <h1 class="section-title">Who Is It For? &amp; The Problem It Solves</h1>
+    <div class="rule"></div>
 
-  <h3 class="h3">Step 2 — The AI Organizes It (Training)</h3>
-  <p>Behind the scenes, CreBot breaks the document into small chunks, then converts each chunk into a list of numbers
-  called a <b>vector embedding</b> — a mathematical fingerprint of what that chunk <i>means</i>. These are stored in a
-  special database built for fast similarity search.</p>
+    <p>Any business that has written documentation and gets repetitive questions from customers or employees can use
+      CreBot.
+      Here are the main real-world situations it's built for:</p>
 
-  <h3 class="h3">Step 3 — Get an Embed Code</h3>
-  <p>Once training finishes, the owner copies a small HTML snippet from the "Embed" tab and pastes it into their own
-  website's code.</p>
+    <h3 class="h3">1. SaaS Customer Support</h3>
+    <p>Software companies get the same questions again and again about pricing, features, or how to fix a common
+      problem.
+      CreBot answers these instantly using the company's existing help docs — cutting down support tickets by roughly
+      <b>40%</b>, working 24/7, and handing off to a human when needed.
+    </p>
 
-  <h3 class="h3">Step 4 — A Visitor Asks a Question</h3>
-  <p>Anyone visiting that website can click the chat bubble and type a question, just like texting a person.</p>
+    <h3 class="h3">2. Internal Knowledge &amp; Operations</h3>
+    <p>Instead of digging through a messy company wiki, employees can just <i>ask</i> the chatbot. It shortens
+      onboarding time
+      for new hires and becomes a single, reliable source of truth for internal information.</p>
 
-  <h3 class="h3">Step 5 — The Bot Finds the Answer and Replies</h3>
-  <p>CreBot converts the visitor's question into the same kind of "fingerprint," searches the stored document
-  chunks for the closest matches, and hands those matching chunks to the Groq AI model, which is instructed to
-  answer <i>using only that information</i>. If nothing matches well enough, it honestly says it doesn't know.</p>
+    <h3 class="h3">3. E-Commerce FAQs &amp; Sales</h3>
+    <p>Online stores use it to instantly answer questions about shipping, returns, and product specifications — helping
+      turn browsers into buyers before they leave the page.</p>
 
-  <div class="callout">
-    <b>Why this design is smart:</b> The AI never has to "remember" every document — it just needs to find the
-    right small piece of text at the right moment and read it out loud in a natural way. This keeps answers accurate
-    and lets the knowledge base scale to huge amounts of documentation.
-  </div>
-</div>
+    <h3 class="h3">4. API &amp; Developer Docs</h3>
+    <p>Developer-facing companies let programmers ask questions directly against their technical documentation,
+      including
+      generating code snippets and finding the right API endpoint.</p>
 
-<!-- ============ 05 TECH STACK ============ -->
-<div class="sec" id="sec05">
-  <div class="kicker">Section 05</div>
-  <h1 class="section-title">Technology Stack, Explained Simply</h1>
-  <div class="rule"></div>
+    <h2 class="h">Other Great Fits</h2>
+    <ul>
+      <li>Small businesses that can't afford a full-time support team.</li>
+      <li>Solo entrepreneurs who need round-the-clock coverage without hiring anyone.</li>
+      <li>Agencies who manage support chat for many different clients from one place.</li>
+    </ul>
 
-  <h2 class="h">Frontend (What the User Sees)</h2>
-  <table>
-    <tr><th>Technology</th><th>Plain-English Role</th></tr>
-    <tr><td><b>React 18 + Vite</b></td><td>The framework that builds the actual dashboard screens, and the tool that runs/bundles the code very fast during development.</td></tr>
-    <tr><td><b>TypeScript</b></td><td>A stricter version of JavaScript that catches mistakes before the app even runs.</td></tr>
-    <tr><td><b>Tailwind CSS</b></td><td>A styling toolkit used to quickly design and theme every screen (colors, spacing, layout).</td></tr>
-    <tr><td><b>Framer Motion</b></td><td>Adds smooth animations, e.g. the animated mock chat on the homepage.</td></tr>
-    <tr><td><b>Clerk React</b></td><td>Ready-made, secure login/sign-up screens and session handling.</td></tr>
-    <tr><td><b>React Router</b></td><td>Controls which page shows up for which web address (URL).</td></tr>
-    <tr><td><b>Lucide React</b></td><td>The icon set used throughout the interface.</td></tr>
-  </table>
-
-  <h2 class="h">Backend (The "Brain" Running on the Server)</h2>
-  <table>
-    <tr><th>Technology</th><th>Plain-English Role</th></tr>
-    <tr><td><b>FastAPI (Python)</b></td><td>A high-performance framework that powers all the behind-the-scenes logic and API endpoints.</td></tr>
-    <tr><td><b>Supabase (PostgreSQL)</b></td><td>The database that stores users, bots, documents, chat logs, and API keys.</td></tr>
-    <tr><td><b>pgvector</b></td><td>A database extension that lets Supabase store and instantly search AI "fingerprints" (vectors).</td></tr>
-    <tr><td><b>Groq API (Llama 3 models)</b></td><td>The actual AI model that reads the retrieved document chunks and writes the final answer, at very high speed.</td></tr>
-    <tr><td><b>SlowAPI</b></td><td>Enforces rate limiting so no single user can overload the shared servers.</td></tr>
-  </table>
-
-  <h2 class="h">Widget (The Public Chat Bubble)</h2>
-  <p><b>Vanilla JavaScript</b> — written with zero external dependencies so it never conflicts with a customer's
-  existing website code, and stays extremely lightweight and fast to load.</p>
-</div>
-
-<!-- ============ 06 AUTH FLOW ============ -->
-<div class="sec" id="sec06">
-  <div class="kicker">Section 06</div>
-  <h1 class="section-title">Authentication Flow (Clerk + JWT)</h1>
-  <p class="section-sub">How CreBot knows who you are and keeps your data private.</p>
-  <div class="rule"></div>
-
-  <p>CreBot uses a third-party service called <b>Clerk</b> to handle everything related to logging in — so the CreBot
-  team never has to store your raw password themselves.</p>
-
-  <h2 class="h">Step-by-Step</h2>
-  <ol>
-    <li>You sign in or sign up through Clerk's ready-made screens inside the React app.</li>
-    <li>Clerk gives your browser a signed digital pass called a <b>JWT (JSON Web Token)</b>.</li>
-    <li>Every time the dashboard asks the backend for data, it attaches this token in the request's
-    <span class="mono">Authorization</span> header, as a "Bearer" token.</li>
-    <li>On the backend, a piece of code called <span class="mono">workspace_middleware</span> intercepts every
-    incoming request and checks this token is genuine, using Clerk's public verification keys (JWKS).</li>
-    <li>Once verified, the backend extracts your unique Clerk user ID.</li>
-    <li>It then checks: does this user already have a "workspace" (their private account/tenant) in the database?
-    If not, one is automatically created for them, named "My Workspace."</li>
-    <li>Your user ID and workspace ID are attached to the request so every other part of the backend automatically
-    knows exactly whose data it's working with.</li>
-  </ol>
-
-  <h2 class="h">Key Files Involved</h2>
-  <table>
-    <tr><th>File</th><th>Purpose</th></tr>
-    <tr><td class="mono">frontend/src/main.tsx</td><td>Wraps the whole React app in Clerk's <span class="mono">ClerkProvider</span>.</td></tr>
-    <tr><td class="mono">frontend/src/lib/api.ts</td><td>Automatically attaches the Clerk JWT to every outgoing API request.</td></tr>
-    <tr><td class="mono">backend/middlewares/auth.py</td><td>Protects API routes and figures out which workspace the request belongs to.</td></tr>
-    <tr><td class="mono">backend/utils/clerk_auth.py</td><td>Decodes and validates the Clerk JWT using PyJWT.</td></tr>
-  </table>
-
-  <div class="callout">
-    <b>Why it matters:</b> This design means no page of code, anywhere in the app, has to re-invent login security —
-    and every single database call is automatically scoped to the correct, isolated user account.
-  </div>
-</div>
-
-<!-- ============ 07 FRONTEND ARCHITECTURE ============ -->
-<div class="sec" id="sec07">
-  <div class="kicker">Section 07</div>
-  <h1 class="section-title">Frontend Architecture — Every Page &amp; Component</h1>
-  <div class="rule"></div>
-  <p>The dashboard is built with React, TypeScript, Vite and Tailwind CSS. Below is exactly what each part of the
-  frontend does.</p>
-
-  <h2 class="h">Pages (<span class="mono">src/pages/</span>)</h2>
-  <table>
-    <tr><th>File</th><th>What It Does</th></tr>
-    <tr><td class="mono">LandingPage.tsx</td><td>The public marketing homepage — hero section, features, pricing.</td></tr>
-    <tr><td class="mono">DashboardOverview.tsx</td><td>The main dashboard home: bot counts, files uploaded, recent activity.</td></tr>
-    <tr><td class="mono">ChatbotsPage.tsx</td><td>Lists every chatbot the user has created.</td></tr>
-    <tr><td class="mono">ChatbotDetail.tsx / BotDetail.tsx</td><td>Configure a specific bot's name, avatar, prompt and appearance.</td></tr>
-    <tr><td class="mono">KnowledgeBasePage.tsx</td><td>Upload and manage the source documents that train a bot.</td></tr>
-    <tr><td class="mono">EmbedPage.tsx</td><td>Generates the script tag and settings used to embed the widget elsewhere.</td></tr>
-    <tr><td class="mono">ChatLogsPage.tsx</td><td>Shows the full history of conversations end-users had with a bot.</td></tr>
-    <tr><td class="mono">SettingsPage.tsx</td><td>Manage API keys, export account data, and dangerous actions like deletion.</td></tr>
-    <tr><td class="mono">BillingPage.tsx</td><td>Subscription / billing management screen (Stripe-based).</td></tr>
-    <tr><td class="mono">SignInPage.tsx / SignUpPage.tsx</td><td>Authentication wrappers around Clerk's UI components.</td></tr>
-    <tr><td class="mono">UserProfilePage.tsx</td><td>Personal account configuration.</td></tr>
-    <tr><td class="mono">AdminPage.tsx</td><td>System administrator dashboard.</td></tr>
-    <tr><td class="mono">JoinBotPage.tsx</td><td>Lets a teammate join an existing bot using a share code.</td></tr>
-  </table>
-
-  <h2 class="h">Components (<span class="mono">src/components/</span>)</h2>
-  <table>
-    <tr><th>Folder</th><th>Contains</th></tr>
-    <tr><td class="mono">layout/</td><td>Structural pieces: <span class="mono">Navbar.tsx</span>, <span class="mono">Sidebar.tsx</span>, <span class="mono">DashboardLayout.tsx</span>, <span class="mono">AuthLayout.tsx</span>.</td></tr>
-    <tr><td class="mono">chatbots/</td><td>Bot-specific UI: <span class="mono">ChatbotCard.tsx</span>, <span class="mono">CreateChatbotModal.tsx</span>, <span class="mono">UsageLimitBanner.tsx</span>.</td></tr>
-    <tr><td class="mono">common/</td><td>Reusable pieces used everywhere: <span class="mono">Button.tsx</span>, <span class="mono">Card.tsx</span>, <span class="mono">Input.tsx</span>, <span class="mono">Modal.tsx</span>, <span class="mono">Select.tsx</span>.</td></tr>
-    <tr><td class="mono">dashboard/</td><td>Widgets like <span class="mono">StatCard.tsx</span> and <span class="mono">RecentActivity.tsx</span>.</td></tr>
-    <tr><td class="mono">knowledge/</td><td><span class="mono">UploadDropzone.tsx</span> and <span class="mono">KnowledgeTable.tsx</span> for managing documents.</td></tr>
-    <tr><td class="mono">landing/</td><td>Public page sections: <span class="mono">HeroSection.tsx</span>, <span class="mono">FeatureGrid.tsx</span>, <span class="mono">FAQSection.tsx</span>, <span class="mono">SecuritySection.tsx</span>.</td></tr>
-  </table>
-
-  <h2 class="h">Supporting Files</h2>
-  <table>
-    <tr><th>File</th><th>Purpose</th></tr>
-    <tr><td class="mono">src/App.tsx</td><td>Main router — decides which page loads for which URL, and separates protected vs. public routes.</td></tr>
-    <tr><td class="mono">src/lib/api.ts</td><td>One central place that every part of the app uses to talk to the backend.</td></tr>
-    <tr><td class="mono">src/lib/clerkTheme.ts</td><td>Makes the Clerk login screens visually match the rest of the app.</td></tr>
-    <tr><td class="mono">src/context/ThemeContext.tsx</td><td>Controls switching between Light and Dark mode.</td></tr>
-    <tr><td class="mono">src/index.css</td><td>Global styling rules and Tailwind setup.</td></tr>
-  </table>
-
-  <h2 class="h">Frontend Data Flow</h2>
-  <p>Every screen follows the same simple pattern:</p>
-  <ol>
-    <li>A page component (e.g. <span class="mono">ChatbotsPage.tsx</span>) loads.</li>
-    <li>It calls a function from the central <span class="mono">src/lib/api.ts</span> client.</li>
-    <li>That client automatically attaches the user's Clerk login token and sends the request to the FastAPI backend.</li>
-    <li>The page stores the response using normal React state (hooks) and renders it on screen.</li>
-  </ol>
-
-  <p>Routing is handled with <span class="mono">react-router-dom</span> inside <span class="mono">App.tsx</span>, using
-  lazy loading so pages are only downloaded by the browser when they're actually needed — keeping the app fast.
-  Protected pages are wrapped in a <span class="mono">&lt;SignedIn&gt;</span> check, and public pages (like the
-  landing page or sign-in) are wrapped in <span class="mono">&lt;SignedOut&gt;</span>.</p>
-
-  <div class="callout-blue">
-    <b>Simple analogy:</b> Think of <span class="mono">api.ts</span> as the app's single "receptionist." No matter
-    which page needs information from the server, they all go through the same front desk — which makes the whole
-    app easier to secure and maintain.
-  </div>
-</div>
-
-<!-- ============ 08 BACKEND ARCHITECTURE ============ -->
-<div class="sec" id="sec08">
-  <div class="kicker">Section 08</div>
-  <h1 class="section-title">Backend Architecture — Every Route &amp; Service</h1>
-  <div class="rule"></div>
-  <p>The backend is written in Python using FastAPI. It's split into two clean layers: <b>Routes</b> (which handle
-  the web requests) and <b>Services</b> (which contain the actual business logic).</p>
-
-  <h2 class="h">Core Files</h2>
-  <table>
-    <tr><th>File</th><th>Purpose</th></tr>
-    <tr><td class="mono">main.py</td><td>The application's entry point — sets up middleware, rate limiting, connects all the routers, and serves the widget's static files.</td></tr>
-    <tr><td class="mono">config.py</td><td>Loads environment variables and settings such as Supabase keys, the Groq API key, and Clerk configuration.</td></tr>
-    <tr><td class="mono">models/schemas.py</td><td>Defines the exact shape of data the API expects and returns (using Pydantic), for validation and auto-generated docs.</td></tr>
-  </table>
-
-  <h2 class="h">Routers (<span class="mono">backend/routes/</span>)</h2>
-  <table>
-    <tr><th>File</th><th>Handles</th></tr>
-    <tr><td class="mono">bots.py</td><td>Create, read, update, delete (CRUD) operations for chatbots.</td></tr>
-    <tr><td class="mono">knowledge.py</td><td>Document upload, parsing, and embedding generation.</td></tr>
-    <tr><td class="mono">chat.py</td><td>The dashboard's own "test chat" endpoint, used while configuring a bot.</td></tr>
-    <tr><td class="mono">widget.py</td><td>The public, rate-limited endpoint the live embedded widget actually talks to — the heart of the RAG chat logic.</td></tr>
-    <tr><td class="mono">embed.py</td><td>Returns the widget script/settings needed to embed a bot on an external site.</td></tr>
-    <tr><td class="mono">settings.py</td><td>API key generation, revocation, and full data export.</td></tr>
-    <tr><td class="mono">dashboard.py</td><td>Aggregates statistics (bot counts, storage used, etc.) for the frontend dashboard.</td></tr>
-    <tr><td class="mono">chatlogs.py</td><td>Retrieves historical conversation data for the Chat Logs page.</td></tr>
-  </table>
-
-  <h2 class="h">Services (<span class="mono">backend/services/</span>)</h2>
-  <table>
-    <tr><th>File</th><th>Purpose</th></tr>
-    <tr><td class="mono">groq_service.py</td><td>Talks to the Groq API — rewrites vague follow-up questions into standalone questions, then generates the final answer.</td></tr>
-    <tr><td class="mono">knowledge_service.py</td><td>Manages stored file records and kicks off the chunking/embedding pipeline.</td></tr>
-    <tr><td class="mono">chunking.py</td><td>Splits long raw text into smaller, slightly overlapping chunks that are easier to search and embed.</td></tr>
-    <tr><td class="mono">embedding.py</td><td>Converts each text chunk into a vector embedding using a HuggingFace model.</td></tr>
-    <tr><td class="mono">retrieval.py</td><td>Performs the actual semantic (meaning-based) search in Supabase to find the most relevant chunks for a question.</td></tr>
-    <tr><td class="mono">rate_limiter.py</td><td>Enforces how many requests a user/bot can make per minute.</td></tr>
-    <tr><td class="mono">settings_service.py</td><td>Logic behind managing API keys and workspace-level configuration.</td></tr>
-    <tr><td class="mono">dashboard_service.py / chatlog_service.py</td><td>Database logic that powers the dashboard statistics and chat log pages.</td></tr>
-  </table>
-
-  <h2 class="h">Why Split "Routes" from "Services"?</h2>
-  <p>This is a common, senior-level backend pattern, and it's worth understanding for a presentation:</p>
-
-  <div class="grid2">
-    <div class="card"><div class="num">R</div><h4>Routes = "The Front Door"</h4>
-      <p>These files only handle the web-facing parts: reading the incoming request, checking permissions, and
-      returning a response. They stay short and easy to read.</p></div>
-    <div class="card"><div class="num">S</div><h4>Services = "The Engine Room"</h4>
-      <p>These files contain the real logic — database queries, AI calls, text processing — completely separate from
-      any web/HTTP details.</p></div>
+    <div class="callout-blue">
+      <b>Why this matters for a presentation:</b> CreBot isn't a toy demo — it targets a real, expensive business
+      problem (support cost and response time) and solves it with a self-serve, no-code product.
+    </div>
   </div>
 
-  <div class="callout">
-    <b>Why it matters:</b> This separation means the same business logic (e.g. "search the knowledge base") can be
-    reused by multiple routes without duplicating code, and it's much easier to test and maintain as the app grows.
+  <!-- ============ 03 KEY FEATURES ============ -->
+  <div class="sec" id="sec03">
+    <div class="kicker">Section 03</div>
+    <h1 class="section-title">Key Features</h1>
+    <div class="rule"></div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="num">1</div>
+        <h4>Intelligent Chatbot Creation (RAG)</h4>
+        <p>Every chatbot is fully grounded in the documents its owner uploads, using a technique called
+          Retrieval-Augmented
+          Generation (RAG) — see the Glossary for a full explanation.</p>
+      </div>
+      <div class="card">
+        <div class="num">2</div>
+        <h4>Knowledge Base Management</h4>
+        <p>Upload text, Markdown, PDF, or Word documents. CreBot automatically converts them into "vector embeddings"
+          so the AI can search them intelligently.</p>
+      </div>
+      <div class="card">
+        <div class="num">3</div>
+        <h4>Embeddable Chat Widget</h4>
+        <p>A dependency-free JavaScript widget (<span class="mono">crebot-widget.js</span>) that can be pasted into any
+          website with one script tag — no framework required.</p>
+      </div>
+      <div class="card">
+        <div class="num">4</div>
+        <h4>Chat Logs &amp; History</h4>
+        <p>Every conversation is recorded. Owners can review exactly what visitors asked and how the bot answered,
+          in real time.</p>
+      </div>
+      <div class="card">
+        <div class="num">5</div>
+        <h4>API Access &amp; Data Export</h4>
+        <p>Generate secure API keys to connect CreBot into other tools, and export your full account data as JSON
+          whenever you want.</p>
+      </div>
+      <div class="card">
+        <div class="num">6</div>
+        <h4>Authentication &amp; Security</h4>
+        <p>Sign-up, sign-in, and session management are handled by Clerk. Every account's data is fully isolated —
+          nobody can ever see another user's knowledge base.</p>
+      </div>
+      <div class="card">
+        <div class="num">7</div>
+        <h4>Team Collaboration</h4>
+        <p>Owners can invite teammates with either full Edit access or read-only View access to a specific bot.</p>
+      </div>
+      <div class="card">
+        <div class="num">8</div>
+        <h4>Bring Your Own Key (BYOK)</h4>
+        <p>Power users can plug in their own free Groq API key to remove the shared rate limit and get much faster
+          responses.</p>
+      </div>
+    </div>
   </div>
 
-  <h2 class="h">External Services CreBot Depends On</h2>
-  <table>
-    <tr><th>Service</th><th>Role</th></tr>
-    <tr><td><b>Clerk</b></td><td>User registration, login, session management, and securing API endpoints via JWT.</td></tr>
-    <tr><td><b>Supabase</b></td><td>The PostgreSQL database, plus <span class="mono">pgvector</span> for storing and querying AI embeddings.</td></tr>
-    <tr><td><b>Groq</b></td><td>Ultra-fast LLM inference — reformulating questions and generating the final grounded answer.</td></tr>
-  </table>
-</div>
+  <!-- ============ 04 HOW IT WORKS ============ -->
+  <div class="sec" id="sec04">
+    <div class="kicker">Section 04</div>
+    <h1 class="section-title">How CreBot Works — The Big Picture</h1>
+    <div class="rule"></div>
 
-<!-- ============ 09 DATABASE SCHEMA ============ -->
-<div class="sec" id="sec09">
-  <div class="kicker">Section 09</div>
-  <h1 class="section-title">Database Schema (Supabase + pgvector)</h1>
-  <p class="section-sub">CreBot's entire "memory" lives in a PostgreSQL database, supercharged with the pgvector extension
-  for AI-style semantic search.</p>
-  <div class="rule"></div>
+    <p>Forget the code for a second. Here is the entire product in five plain-English steps:</p>
 
-  <table>
-    <tr><th>Table</th><th>What It Stores</th></tr>
-    <tr><td class="mono">workspaces</td><td>One row per user account/tenant — includes the Clerk user ID, plan, and limits like chatbot/storage caps.</td></tr>
-    <tr><td class="mono">bots</td><td>Each chatbot's configuration: name, unique widget key, appearance (theme, welcome message), allowed domains, and a "strict knowledge" toggle.</td></tr>
-    <tr><td class="mono">knowledge_files</td><td>Metadata about every uploaded file: name, processing status, and how many chunks it produced.</td></tr>
-    <tr><td class="mono">knowledge_chunks / documents</td><td>The actual small text segments and their vector embeddings (384-dimension) used for search, per bot.</td></tr>
-    <tr><td class="mono">chat_logs / queries_log</td><td>Every question asked, the answer given, and which document sources were used to generate it.</td></tr>
-    <tr><td class="mono">bot_members</td><td>Tracks which teammates have Edit or View access to a shared bot.</td></tr>
-    <tr><td class="mono">api_keys</td><td>Programmatic access keys generated by users.</td></tr>
-  </table>
+    <div class="flow">
+      <div class="step">1. Upload<br>Documents</div>
+      <div class="arrow">→</div>
+      <div class="step">2. AI Reads &amp;<br>Organizes Them</div>
+      <div class="arrow">→</div>
+      <div class="step">3. Get an<br>Embed Code</div>
+      <div class="arrow">→</div>
+      <div class="step">4. Visitor Asks<br>a Question</div>
+      <div class="arrow">→</div>
+      <div class="step">5. Bot Finds &amp;<br>Answers</div>
+    </div>
 
-  <h2 class="h">Row Level Security (RLS)</h2>
-  <p>Every one of these tables is protected using PostgreSQL's built-in <b>Row Level Security</b>. In simple terms:
-  even if a backend query has a mistake in it, the database itself will still refuse to return another user's rows.
-  This is a second, independent safety net beyond the application code.</p>
+    <h3 class="h3">Step 1 — Upload</h3>
+    <p>The business owner uploads their documentation (a PDF, a Word doc, plain text, or Markdown) into the CreBot
+      dashboard.</p>
 
-  <h2 class="h">Semantic Search Function</h2>
-  <p>A custom Postgres function called <span class="mono">match_documents</span> calculates <b>cosine similarity</b>
-  between a question's vector and every stored chunk's vector, instantly returning the closest, most relevant matches.</p>
-</div>
+    <h3 class="h3">Step 2 — The AI Organizes It (Training)</h3>
+    <p>Behind the scenes, CreBot breaks the document into small chunks, then converts each chunk into a list of numbers
+      called a <b>vector embedding</b> — a mathematical fingerprint of what that chunk <i>means</i>. These are stored in
+      a
+      special database built for fast similarity search.</p>
 
-<!-- ============ 10 WIDGET ============ -->
-<div class="sec" id="sec10">
-  <div class="kicker">Section 10</div>
-  <h1 class="section-title">The Embeddable Widget</h1>
-  <div class="rule"></div>
+    <h3 class="h3">Step 3 — Get an Embed Code</h3>
+    <p>Once training finishes, the owner copies a small HTML snippet from the "Embed" tab and pastes it into their own
+      website's code.</p>
 
-  <p>The widget is the small chat bubble that actually appears on a customer's real website — the public face of
-  every bot CreBot builds.</p>
+    <h3 class="h3">Step 4 — A Visitor Asks a Question</h3>
+    <p>Anyone visiting that website can click the chat bubble and type a question, just like texting a person.</p>
 
-  <h2 class="h">Why It Exists</h2>
-  <p>Business owners shouldn't need to know React, or build any UI themselves, just to put a chatbot on their site.
-  A single <span class="mono">&lt;script&gt;</span> tag is the simplest, most universal way to add functionality to
-  any website — regardless of what that website was built with.</p>
+    <h3 class="h3">Step 5 — The Bot Finds the Answer and Replies</h3>
+    <p>CreBot converts the visitor's question into the same kind of "fingerprint," searches the stored document
+      chunks for the closest matches, and hands those matching chunks to the Groq AI model, which is instructed to
+      answer <i>using only that information</i>. If nothing matches well enough, it honestly says it doesn't know.</p>
 
-  <h2 class="h">What <span class="mono">crebot-widget.js</span> Actually Does</h2>
-  <ul>
-    <li>Injects its own CSS directly into the host page's <span class="mono">&lt;head&gt;</span>, so it doesn't rely
-    on any external stylesheet.</li>
-    <li>Builds all of its own HTML elements in JavaScript — the floating bubble and the chat panel.</li>
-    <li>Manages every visual state: opening, closing, the "typing..." animation, and copy buttons.</li>
-    <li>Sends the visitor's questions to the backend at an endpoint shaped like
-    <span class="mono">API_URL/api/widget/{id}/chat</span>, identified using a <span class="mono">bot_id</span> or
-    <span class="mono">widget_key</span> passed in via the script tag's <span class="mono">data-</span> attributes.</li>
-    <li>Keeps a short-term memory of the conversation in the browser, so follow-up questions make sense in context.</li>
-  </ul>
-
-  <h2 class="h">Design Choices That Matter</h2>
-  <div class="grid2">
-    <div class="card"><div class="num">✓</div><h4>Zero Dependencies</h4>
-      <p>Written in plain ("vanilla") JavaScript so it never clashes with a host site's existing React, Vue, or jQuery code.</p></div>
-    <div class="card"><div class="num">✓</div><h4>Style Isolation</h4>
-      <p>Its own CSS/DOM is isolated from the host site's styling, so it always looks correct no matter where it's placed.</p></div>
-    <div class="card"><div class="num">✓</div><h4>Live Configuration</h4>
-      <p>Fetches the bot's name, color, and welcome message from the backend dynamically — dashboard changes appear
-      instantly on the live widget without needing to re-embed anything.</p></div>
-    <div class="card"><div class="num">✓</div><h4>Cross-Device</h4>
-      <p>Works the same way across desktop, tablet, and mobile.</p></div>
+    <div class="callout">
+      <b>Why this design is smart:</b> The AI never has to "remember" every document — it just needs to find the
+      right small piece of text at the right moment and read it out loud in a natural way. This keeps answers accurate
+      and lets the knowledge base scale to huge amounts of documentation.
+    </div>
   </div>
-</div>
 
-<!-- ============ 11 FULL FOLDER STRUCTURE ============ -->
-<div class="sec" id="sec11">
-  <div class="kicker">Section 11</div>
-  <h1 class="section-title">Complete Folder &amp; File Structure</h1>
-  <p class="section-sub">Everything in the project, in one place, so you know exactly where every piece of logic lives.</p>
-  <div class="rule"></div>
+  <!-- ============ 05 TECH STACK ============ -->
+  <div class="sec" id="sec05">
+    <div class="kicker">Section 05</div>
+    <h1 class="section-title">Technology Stack, Explained Simply</h1>
+    <div class="rule"></div>
 
-<div class="tree"><span class="cmt">CreBot/</span>
-├── <span class="cmt">schema.sql                    # Core Supabase PostgreSQL schema</span>
-├── <span class="dir">backend/</span>
-│   ├── main.py                   <span class="cmt"># FastAPI app entry, middleware, router mounting</span>
-│   ├── config.py                 <span class="cmt"># Environment variable / settings loader</span>
-│   ├── <span class="dir">models/</span>
-│   │   └── schemas.py            <span class="cmt"># Pydantic request/response validation models</span>
-│   ├── <span class="dir">middlewares/</span>
-│   │   └── auth.py                <span class="cmt"># Clerk auth + workspace-context middleware</span>
-│   ├── <span class="dir">utils/</span>
-│   │   └── clerk_auth.py          <span class="cmt"># JWT decode/verify helpers</span>
-│   ├── <span class="dir">routes/</span>
-│   │   ├── bots.py                <span class="cmt"># Chatbot CRUD</span>
-│   │   ├── knowledge.py           <span class="cmt"># Upload / parse / embed documents</span>
-│   │   ├── chat.py                <span class="cmt"># Dashboard test-chat endpoint</span>
-│   │   ├── widget.py              <span class="cmt"># Public widget chat endpoint (RAG core)</span>
-│   │   ├── embed.py               <span class="cmt"># Widget script/settings endpoint</span>
-│   │   ├── settings.py            <span class="cmt"># API keys + data export</span>
-│   │   ├── dashboard.py           <span class="cmt"># Dashboard statistics</span>
-│   │   └── chatlogs.py            <span class="cmt"># Conversation history retrieval</span>
-│   ├── <span class="dir">services/</span>
-│   │   ├── groq_service.py        <span class="cmt"># Talks to the Groq LLM</span>
-│   │   ├── knowledge_service.py   <span class="cmt"># File records + pipeline trigger</span>
-│   │   ├── chunking.py            <span class="cmt"># Splits text into chunks</span>
-│   │   ├── embedding.py           <span class="cmt"># Text → vector embeddings</span>
-│   │   ├── retrieval.py           <span class="cmt"># Vector similarity search</span>
-│   │   ├── rate_limiter.py        <span class="cmt"># Usage / plan limits</span>
-│   │   ├── settings_service.py    <span class="cmt"># API key + workspace logic</span>
-│   │   ├── dashboard_service.py   <span class="cmt"># Dashboard stat aggregation</span>
-│   │   └── chatlog_service.py     <span class="cmt"># Chat log queries</span>
-│   └── requirements.txt          <span class="cmt"># Python dependencies</span>
-├── <span class="dir">frontend/</span>
-│   ├── <span class="dir">src/</span>
-│   │   ├── main.tsx               <span class="cmt"># App entry — ClerkProvider setup</span>
-│   │   ├── App.tsx                <span class="cmt"># Router config, protected/public routes</span>
-│   │   ├── index.css              <span class="cmt"># Global styles + Tailwind directives</span>
-│   │   ├── <span class="dir">lib/</span>
-│   │   │   ├── api.ts             <span class="cmt"># Central API client (attaches JWT)</span>
-│   │   │   └── clerkTheme.ts      <span class="cmt"># Clerk UI theme matching</span>
-│   │   ├── <span class="dir">context/</span>
-│   │   │   └── ThemeContext.tsx   <span class="cmt"># Light/Dark mode</span>
-│   │   ├── <span class="dir">pages/</span>            <span class="cmt"># 14 top-level screens (see Section 07)</span>
-│   │   └── <span class="dir">components/</span>
-│   │       ├── <span class="dir">layout/</span>        <span class="cmt"># Navbar, Sidebar, DashboardLayout</span>
-│   │       ├── <span class="dir">chatbots/</span>      <span class="cmt"># Bot cards, create modal, usage banner</span>
-│   │       ├── <span class="dir">common/</span>        <span class="cmt"># Button, Card, Input, Modal, Select</span>
-│   │       ├── <span class="dir">dashboard/</span>     <span class="cmt"># StatCard, RecentActivity</span>
-│   │       ├── <span class="dir">knowledge/</span>     <span class="cmt"># UploadDropzone, KnowledgeTable</span>
-│   │       └── <span class="dir">landing/</span>       <span class="cmt"># Hero, FeatureGrid, FAQ, Security sections</span>
-│   ├── package.json               <span class="cmt"># Node dependencies</span>
-│   └── tailwind.config.js         <span class="cmt"># Styling rules / design tokens</span>
-└── <span class="dir">widget/</span>
-    └── crebot-widget.js           <span class="cmt"># The deployable, dependency-free JS widget</span>
-</div>
-</div>
+    <h2 class="h">Frontend (What the User Sees)</h2>
+    <table>
+      <tr>
+        <th>Technology</th>
+        <th>Plain-English Role</th>
+      </tr>
+      <tr>
+        <td><b>React 18 + Vite</b></td>
+        <td>The framework that builds the actual dashboard screens, and the tool that runs/bundles the code very fast
+          during development.</td>
+      </tr>
+      <tr>
+        <td><b>TypeScript</b></td>
+        <td>A stricter version of JavaScript that catches mistakes before the app even runs.</td>
+      </tr>
+      <tr>
+        <td><b>Tailwind CSS</b></td>
+        <td>A styling toolkit used to quickly design and theme every screen (colors, spacing, layout).</td>
+      </tr>
+      <tr>
+        <td><b>Framer Motion</b></td>
+        <td>Adds smooth animations, e.g. the animated mock chat on the homepage.</td>
+      </tr>
+      <tr>
+        <td><b>Clerk React</b></td>
+        <td>Ready-made, secure login/sign-up screens and session handling.</td>
+      </tr>
+      <tr>
+        <td><b>React Router</b></td>
+        <td>Controls which page shows up for which web address (URL).</td>
+      </tr>
+      <tr>
+        <td><b>Lucide React</b></td>
+        <td>The icon set used throughout the interface.</td>
+      </tr>
+    </table>
 
-<!-- ============ 12 SEQUENCE ============ -->
-<div class="sec" id="sec12">
-  <div class="kicker">Section 12</div>
-  <h1 class="section-title">Step-by-Step: From Upload to Answer</h1>
-  <p class="section-sub">A plain-English walkthrough of the project's real sequence diagram.</p>
-  <div class="rule"></div>
+    <h2 class="h">Backend (The "Brain" Running on the Server)</h2>
+    <table>
+      <tr>
+        <th>Technology</th>
+        <th>Plain-English Role</th>
+      </tr>
+      <tr>
+        <td><b>FastAPI (Python)</b></td>
+        <td>A high-performance framework that powers all the behind-the-scenes logic and API endpoints.</td>
+      </tr>
+      <tr>
+        <td><b>Supabase (PostgreSQL)</b></td>
+        <td>The database that stores users, bots, documents, chat logs, and API keys.</td>
+      </tr>
+      <tr>
+        <td><b>pgvector</b></td>
+        <td>A database extension that lets Supabase store and instantly search AI "fingerprints" (vectors).</td>
+      </tr>
+      <tr>
+        <td><b>Groq API (Llama 3 models)</b></td>
+        <td>The actual AI model that reads the retrieved document chunks and writes the final answer, at very high
+          speed.</td>
+      </tr>
+      <tr>
+        <td><b>SlowAPI</b></td>
+        <td>Enforces rate limiting so no single user can overload the shared servers.</td>
+      </tr>
+    </table>
 
-  <h2 class="h">Phase 1 — Training a Bot</h2>
-  <ol>
-    <li>The business owner uploads a knowledge base (FAQ text or files) from the React dashboard.</li>
-    <li>The dashboard sends this to the backend's training endpoint.</li>
-    <li>The backend chunks the text into paragraphs.</li>
-    <li>Each chunk is turned into a 384-number vector by the local embedding model.</li>
-    <li>The text chunks and their vectors are saved into Supabase.</li>
-    <li>The dashboard shows "Training Complete."</li>
-  </ol>
-
-  <h2 class="h">Phase 2 — A Visitor Chats With the Bot</h2>
-  <ol>
-    <li>A website visitor types a question into the embedded widget (e.g. <i>"What is your refund policy?"</i>).</li>
-    <li>The widget sends the question, plus recent chat history, to the backend's public widget-chat endpoint.</li>
-    <li>The backend checks the rate limit for that bot.</li>
-    <li>The Groq LLM rewrites the question into a clear, standalone version (using the conversation history for context).</li>
-    <li>That standalone question is converted into a vector.</li>
-    <li>Supabase performs a similarity search and returns the top matching chunks from the knowledge base.</li>
-    <li>Those chunks are sent to the Groq LLM again, with strict instructions to answer <i>using only this
-    information.</i></li>
-    <li>The final answer is logged for analytics, then sent back to the widget and displayed to the visitor.</li>
-  </ol>
-
-  <div class="callout">
-    <b>The key insight:</b> The AI is called <i>twice</i> per question — once to clean up the question itself, and
-    once to generate the grounded answer. This two-step process is a big part of why CreBot's answers stay accurate
-    even across a multi-turn conversation.
+    <h2 class="h">Widget (The Public Chat Bubble)</h2>
+    <p><b>Vanilla JavaScript</b> — written with zero external dependencies so it never conflicts with a customer's
+      existing website code, and stays extremely lightweight and fast to load.</p>
   </div>
-</div>
 
-<!-- ============ 13 SECURITY ============ -->
-<div class="sec" id="sec13">
-  <div class="kicker">Section 13</div>
-  <h1 class="section-title">Security &amp; Privacy</h1>
-  <div class="rule"></div>
+  <!-- ============ 06 AUTH FLOW ============ -->
+  <div class="sec" id="sec06">
+    <div class="kicker">Section 06</div>
+    <h1 class="section-title">Authentication Flow (Clerk + JWT)</h1>
+    <p class="section-sub">How CreBot knows who you are and keeps your data private.</p>
+    <div class="rule"></div>
 
-  <h2 class="h">Data Isolation</h2>
-  <ul>
-    <li><b>Row Level Security (RLS)</b> at the database level — even a broken or malicious backend query cannot
-    leak another user's data.</li>
-    <li><b>Client-isolated vector index with strict RBAC</b> — a widget key that belongs to one bot can never reach
-    another bot's knowledge base or another tenant's data.</li>
-  </ul>
+    <p>CreBot uses a third-party service called <b>Clerk</b> to handle everything related to logging in — so the CreBot
+      team never has to store your raw password themselves.</p>
 
-  <h2 class="h">Authentication &amp; Personal Data (PII)</h2>
-  <p>Clerk securely manages all personally identifiable information — emails, passwords, and sessions. CreBot's own
-  database only ever stores a <i>reference</i> to the authenticated user ID, never the raw credentials.</p>
+    <h2 class="h">Step-by-Step</h2>
+    <ol>
+      <li>You sign in or sign up through Clerk's ready-made screens inside the React app.</li>
+      <li>Clerk gives your browser a signed digital pass called a <b>JWT (JSON Web Token)</b>.</li>
+      <li>Every time the dashboard asks the backend for data, it attaches this token in the request's
+        <span class="mono">Authorization</span> header, as a "Bearer" token.
+      </li>
+      <li>On the backend, a piece of code called <span class="mono">workspace_middleware</span> intercepts every
+        incoming request and checks this token is genuine, using Clerk's public verification keys (JWKS).</li>
+      <li>Once verified, the backend extracts your unique Clerk user ID.</li>
+      <li>It then checks: does this user already have a "workspace" (their private account/tenant) in the database?
+        If not, one is automatically created for them, named "My Workspace."</li>
+      <li>Your user ID and workspace ID are attached to the request so every other part of the backend automatically
+        knows exactly whose data it's working with.</li>
+    </ol>
 
-  <h2 class="h">Prompt Injection Prevention</h2>
-  <p>System prompts are rigidly structured so the AI model is explicitly instructed not to answer outside the
-  provided document context, and to ignore any attempt by a user to override its prior instructions
-  (a technique called <b>prompt injection</b> — see Glossary). CreBot is honest that no LLM-based system can
-  guarantee 100% prevention of this — it's a strong mitigation, not an absolute guarantee.</p>
+    <h2 class="h">Key Files Involved</h2>
+    <table>
+      <tr>
+        <th>File</th>
+        <th>Purpose</th>
+      </tr>
+      <tr>
+        <td class="mono">frontend/src/main.tsx</td>
+        <td>Wraps the whole React app in Clerk's <span class="mono">ClerkProvider</span>.</td>
+      </tr>
+      <tr>
+        <td class="mono">frontend/src/lib/api.ts</td>
+        <td>Automatically attaches the Clerk JWT to every outgoing API request.</td>
+      </tr>
+      <tr>
+        <td class="mono">backend/middlewares/auth.py</td>
+        <td>Protects API routes and figures out which workspace the request belongs to.</td>
+      </tr>
+      <tr>
+        <td class="mono">backend/utils/clerk_auth.py</td>
+        <td>Decodes and validates the Clerk JWT using PyJWT.</td>
+      </tr>
+    </table>
 
-  <h2 class="h">BYOK Key Security</h2>
-  <p>If you bring your own Groq API key, it is <b>AES-256 encrypted directly on your device</b> before it's ever
-  sent to CreBot's servers — a "zero-knowledge" design, meaning CreBot itself never has access to your raw key.</p>
-
-  <div class="callout-blue">
-    <b>Presentation tip:</b> Security isn't just one feature — it's layered across four independent levels: the
-    authentication provider (Clerk), the middleware, the database (RLS), and the AI prompt design itself.
+    <div class="callout">
+      <b>Why it matters:</b> This design means no page of code, anywhere in the app, has to re-invent login security —
+      and every single database call is automatically scoped to the correct, isolated user account.
+    </div>
   </div>
-</div>
 
-<!-- ============ 14 ACCESS CONTROL ============ -->
-<div class="sec" id="sec14">
-  <div class="kicker">Section 14</div>
-  <h1 class="section-title">Access Control &amp; Team Roles</h1>
-  <div class="rule"></div>
+  <!-- ============ 07 FRONTEND ARCHITECTURE ============ -->
+  <div class="sec" id="sec07">
+    <div class="kicker">Section 07</div>
+    <h1 class="section-title">Frontend Architecture — Every Page &amp; Component</h1>
+    <div class="rule"></div>
+    <p>The dashboard is built with React, TypeScript, Vite and Tailwind CSS. Below is exactly what each part of the
+      frontend does.</p>
 
-  <p>A bot doesn't have to be used by just one person. CreBot lets an owner invite teammates with different levels
-  of access to a specific bot:</p>
+    <h2 class="h">Pages (<span class="mono">src/pages/</span>)</h2>
+    <table>
+      <tr>
+        <th>File</th>
+        <th>What It Does</th>
+      </tr>
+      <tr>
+        <td class="mono">LandingPage.tsx</td>
+        <td>The public marketing homepage — hero section, features, pricing.</td>
+      </tr>
+      <tr>
+        <td class="mono">DashboardOverview.tsx</td>
+        <td>The main dashboard home: bot counts, files uploaded, recent activity.</td>
+      </tr>
+      <tr>
+        <td class="mono">ChatbotsPage.tsx</td>
+        <td>Lists every chatbot the user has created.</td>
+      </tr>
+      <tr>
+        <td class="mono">ChatbotDetail.tsx / BotDetail.tsx</td>
+        <td>Configure a specific bot's name, avatar, prompt and appearance.</td>
+      </tr>
+      <tr>
+        <td class="mono">KnowledgeBasePage.tsx</td>
+        <td>Upload and manage the source documents that train a bot.</td>
+      </tr>
+      <tr>
+        <td class="mono">EmbedPage.tsx</td>
+        <td>Generates the script tag and settings used to embed the widget elsewhere.</td>
+      </tr>
+      <tr>
+        <td class="mono">ChatLogsPage.tsx</td>
+        <td>Shows the full history of conversations end-users had with a bot.</td>
+      </tr>
+      <tr>
+        <td class="mono">SettingsPage.tsx</td>
+        <td>Manage API keys, export account data, and dangerous actions like deletion.</td>
+      </tr>
+      <tr>
+        <td class="mono">BillingPage.tsx</td>
+        <td>Subscription / billing management screen (Stripe-based).</td>
+      </tr>
+      <tr>
+        <td class="mono">SignInPage.tsx / SignUpPage.tsx</td>
+        <td>Authentication wrappers around Clerk's UI components.</td>
+      </tr>
+      <tr>
+        <td class="mono">UserProfilePage.tsx</td>
+        <td>Personal account configuration.</td>
+      </tr>
+      <tr>
+        <td class="mono">AdminPage.tsx</td>
+        <td>System administrator dashboard.</td>
+      </tr>
+      <tr>
+        <td class="mono">JoinBotPage.tsx</td>
+        <td>Lets a teammate join an existing bot using a share code.</td>
+      </tr>
+    </table>
 
-  <table>
-    <tr><th>Role</th><th>Can Do</th></tr>
-    <tr><td><span class="pill pill-owner">OWNER</span></td><td>Full control over the bot, including sharing it and managing who else has access.</td></tr>
-    <tr><td><span class="pill pill-edit">EDIT</span></td><td>Full access to scan the knowledge base, write configuration, and edit bot parameters.</td></tr>
-    <tr><td><span class="pill pill-view">VIEW</span></td><td>Can view the bot, chat with it, and copy the embed code — but cannot change any configuration.</td></tr>
-  </table>
+    <h2 class="h">Components (<span class="mono">src/components/</span>)</h2>
+    <table>
+      <tr>
+        <th>Folder</th>
+        <th>Contains</th>
+      </tr>
+      <tr>
+        <td class="mono">layout/</td>
+        <td>Structural pieces: <span class="mono">Navbar.tsx</span>, <span class="mono">Sidebar.tsx</span>, <span
+            class="mono">DashboardLayout.tsx</span>, <span class="mono">AuthLayout.tsx</span>.</td>
+      </tr>
+      <tr>
+        <td class="mono">chatbots/</td>
+        <td>Bot-specific UI: <span class="mono">ChatbotCard.tsx</span>, <span
+            class="mono">CreateChatbotModal.tsx</span>, <span class="mono">UsageLimitBanner.tsx</span>.</td>
+      </tr>
+      <tr>
+        <td class="mono">common/</td>
+        <td>Reusable pieces used everywhere: <span class="mono">Button.tsx</span>, <span class="mono">Card.tsx</span>,
+          <span class="mono">Input.tsx</span>, <span class="mono">Modal.tsx</span>, <span
+            class="mono">Select.tsx</span>.</td>
+      </tr>
+      <tr>
+        <td class="mono">dashboard/</td>
+        <td>Widgets like <span class="mono">StatCard.tsx</span> and <span class="mono">RecentActivity.tsx</span>.</td>
+      </tr>
+      <tr>
+        <td class="mono">knowledge/</td>
+        <td><span class="mono">UploadDropzone.tsx</span> and <span class="mono">KnowledgeTable.tsx</span> for managing
+          documents.</td>
+      </tr>
+      <tr>
+        <td class="mono">landing/</td>
+        <td>Public page sections: <span class="mono">HeroSection.tsx</span>, <span class="mono">FeatureGrid.tsx</span>,
+          <span class="mono">FAQSection.tsx</span>, <span class="mono">SecuritySection.tsx</span>.</td>
+      </tr>
+    </table>
 
-  <p>This makes CreBot practical for real teams and agencies: an admin can configure a bot in depth, while
-  non-technical teammates (or clients) only get a safe, read-only way to demo or use it.</p>
-</div>
+    <h2 class="h">Supporting Files</h2>
+    <table>
+      <tr>
+        <th>File</th>
+        <th>Purpose</th>
+      </tr>
+      <tr>
+        <td class="mono">src/App.tsx</td>
+        <td>Main router — decides which page loads for which URL, and separates protected vs. public routes.</td>
+      </tr>
+      <tr>
+        <td class="mono">src/lib/api.ts</td>
+        <td>One central place that every part of the app uses to talk to the backend.</td>
+      </tr>
+      <tr>
+        <td class="mono">src/lib/clerkTheme.ts</td>
+        <td>Makes the Clerk login screens visually match the rest of the app.</td>
+      </tr>
+      <tr>
+        <td class="mono">src/context/ThemeContext.tsx</td>
+        <td>Controls switching between Light and Dark mode.</td>
+      </tr>
+      <tr>
+        <td class="mono">src/index.css</td>
+        <td>Global styling rules and Tailwind setup.</td>
+      </tr>
+    </table>
 
-<!-- ============ 15 RATE LIMITS / PRICING ============ -->
-<div class="sec" id="sec15">
-  <div class="kicker">Section 15</div>
-  <h1 class="section-title">Rate Limits, BYOK &amp; Pricing</h1>
-  <div class="rule"></div>
+    <h2 class="h">Frontend Data Flow</h2>
+    <p>Every screen follows the same simple pattern:</p>
+    <ol>
+      <li>A page component (e.g. <span class="mono">ChatbotsPage.tsx</span>) loads.</li>
+      <li>It calls a function from the central <span class="mono">src/lib/api.ts</span> client.</li>
+      <li>That client automatically attaches the user's Clerk login token and sends the request to the FastAPI backend.
+      </li>
+      <li>The page stores the response using normal React state (hooks) and renders it on screen.</li>
+    </ol>
 
-  <h2 class="h">Current Plan — Free for Everyone</h2>
-  <p>CreBot is currently in a free-access phase for all sign-ups, with no credit card required. All core features
-  are unlocked: bot creation, knowledge base training, widget deployment, chat logs, analytics, and access sharing.</p>
+    <p>Routing is handled with <span class="mono">react-router-dom</span> inside <span class="mono">App.tsx</span>,
+      using
+      lazy loading so pages are only downloaded by the browser when they're actually needed — keeping the app fast.
+      Protected pages are wrapped in a <span class="mono">&lt;SignedIn&gt;</span> check, and public pages (like the
+      landing page or sign-in) are wrapped in <span class="mono">&lt;SignedOut&gt;</span>.</p>
 
-  <table>
-    <tr><th>Limit</th><th>Value</th></tr>
-    <tr><td>Chatbots per account</td><td>Up to 5</td></tr>
-    <tr><td>Default shared API rate limit</td><td>10 requests / minute per user (fair-usage policy)</td></tr>
-    <tr><td>If limit is hit</td><td>Wait one minute, or use BYOK to remove the cap entirely</td></tr>
-  </table>
-
-  <h2 class="h">Bring Your Own Key (BYOK)</h2>
-  <p>Groq API keys are free to generate from Groq's own console. Once added in Settings, all of that bot's traffic
-  is routed directly through the user's own private quota, skipping CreBot's shared queue entirely — unlocking
-  much faster generation speeds.</p>
-
-  <h2 class="h">Planned Billing (Future)</h2>
-  <p>CreBot will introduce paid subscription tiers in a future release. The expected direction (not yet finalized)
-  is a free tier with the limits above, plus paid tiers that unlock more than 5 bots, higher message volumes,
-  priority support, and advanced analytics. Existing free users will be notified in advance of any billing changes.</p>
-</div>
-
-<!-- ============ 16 ROADMAP ============ -->
-<div class="sec" id="sec16">
-  <div class="kicker">Section 16</div>
-  <h1 class="section-title">Roadmap — What's Coming Next</h1>
-  <div class="rule"></div>
-
-  <div class="grid2">
-    <div class="card"><div class="num">→</div><h4>Paid Billing Tiers</h4><p>Formal subscription plans beyond the current free-access phase.</p></div>
-    <div class="card"><div class="num">→</div><h4>Website / URL Scraping</h4><p>Auto-ingest a knowledge base directly from a live website, instead of only uploaded files.</p></div>
-    <div class="card"><div class="num">→</div><h4>Multi-Language Support</h4><p>Ask and receive answers in multiple languages.</p></div>
-    <div class="card"><div class="num">→</div><h4>Advanced Analytics</h4><p>Sentiment analysis and automatic surfacing of "unanswered" questions to guide what to add next.</p></div>
-    <div class="card"><div class="num">→</div><h4>Human Handoff</h4><p>Detects frustration or complexity in a conversation and transfers the chat to a live agent (e.g. via Slack or Discord).</p></div>
+    <div class="callout-blue">
+      <b>Simple analogy:</b> Think of <span class="mono">api.ts</span> as the app's single "receptionist." No matter
+      which page needs information from the server, they all go through the same front desk — which makes the whole
+      app easier to secure and maintain.
+    </div>
   </div>
-</div>
 
-<!-- ============ 17 QUICK START ============ -->
-<div class="sec" id="sec17">
-  <div class="kicker">Section 17</div>
-  <h1 class="section-title">Quick Start Guide</h1>
-  <p class="section-sub">How a developer would run the whole project locally, from scratch.</p>
-  <div class="rule"></div>
+  <!-- ============ 08 BACKEND ARCHITECTURE ============ -->
+  <div class="sec" id="sec08">
+    <div class="kicker">Section 08</div>
+    <h1 class="section-title">Backend Architecture — Every Route &amp; Service</h1>
+    <div class="rule"></div>
+    <p>The backend is written in Python using FastAPI. It's split into two clean layers: <b>Routes</b> (which handle
+      the web requests) and <b>Services</b> (which contain the actual business logic).</p>
 
-  <h3 class="h3">1. Database Setup (Supabase)</h3>
-  <ol>
-    <li>Create a free project at supabase.com.</li>
-    <li>Go to <b>Database → Extensions</b> and enable <span class="mono">vector</span> (pgvector).</li>
-    <li>Open the SQL Editor, paste the schema file's contents, and run it to set up tables, Row Level Security,
-    and search functions.</li>
-  </ol>
+    <h2 class="h">Core Files</h2>
+    <table>
+      <tr>
+        <th>File</th>
+        <th>Purpose</th>
+      </tr>
+      <tr>
+        <td class="mono">main.py</td>
+        <td>The application's entry point — sets up middleware, rate limiting, connects all the routers, and serves the
+          widget's static files.</td>
+      </tr>
+      <tr>
+        <td class="mono">config.py</td>
+        <td>Loads environment variables and settings such as Supabase keys, the Groq API key, and Clerk configuration.
+        </td>
+      </tr>
+      <tr>
+        <td class="mono">models/schemas.py</td>
+        <td>Defines the exact shape of data the API expects and returns (using Pydantic), for validation and
+          auto-generated docs.</td>
+      </tr>
+    </table>
 
-  <h3 class="h3">2. Backend Setup</h3>
-  <p class="code-block">cd backend
-python -m venv venv
-venv\Scripts\activate        (Windows)
-pip install -r requirements.txt
-copy .env.example .env       (fill in Supabase, Groq, Clerk keys)
-uvicorn main:app --reload --port 8000</p>
+    <h2 class="h">Routers (<span class="mono">backend/routes/</span>)</h2>
+    <table>
+      <tr>
+        <th>File</th>
+        <th>Handles</th>
+      </tr>
+      <tr>
+        <td class="mono">bots.py</td>
+        <td>Create, read, update, delete (CRUD) operations for chatbots.</td>
+      </tr>
+      <tr>
+        <td class="mono">knowledge.py</td>
+        <td>Document upload, parsing, and embedding generation.</td>
+      </tr>
+      <tr>
+        <td class="mono">chat.py</td>
+        <td>The dashboard's own "test chat" endpoint, used while configuring a bot.</td>
+      </tr>
+      <tr>
+        <td class="mono">widget.py</td>
+        <td>The public, rate-limited endpoint the live embedded widget actually talks to — the heart of the RAG chat
+          logic.</td>
+      </tr>
+      <tr>
+        <td class="mono">embed.py</td>
+        <td>Returns the widget script/settings needed to embed a bot on an external site.</td>
+      </tr>
+      <tr>
+        <td class="mono">settings.py</td>
+        <td>API key generation, revocation, and full data export.</td>
+      </tr>
+      <tr>
+        <td class="mono">dashboard.py</td>
+        <td>Aggregates statistics (bot counts, storage used, etc.) for the frontend dashboard.</td>
+      </tr>
+      <tr>
+        <td class="mono">chatlogs.py</td>
+        <td>Retrieves historical conversation data for the Chat Logs page.</td>
+      </tr>
+    </table>
 
-  <h3 class="h3">3. Frontend Setup</h3>
-  <p class="code-block">cd frontend
-npm install
-npm run dev</p>
+    <h2 class="h">Services (<span class="mono">backend/services/</span>)</h2>
+    <table>
+      <tr>
+        <th>File</th>
+        <th>Purpose</th>
+      </tr>
+      <tr>
+        <td class="mono">groq_service.py</td>
+        <td>Talks to the Groq API — rewrites vague follow-up questions into standalone questions, then generates the
+          final answer.</td>
+      </tr>
+      <tr>
+        <td class="mono">knowledge_service.py</td>
+        <td>Manages stored file records and kicks off the chunking/embedding pipeline.</td>
+      </tr>
+      <tr>
+        <td class="mono">chunking.py</td>
+        <td>Splits long raw text into smaller, slightly overlapping chunks that are easier to search and embed.</td>
+      </tr>
+      <tr>
+        <td class="mono">embedding.py</td>
+        <td>Converts each text chunk into a vector embedding using a HuggingFace model.</td>
+      </tr>
+      <tr>
+        <td class="mono">retrieval.py</td>
+        <td>Performs the actual semantic (meaning-based) search in Supabase to find the most relevant chunks for a
+          question.</td>
+      </tr>
+      <tr>
+        <td class="mono">rate_limiter.py</td>
+        <td>Enforces how many requests a user/bot can make per minute.</td>
+      </tr>
+      <tr>
+        <td class="mono">settings_service.py</td>
+        <td>Logic behind managing API keys and workspace-level configuration.</td>
+      </tr>
+      <tr>
+        <td class="mono">dashboard_service.py / chatlog_service.py</td>
+        <td>Database logic that powers the dashboard statistics and chat log pages.</td>
+      </tr>
+    </table>
 
-  <h3 class="h3">4. Test the Widget</h3>
-  <p>Paste this snippet into the <span class="mono">&lt;body&gt;</span> of any HTML file to test a trained chatbot:</p>
-  <p class="code-block">&lt;script
-  src="http://localhost:3000/widget/crebot-widget.js"
-  data-widget-key="YOUR_BOT_WIDGET_KEY"
-  data-api-url="http://localhost:8000"
-  async&gt;
-&lt;/script&gt;</p>
-</div>
+    <h2 class="h">Why Split "Routes" from "Services"?</h2>
+    <p>This is a common, senior-level backend pattern, and it's worth understanding for a presentation:</p>
 
-<!-- ============ 18 GLOSSARY ============ -->
-<div class="sec" id="sec18">
-  <div class="kicker">Section 18</div>
-  <h1 class="section-title">Glossary — Every Technical Word, Explained</h1>
-  <p class="section-sub">Written for someone who has never studied software engineering. Read this section any time
-  a word in this document is unfamiliar.</p>
-  <div class="rule"></div>
+    <div class="grid2">
+      <div class="card">
+        <div class="num">R</div>
+        <h4>Routes = "The Front Door"</h4>
+        <p>These files only handle the web-facing parts: reading the incoming request, checking permissions, and
+          returning a response. They stay short and easy to read.</p>
+      </div>
+      <div class="card">
+        <div class="num">S</div>
+        <h4>Services = "The Engine Room"</h4>
+        <p>These files contain the real logic — database queries, AI calls, text processing — completely separate from
+          any web/HTTP details.</p>
+      </div>
+    </div>
 
-  <div class="term"><div class="w">API (Application Programming Interface)</div>
-  <div class="d">A defined way for two pieces of software to talk to each other — like a waiter taking your order
-  to the kitchen and bringing food back.</div></div>
+    <div class="callout">
+      <b>Why it matters:</b> This separation means the same business logic (e.g. "search the knowledge base") can be
+      reused by multiple routes without duplicating code, and it's much easier to test and maintain as the app grows.
+    </div>
 
-  <div class="term"><div class="w">RAG (Retrieval-Augmented Generation)</div>
-  <div class="d">A technique where the AI first "retrieves" (looks up) relevant information, then "generates" an
-  answer using only that information, instead of relying purely on what it memorized during training.</div></div>
-
-  <div class="term"><div class="w">LLM (Large Language Model)</div>
-  <div class="d">The type of AI model (like Llama 3) that has been trained on huge amounts of text and can read,
-  understand, and write natural-sounding language.</div></div>
-
-  <div class="term"><div class="w">Hallucination</div>
-  <div class="d">When an AI confidently states something false or made-up. CreBot's whole design is aimed at
-  preventing this.</div></div>
-
-  <div class="term"><div class="w">Vector / Embedding</div>
-  <div class="d">A list of numbers that represents the "meaning" of a piece of text. Two chunks of text about
-  similar topics will have vectors that are mathematically close together, which is how the AI finds relevant
-  information quickly.</div></div>
-
-  <div class="term"><div class="w">Vector Database (pgvector)</div>
-  <div class="d">A database built (or extended) to store and instantly search these number-lists by similarity,
-  rather than by exact matching text.</div></div>
-
-  <div class="term"><div class="w">Chunking</div>
-  <div class="d">Breaking a long document into smaller pieces so the AI can search and reference specific, focused
-  sections instead of an entire book at once.</div></div>
-
-  <div class="term"><div class="w">Cosine Similarity</div>
-  <div class="d">A mathematical way of measuring how "close" two vectors are in meaning — the method used to find
-  the best-matching document chunks for a question.</div></div>
-
-  <div class="term"><div class="w">JWT (JSON Web Token)</div>
-  <div class="d">A digitally signed "ID card" issued after login, proving who a user is on every future request,
-  without needing to log in again each time.</div></div>
-
-  <div class="term"><div class="w">Middleware</div>
-  <div class="d">Code that runs automatically in between a request arriving and the actual page/feature responding
-  to it — commonly used for things like security checks.</div></div>
-
-  <div class="term"><div class="w">RBAC (Role-Based Access Control)</div>
-  <div class="d">A security model where what you're allowed to do depends on your assigned role (e.g. Owner, Edit,
-  View), rather than being the same for everyone.</div></div>
-
-  <div class="term"><div class="w">RLS (Row Level Security)</div>
-  <div class="d">A database-level rule that automatically hides other users' data rows, even if the application
-  code above it makes a mistake.</div></div>
-
-  <div class="term"><div class="w">Prompt Injection</div>
-  <div class="d">An attack where someone tries to trick an AI into ignoring its original instructions by hiding new
-  "commands" inside their message.</div></div>
-
-  <div class="term"><div class="w">SaaS (Software as a Service)</div>
-  <div class="d">Software that you use directly through a website, paying (or signing up) for access, instead of
-  installing and running it yourself.</div></div>
-
-  <div class="term"><div class="w">CRUD</div>
-  <div class="d">Short for Create, Read, Update, Delete — the four basic operations almost every app needs to
-  perform on its data.</div></div>
-
-  <div class="term"><div class="w">Widget</div>
-  <div class="d">A small, self-contained piece of interface — here, the floating chat bubble that gets embedded on
-  someone else's website.</div></div>
-
-  <div class="term"><div class="w">Rate Limiting</div>
-  <div class="d">Deliberately capping how many requests a user can make in a given time period, to keep the shared
-  service fast and fair for everyone.</div></div>
-
-  <div class="term"><div class="w">BYOK (Bring Your Own Key)</div>
-  <div class="d">Letting a user supply their own API key from a provider (here, Groq) so their usage runs on their
-  own private quota instead of the shared one.</div></div>
-
-  <div class="term"><div class="w">AES-256 Encryption</div>
-  <div class="d">A very strong, widely trusted method of scrambling data so it can only be read by someone with the
-  correct decryption key.</div></div>
-
-  <div class="term"><div class="w">Framework</div>
-  <div class="d">A pre-built structure and set of tools (like React or FastAPI) that developers build on top of,
-  instead of writing everything completely from scratch.</div></div>
-
-  <div class="term"><div class="w">Tenant / Multi-Tenancy</div>
-  <div class="d">A design where one shared system serves many independent customers ("tenants") while keeping each
-  one's data fully separate and private.</div></div>
-
-  <div class="term"><div class="w">Endpoint</div>
-  <div class="d">One specific web address that a piece of software (like the widget) can send a request to in order
-  to get something done, e.g. <span class="mono">/api/widget/{id}/chat</span>.</div></div>
-
-  <div class="term"><div class="w">Session Management</div>
-  <div class="d">How an application keeps track of the fact that you're still logged in as you move between pages.</div></div>
-
-  <div class="term"><div class="w">Environment Variables</div>
-  <div class="d">Configuration values (like secret API keys) kept outside of the code itself, so sensitive
-  information is never hard-coded or accidentally shared.</div></div>
-
-  <div class="term"><div class="w">Static Files</div>
-  <div class="d">Files (like the widget's JavaScript file) that are served exactly as-is, without needing to be
-  processed by the backend each time.</div></div>
-
-  <div class="term"><div class="w">Backend / Frontend</div>
-  <div class="d">The Frontend is everything the user directly sees and clicks on in the browser. The Backend is the
-  server-side code that stores data, applies business rules, and talks to the AI — invisible to the user.</div></div>
-
-  <div class="term"><div class="w">Repository / Codebase</div>
-  <div class="d">The complete collection of source code files that make up the project.</div></div>
-
-  <div class="term"><div class="w">Deployment</div>
-  <div class="d">The process of taking finished code and making it live and accessible on the real internet.</div></div>
-</div>
-
-<!-- ============ 19 CONTACT ============ -->
-<div class="sec" id="sec19">
-  <div class="kicker">Section 19</div>
-  <h1 class="section-title">Company &amp; Contact</h1>
-  <div class="rule"></div>
-
-  <table>
-    <tr><th>Detail</th><th>Info</th></tr>
-    <tr><td>HQ Location</td><td>Gandhinagar, Gujarat, India</td></tr>
-    <tr><td>Core Team / System Architects</td><td>Priyank, Miral, Sujal</td></tr>
-    <tr><td>Contact</td><td>Available via the website contact form — for enterprise plans, custom integrations, or proof-of-concept discussions</td></tr>
-    <tr><td>Typical Response Time</td><td>Within 4 hours</td></tr>
-    <tr><td>Legal</td><td>Privacy Policy, Terms of Service, and Cookie Policy published and linked in the site footer</td></tr>
-  </table>
-
-  <h2 class="h">Closing Summary</h2>
-  <p>CreBot is a complete, production-shaped SaaS product: a secure multi-tenant dashboard, a Zero-Speculation RAG
-  pipeline built on vector search, a lightweight universal widget, and a layered security model — all wrapped in a
-  free, no-code onboarding experience for any business that wants an AI support agent trained on their own
-  documentation.</p>
-
-  <div class="callout-blue">
-    <b>End of Document.</b> Thank you for reading — this documentation was written to be presentable to technical
-    reviewers, business stakeholders, and complete beginners alike.
+    <h2 class="h">External Services CreBot Depends On</h2>
+    <table>
+      <tr>
+        <th>Service</th>
+        <th>Role</th>
+      </tr>
+      <tr>
+        <td><b>Clerk</b></td>
+        <td>User registration, login, session management, and securing API endpoints via JWT.</td>
+      </tr>
+      <tr>
+        <td><b>Supabase</b></td>
+        <td>The PostgreSQL database, plus <span class="mono">pgvector</span> for storing and querying AI embeddings.
+        </td>
+      </tr>
+      <tr>
+        <td><b>Groq</b></td>
+        <td>Ultra-fast LLM inference — reformulating questions and generating the final grounded answer.</td>
+      </tr>
+    </table>
   </div>
-</div>
+
+  <!-- ============ 09 DATABASE SCHEMA ============ -->
+  <div class="sec" id="sec09">
+    <div class="kicker">Section 09</div>
+    <h1 class="section-title">Database Schema (Supabase + pgvector)</h1>
+    <p class="section-sub">CreBot's entire "memory" lives in a PostgreSQL database, supercharged with the pgvector
+      extension
+      for AI-style semantic search.</p>
+    <div class="rule"></div>
+
+    <table>
+      <tr>
+        <th>Table</th>
+        <th>What It Stores</th>
+      </tr>
+      <tr>
+        <td class="mono">workspaces</td>
+        <td>One row per user account/tenant — includes the Clerk user ID, plan, and limits like chatbot/storage caps.
+        </td>
+      </tr>
+      <tr>
+        <td class="mono">bots</td>
+        <td>Each chatbot's configuration: name, unique widget key, appearance (theme, welcome message), allowed domains,
+          and a "strict knowledge" toggle.</td>
+      </tr>
+      <tr>
+        <td class="mono">knowledge_files</td>
+        <td>Metadata about every uploaded file: name, processing status, and how many chunks it produced.</td>
+      </tr>
+      <tr>
+        <td class="mono">knowledge_chunks / documents</td>
+        <td>The actual small text segments and their vector embeddings (384-dimension) used for search, per bot.</td>
+      </tr>
+      <tr>
+        <td class="mono">chat_logs / queries_log</td>
+        <td>Every question asked, the answer given, and which document sources were used to generate it.</td>
+      </tr>
+      <tr>
+        <td class="mono">bot_members</td>
+        <td>Tracks which teammates have Edit or View access to a shared bot.</td>
+      </tr>
+      <tr>
+        <td class="mono">api_keys</td>
+        <td>Programmatic access keys generated by users.</td>
+      </tr>
+    </table>
+
+    <h2 class="h">Row Level Security (RLS)</h2>
+    <p>Every one of these tables is protected using PostgreSQL's built-in <b>Row Level Security</b>. In simple terms:
+      even if a backend query has a mistake in it, the database itself will still refuse to return another user's rows.
+      This is a second, independent safety net beyond the application code.</p>
+
+    <h2 class="h">Semantic Search Function</h2>
+    <p>A custom Postgres function called <span class="mono">match_documents</span> calculates <b>cosine similarity</b>
+      between a question's vector and every stored chunk's vector, instantly returning the closest, most relevant
+      matches.</p>
+  </div>
+
+  <!-- ============ 10 WIDGET ============ -->
+  <div class="sec" id="sec10">
+    <div class="kicker">Section 10</div>
+    <h1 class="section-title">The Embeddable Widget</h1>
+    <div class="rule"></div>
+
+    <p>The widget is the small chat bubble that actually appears on a customer's real website — the public face of
+      every bot CreBot builds.</p>
+
+    <h2 class="h">Why It Exists</h2>
+    <p>Business owners shouldn't need to know React, or build any UI themselves, just to put a chatbot on their site.
+      A single <span class="mono">&lt;script&gt;</span> tag is the simplest, most universal way to add functionality to
+      any website — regardless of what that website was built with.</p>
+
+    <h2 class="h">What <span class="mono">crebot-widget.js</span> Actually Does</h2>
+    <ul>
+      <li>Injects its own CSS directly into the host page's <span class="mono">&lt;head&gt;</span>, so it doesn't rely
+        on any external stylesheet.</li>
+      <li>Builds all of its own HTML elements in JavaScript — the floating bubble and the chat panel.</li>
+      <li>Manages every visual state: opening, closing, the "typing..." animation, and copy buttons.</li>
+      <li>Sends the visitor's questions to the backend at an endpoint shaped like
+        <span class="mono">API_URL/api/widget/{id}/chat</span>, identified using a <span class="mono">bot_id</span> or
+        <span class="mono">widget_key</span> passed in via the script tag's <span class="mono">data-</span> attributes.
+      </li>
+      <li>Keeps a short-term memory of the conversation in the browser, so follow-up questions make sense in context.
+      </li>
+    </ul>
+
+    <h2 class="h">Design Choices That Matter</h2>
+    <div class="grid2">
+      <div class="card">
+        <div class="num">✓</div>
+        <h4>Zero Dependencies</h4>
+        <p>Written in plain ("vanilla") JavaScript so it never clashes with a host site's existing React, Vue, or jQuery
+          code.</p>
+      </div>
+      <div class="card">
+        <div class="num">✓</div>
+        <h4>Style Isolation</h4>
+        <p>Its own CSS/DOM is isolated from the host site's styling, so it always looks correct no matter where it's
+          placed.</p>
+      </div>
+      <div class="card">
+        <div class="num">✓</div>
+        <h4>Live Configuration</h4>
+        <p>Fetches the bot's name, color, and welcome message from the backend dynamically — dashboard changes appear
+          instantly on the live widget without needing to re-embed anything.</p>
+      </div>
+      <div class="card">
+        <div class="num">✓</div>
+        <h4>Cross-Device</h4>
+        <p>Works the same way across desktop, tablet, and mobile.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 11 FULL FOLDER STRUCTURE ============ -->
+  <div class="sec" id="sec11">
+    <div class="kicker">Section 11</div>
+    <h1 class="section-title">Complete Folder &amp; File Structure</h1>
+    <p class="section-sub">Everything in the project, in one place, so you know exactly where every piece of logic
+      lives.</p>
+    <div class="rule"></div>
+
+    <div class="tree"><span class="cmt">CreBot/</span>
+      ├── <span class="cmt">schema.sql # Core Supabase PostgreSQL schema</span>
+      ├── <span class="dir">backend/</span>
+      │ ├── main.py <span class="cmt"># FastAPI app entry, middleware, router mounting</span>
+      │ ├── config.py <span class="cmt"># Environment variable / settings loader</span>
+      │ ├── <span class="dir">models/</span>
+      │ │ └── schemas.py <span class="cmt"># Pydantic request/response validation models</span>
+      │ ├── <span class="dir">middlewares/</span>
+      │ │ └── auth.py <span class="cmt"># Clerk auth + workspace-context middleware</span>
+      │ ├── <span class="dir">utils/</span>
+      │ │ └── clerk_auth.py <span class="cmt"># JWT decode/verify helpers</span>
+      │ ├── <span class="dir">routes/</span>
+      │ │ ├── bots.py <span class="cmt"># Chatbot CRUD</span>
+      │ │ ├── knowledge.py <span class="cmt"># Upload / parse / embed documents</span>
+      │ │ ├── chat.py <span class="cmt"># Dashboard test-chat endpoint</span>
+      │ │ ├── widget.py <span class="cmt"># Public widget chat endpoint (RAG core)</span>
+      │ │ ├── embed.py <span class="cmt"># Widget script/settings endpoint</span>
+      │ │ ├── settings.py <span class="cmt"># API keys + data export</span>
+      │ │ ├── dashboard.py <span class="cmt"># Dashboard statistics</span>
+      │ │ └── chatlogs.py <span class="cmt"># Conversation history retrieval</span>
+      │ ├── <span class="dir">services/</span>
+      │ │ ├── groq_service.py <span class="cmt"># Talks to the Groq LLM</span>
+      │ │ ├── knowledge_service.py <span class="cmt"># File records + pipeline trigger</span>
+      │ │ ├── chunking.py <span class="cmt"># Splits text into chunks</span>
+      │ │ ├── embedding.py <span class="cmt"># Text → vector embeddings</span>
+      │ │ ├── retrieval.py <span class="cmt"># Vector similarity search</span>
+      │ │ ├── rate_limiter.py <span class="cmt"># Usage / plan limits</span>
+      │ │ ├── settings_service.py <span class="cmt"># API key + workspace logic</span>
+      │ │ ├── dashboard_service.py <span class="cmt"># Dashboard stat aggregation</span>
+      │ │ └── chatlog_service.py <span class="cmt"># Chat log queries</span>
+      │ └── requirements.txt <span class="cmt"># Python dependencies</span>
+      ├── <span class="dir">frontend/</span>
+      │ ├── <span class="dir">src/</span>
+      │ │ ├── main.tsx <span class="cmt"># App entry — ClerkProvider setup</span>
+      │ │ ├── App.tsx <span class="cmt"># Router config, protected/public routes</span>
+      │ │ ├── index.css <span class="cmt"># Global styles + Tailwind directives</span>
+      │ │ ├── <span class="dir">lib/</span>
+      │ │ │ ├── api.ts <span class="cmt"># Central API client (attaches JWT)</span>
+      │ │ │ └── clerkTheme.ts <span class="cmt"># Clerk UI theme matching</span>
+      │ │ ├── <span class="dir">context/</span>
+      │ │ │ └── ThemeContext.tsx <span class="cmt"># Light/Dark mode</span>
+      │ │ ├── <span class="dir">pages/</span> <span class="cmt"># 14 top-level screens (see Section 07)</span>
+      │ │ └── <span class="dir">components/</span>
+      │ │ ├── <span class="dir">layout/</span> <span class="cmt"># Navbar, Sidebar, DashboardLayout</span>
+      │ │ ├── <span class="dir">chatbots/</span> <span class="cmt"># Bot cards, create modal, usage banner</span>
+      │ │ ├── <span class="dir">common/</span> <span class="cmt"># Button, Card, Input, Modal, Select</span>
+      │ │ ├── <span class="dir">dashboard/</span> <span class="cmt"># StatCard, RecentActivity</span>
+      │ │ ├── <span class="dir">knowledge/</span> <span class="cmt"># UploadDropzone, KnowledgeTable</span>
+      │ │ └── <span class="dir">landing/</span> <span class="cmt"># Hero, FeatureGrid, FAQ, Security sections</span>
+      │ ├── package.json <span class="cmt"># Node dependencies</span>
+      │ └── tailwind.config.js <span class="cmt"># Styling rules / design tokens</span>
+      └── <span class="dir">widget/</span>
+      └── crebot-widget.js <span class="cmt"># The deployable, dependency-free JS widget</span>
+    </div>
+  </div>
+
+  <!-- ============ 12 SEQUENCE ============ -->
+  <div class="sec" id="sec12">
+    <div class="kicker">Section 12</div>
+    <h1 class="section-title">Step-by-Step: From Upload to Answer</h1>
+    <p class="section-sub">A plain-English walkthrough of the project's real sequence diagram.</p>
+    <div class="rule"></div>
+
+    <h2 class="h">Phase 1 — Training a Bot</h2>
+    <ol>
+      <li>The business owner uploads a knowledge base (FAQ text or files) from the React dashboard.</li>
+      <li>The dashboard sends this to the backend's training endpoint.</li>
+      <li>The backend chunks the text into paragraphs.</li>
+      <li>Each chunk is turned into a 384-number vector by the local embedding model.</li>
+      <li>The text chunks and their vectors are saved into Supabase.</li>
+      <li>The dashboard shows "Training Complete."</li>
+    </ol>
+
+    <h2 class="h">Phase 2 — A Visitor Chats With the Bot</h2>
+    <ol>
+      <li>A website visitor types a question into the embedded widget (e.g. <i>"What is your refund policy?"</i>).</li>
+      <li>The widget sends the question, plus recent chat history, to the backend's public widget-chat endpoint.</li>
+      <li>The backend checks the rate limit for that bot.</li>
+      <li>The Groq LLM rewrites the question into a clear, standalone version (using the conversation history for
+        context).</li>
+      <li>That standalone question is converted into a vector.</li>
+      <li>Supabase performs a similarity search and returns the top matching chunks from the knowledge base.</li>
+      <li>Those chunks are sent to the Groq LLM again, with strict instructions to answer <i>using only this
+          information.</i></li>
+      <li>The final answer is logged for analytics, then sent back to the widget and displayed to the visitor.</li>
+    </ol>
+
+    <div class="callout">
+      <b>The key insight:</b> The AI is called <i>twice</i> per question — once to clean up the question itself, and
+      once to generate the grounded answer. This two-step process is a big part of why CreBot's answers stay accurate
+      even across a multi-turn conversation.
+    </div>
+  </div>
+
+  <!-- ============ 13 SECURITY ============ -->
+  <div class="sec" id="sec13">
+    <div class="kicker">Section 13</div>
+    <h1 class="section-title">Security &amp; Privacy</h1>
+    <div class="rule"></div>
+
+    <h2 class="h">Data Isolation</h2>
+    <ul>
+      <li><b>Row Level Security (RLS)</b> at the database level — even a broken or malicious backend query cannot
+        leak another user's data.</li>
+      <li><b>Client-isolated vector index with strict RBAC</b> — a widget key that belongs to one bot can never reach
+        another bot's knowledge base or another tenant's data.</li>
+    </ul>
+
+    <h2 class="h">Authentication &amp; Personal Data (PII)</h2>
+    <p>Clerk securely manages all personally identifiable information — emails, passwords, and sessions. CreBot's own
+      database only ever stores a <i>reference</i> to the authenticated user ID, never the raw credentials.</p>
+
+    <h2 class="h">Prompt Injection Prevention</h2>
+    <p>System prompts are rigidly structured so the AI model is explicitly instructed not to answer outside the
+      provided document context, and to ignore any attempt by a user to override its prior instructions
+      (a technique called <b>prompt injection</b> — see Glossary). CreBot is honest that no LLM-based system can
+      guarantee 100% prevention of this — it's a strong mitigation, not an absolute guarantee.</p>
+
+    <h2 class="h">BYOK Key Security</h2>
+    <p>If you bring your own Groq API key, it is <b>AES-256 encrypted directly on your device</b> before it's ever
+      sent to CreBot's servers — a "zero-knowledge" design, meaning CreBot itself never has access to your raw key.</p>
+
+    <div class="callout-blue">
+      <b>Presentation tip:</b> Security isn't just one feature — it's layered across four independent levels: the
+      authentication provider (Clerk), the middleware, the database (RLS), and the AI prompt design itself.
+    </div>
+  </div>
+
+  <!-- ============ 14 ACCESS CONTROL ============ -->
+  <div class="sec" id="sec14">
+    <div class="kicker">Section 14</div>
+    <h1 class="section-title">Access Control &amp; Team Roles</h1>
+    <div class="rule"></div>
+
+    <p>A bot doesn't have to be used by just one person. CreBot lets an owner invite teammates with different levels
+      of access to a specific bot:</p>
+
+    <table>
+      <tr>
+        <th>Role</th>
+        <th>Can Do</th>
+      </tr>
+      <tr>
+        <td><span class="pill pill-owner">OWNER</span></td>
+        <td>Full control over the bot, including sharing it and managing who else has access.</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-edit">EDIT</span></td>
+        <td>Full access to scan the knowledge base, write configuration, and edit bot parameters.</td>
+      </tr>
+      <tr>
+        <td><span class="pill pill-view">VIEW</span></td>
+        <td>Can view the bot, chat with it, and copy the embed code — but cannot change any configuration.</td>
+      </tr>
+    </table>
+
+    <p>This makes CreBot practical for real teams and agencies: an admin can configure a bot in depth, while
+      non-technical teammates (or clients) only get a safe, read-only way to demo or use it.</p>
+  </div>
+
+  <!-- ============ 15 RATE LIMITS / PRICING ============ -->
+  <div class="sec" id="sec15">
+    <div class="kicker">Section 15</div>
+    <h1 class="section-title">Rate Limits, BYOK &amp; Pricing</h1>
+    <div class="rule"></div>
+
+    <h2 class="h">Current Plan — Free for Everyone</h2>
+    <p>CreBot is currently in a free-access phase for all sign-ups, with no credit card required. All core features
+      are unlocked: bot creation, knowledge base training, widget deployment, chat logs, analytics, and access sharing.
+    </p>
+
+    <table>
+      <tr>
+        <th>Limit</th>
+        <th>Value</th>
+      </tr>
+      <tr>
+        <td>Chatbots per account</td>
+        <td>Up to 5</td>
+      </tr>
+      <tr>
+        <td>Default shared API rate limit</td>
+        <td>10 requests / minute per user (fair-usage policy)</td>
+      </tr>
+      <tr>
+        <td>If limit is hit</td>
+        <td>Wait one minute, or use BYOK to remove the cap entirely</td>
+      </tr>
+    </table>
+
+    <h2 class="h">Bring Your Own Key (BYOK)</h2>
+    <p>Groq API keys are free to generate from Groq's own console. Once added in Settings, all of that bot's traffic
+      is routed directly through the user's own private quota, skipping CreBot's shared queue entirely — unlocking
+      much faster generation speeds.</p>
+
+    <h2 class="h">Planned Billing (Future)</h2>
+    <p>CreBot will introduce paid subscription tiers in a future release. The expected direction (not yet finalized)
+      is a free tier with the limits above, plus paid tiers that unlock more than 5 bots, higher message volumes,
+      priority support, and advanced analytics. Existing free users will be notified in advance of any billing changes.
+    </p>
+  </div>
+
+  <!-- ============ 16 ROADMAP ============ -->
+  <div class="sec" id="sec16">
+    <div class="kicker">Section 16</div>
+    <h1 class="section-title">Roadmap — What's Coming Next</h1>
+    <div class="rule"></div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="num">→</div>
+        <h4>Paid Billing Tiers</h4>
+        <p>Formal subscription plans beyond the current free-access phase.</p>
+      </div>
+      <div class="card">
+        <div class="num">→</div>
+        <h4>Website / URL Scraping</h4>
+        <p>Auto-ingest a knowledge base directly from a live website, instead of only uploaded files.</p>
+      </div>
+      <div class="card">
+        <div class="num">→</div>
+        <h4>Multi-Language Support</h4>
+        <p>Ask and receive answers in multiple languages.</p>
+      </div>
+      <div class="card">
+        <div class="num">→</div>
+        <h4>Advanced Analytics</h4>
+        <p>Sentiment analysis and automatic surfacing of "unanswered" questions to guide what to add next.</p>
+      </div>
+      <div class="card">
+        <div class="num">→</div>
+        <h4>Human Handoff</h4>
+        <p>Detects frustration or complexity in a conversation and transfers the chat to a live agent (e.g. via Slack or
+          Discord).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 17 QUICK START ============ -->
+  <div class="sec" id="sec17">
+    <div class="kicker">Section 17</div>
+    <h1 class="section-title">Quick Start Guide</h1>
+    <p class="section-sub">How a developer would run the whole project locally, from scratch.</p>
+    <div class="rule"></div>
+
+    <h3 class="h3">1. Database Setup (Supabase)</h3>
+    <ol>
+      <li>Create a free project at supabase.com.</li>
+      <li>Go to <b>Database → Extensions</b> and enable <span class="mono">vector</span> (pgvector).</li>
+      <li>Open the SQL Editor, paste the schema file's contents, and run it to set up tables, Row Level Security,
+        and search functions.</li>
+    </ol>
+
+    <h3 class="h3">2. Backend Setup</h3>
+    <p class="code-block">cd backend
+      python -m venv venv
+      venv\Scripts\activate (Windows)
+      pip install -r requirements.txt
+      copy .env.example .env (fill in Supabase, Groq, Clerk keys)
+      uvicorn main:app --reload --port 8000</p>
+
+    <h3 class="h3">3. Frontend Setup</h3>
+    <p class="code-block">cd frontend
+      npm install
+      npm run dev</p>
+
+    <h3 class="h3">4. Test the Widget</h3>
+    <p>Paste this snippet into the <span class="mono">&lt;body&gt;</span> of any HTML file to test a trained chatbot:
+    </p>
+    <p class="code-block">&lt;script
+      src="http://localhost:3000/widget/crebot-widget.js"
+      data-widget-key="YOUR_BOT_WIDGET_KEY"
+      data-api-url="http://localhost:8000"
+      async&gt;
+      &lt;/script&gt;</p>
+  </div>
+
+  <!-- ============ 18 GLOSSARY ============ -->
+  <div class="sec" id="sec18">
+    <div class="kicker">Section 18</div>
+    <h1 class="section-title">Glossary — Every Technical Word, Explained</h1>
+    <p class="section-sub">Written for someone who has never studied software engineering. Read this section any time
+      a word in this document is unfamiliar.</p>
+    <div class="rule"></div>
+
+    <div class="term">
+      <div class="w">API (Application Programming Interface)</div>
+      <div class="d">A defined way for two pieces of software to talk to each other — like a waiter taking your order
+        to the kitchen and bringing food back.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">RAG (Retrieval-Augmented Generation)</div>
+      <div class="d">A technique where the AI first "retrieves" (looks up) relevant information, then "generates" an
+        answer using only that information, instead of relying purely on what it memorized during training.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">LLM (Large Language Model)</div>
+      <div class="d">The type of AI model (like Llama 3) that has been trained on huge amounts of text and can read,
+        understand, and write natural-sounding language.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">Hallucination</div>
+      <div class="d">When an AI confidently states something false or made-up. CreBot's whole design is aimed at
+        preventing this.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">Vector / Embedding</div>
+      <div class="d">A list of numbers that represents the "meaning" of a piece of text. Two chunks of text about
+        similar topics will have vectors that are mathematically close together, which is how the AI finds relevant
+        information quickly.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">Vector Database (pgvector)</div>
+      <div class="d">A database built (or extended) to store and instantly search these number-lists by similarity,
+        rather than by exact matching text.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">Chunking</div>
+      <div class="d">Breaking a long document into smaller pieces so the AI can search and reference specific, focused
+        sections instead of an entire book at once.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">Cosine Similarity</div>
+      <div class="d">A mathematical way of measuring how "close" two vectors are in meaning — the method used to find
+        the best-matching document chunks for a question.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">JWT (JSON Web Token)</div>
+      <div class="d">A digitally signed "ID card" issued after login, proving who a user is on every future request,
+        without needing to log in again each time.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">Middleware</div>
+      <div class="d">Code that runs automatically in between a request arriving and the actual page/feature responding
+        to it — commonly used for things like security checks.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">RBAC (Role-Based Access Control)</div>
+      <div class="d">A security model where what you're allowed to do depends on your assigned role (e.g. Owner, Edit,
+        View), rather than being the same for everyone.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">RLS (Row Level Security)</div>
+      <div class="d">A database-level rule that automatically hides other users' data rows, even if the application
+        code above it makes a mistake.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">Prompt Injection</div>
+      <div class="d">An attack where someone tries to trick an AI into ignoring its original instructions by hiding new
+        "commands" inside their message.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">SaaS (Software as a Service)</div>
+      <div class="d">Software that you use directly through a website, paying (or signing up) for access, instead of
+        installing and running it yourself.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">CRUD</div>
+      <div class="d">Short for Create, Read, Update, Delete — the four basic operations almost every app needs to
+        perform on its data.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">Widget</div>
+      <div class="d">A small, self-contained piece of interface — here, the floating chat bubble that gets embedded on
+        someone else's website.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">Rate Limiting</div>
+      <div class="d">Deliberately capping how many requests a user can make in a given time period, to keep the shared
+        service fast and fair for everyone.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">BYOK (Bring Your Own Key)</div>
+      <div class="d">Letting a user supply their own API key from a provider (here, Groq) so their usage runs on their
+        own private quota instead of the shared one.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">AES-256 Encryption</div>
+      <div class="d">A very strong, widely trusted method of scrambling data so it can only be read by someone with the
+        correct decryption key.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">Framework</div>
+      <div class="d">A pre-built structure and set of tools (like React or FastAPI) that developers build on top of,
+        instead of writing everything completely from scratch.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">Tenant / Multi-Tenancy</div>
+      <div class="d">A design where one shared system serves many independent customers ("tenants") while keeping each
+        one's data fully separate and private.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">Endpoint</div>
+      <div class="d">One specific web address that a piece of software (like the widget) can send a request to in order
+        to get something done, e.g. <span class="mono">/api/widget/{id}/chat</span>.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">Session Management</div>
+      <div class="d">How an application keeps track of the fact that you're still logged in as you move between pages.
+      </div>
+    </div>
+
+    <div class="term">
+      <div class="w">Environment Variables</div>
+      <div class="d">Configuration values (like secret API keys) kept outside of the code itself, so sensitive
+        information is never hard-coded or accidentally shared.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">Static Files</div>
+      <div class="d">Files (like the widget's JavaScript file) that are served exactly as-is, without needing to be
+        processed by the backend each time.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">Backend / Frontend</div>
+      <div class="d">The Frontend is everything the user directly sees and clicks on in the browser. The Backend is the
+        server-side code that stores data, applies business rules, and talks to the AI — invisible to the user.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">Repository / Codebase</div>
+      <div class="d">The complete collection of source code files that make up the project.</div>
+    </div>
+
+    <div class="term">
+      <div class="w">Deployment</div>
+      <div class="d">The process of taking finished code and making it live and accessible on the real internet.</div>
+    </div>
+  </div>
+
+  <!-- ============ 19 CONTACT ============ -->
+  <div class="sec" id="sec19">
+    <div class="kicker">Section 19</div>
+    <h1 class="section-title">Company &amp; Contact</h1>
+    <div class="rule"></div>
+
+    <table>
+      <tr>
+        <th>Detail</th>
+        <th>Info</th>
+      </tr>
+      <tr>
+        <td>HQ Location</td>
+        <td>Gandhinagar, Gujarat, India</td>
+      </tr>
+      <tr>
+        <td>Core Team / System Architects</td>
+        <td>Priyank, Miral, Sujal</td>
+      </tr>
+      <tr>
+        <td>Contact</td>
+        <td>Available via the website contact form — for enterprise plans, custom integrations, or proof-of-concept
+          discussions</td>
+      </tr>
+      <tr>
+        <td>Typical Response Time</td>
+        <td>Within 4 hours</td>
+      </tr>
+      <tr>
+        <td>Legal</td>
+        <td>Privacy Policy, Terms of Service, and Cookie Policy published and linked in the site footer</td>
+      </tr>
+    </table>
+
+    <h2 class="h">Closing Summary</h2>
+    <p>CreBot is a complete, production-shaped SaaS product: a secure multi-tenant dashboard, a Zero-Speculation RAG
+      pipeline built on vector search, a lightweight universal widget, and a layered security model — all wrapped in a
+      free, no-code onboarding experience for any business that wants an AI support agent trained on their own
+      documentation.</p>
+
+    <div class="callout-blue">
+      <b>End of Document.</b> Thank you for reading — this documentation was written to be presentable to technical
+      reviewers, business stakeholders, and complete beginners alike.
+    </div>
+  </div>
 
 </body>
+
 </html>

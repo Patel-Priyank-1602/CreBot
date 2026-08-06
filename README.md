@@ -51,7 +51,15 @@
 
 ---
 
-## 🔄 Sequence Diagram & Architecture
+## 🔄 System Architecture & Data Flow
+
+### Backend Architecture Diagram
+
+<p align="center">
+  <img src="./docs/Arch(Backend).png" alt="Backend Architecture Diagram" width="100%" />
+</p>
+
+### Sequence Diagram
 
 Below is the complete sequence of how data flows through the CreBot system, from Bot Creation to answering an End-User's query.
 
