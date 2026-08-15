@@ -46,7 +46,7 @@
 * **Database:** Supabase (PostgreSQL)
 * **Vector Store:** `pgvector` extension for Supabase
 * **Embedding Model:** Local `sentence-transformers/all-MiniLM-L6-v2`
-* **LLM Provider:** Groq (`llama-3.3-70b-versatile`)
+* **LLM Provider:** Groq (`openai/gpt-oss-120b`)
 * **Rate Limiting:** In-memory sliding window algorithm
 
 ---

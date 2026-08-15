@@ -16,7 +16,7 @@ class Settings:
 
     # Groq
     GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
-    GROQ_MODEL: str = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+    GROQ_MODEL: str = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
 
     # HuggingFace API (free, for embeddings)
     HF_API_TOKEN: str = os.getenv("HF_API_TOKEN", "")
