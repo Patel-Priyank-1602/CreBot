@@ -332,7 +332,7 @@ to existing users in advance.
 - Backend API: FastAPI (Python), JWT verification, rate limiting
 - Database: Supabase PostgreSQL with Row Level Security and pgvector for
   embeddings
-- AI/LLM: Groq (Llama 3 models) for fast inference; local embedding model
+- AI/LLM: Groq (GPT models) for fast inference; local embedding model
   for zero-cost, private vectorization
 - Widget: Vanilla JavaScript, framework-free, Shadow DOM/iframe isolated,
   iframe or JS SDK integration

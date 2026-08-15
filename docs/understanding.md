@@ -86,7 +86,7 @@ The backend is built with **Python, FastAPI, and Supabase (PostgreSQL with pgvec
 - **`embed.py`**: Returns the widget script snippet.
 
 #### Services (`backend/services/`):
-- **`groq_service.py`**: Handles communication with the Groq API (Llama 3). Performs question reformulation and final answer generation based on retrieved context.
+- **`groq_service.py`**: Handles communication with the Groq API (GPT models / `openai/gpt-oss-120b`). Performs question reformulation and final answer generation based on retrieved context.
 - **`knowledge_service.py`**: Manages file storage records and triggers chunking/embedding.
 - **`chunking.py`**: Splits raw text into smaller, overlapping chunks suitable for embedding.
 - **`embedding.py`**: Converts text chunks into vector embeddings using the HuggingFace model.
@@ -150,6 +150,6 @@ Customers need a lightweight, frictionless way to put the chatbot on their own w
    - Provides the PostgreSQL database.
    - Uses `pgvector` for storing and querying high-dimensional vector embeddings to enable RAG.
 3. **Groq API (LLM Inference):**
-   - Used for fast Large Language Model inference (typically Llama 3).
+   - Used for fast Large Language Model inference (typically GPT models / `openai/gpt-oss-120b`).
    - Responsible for reformulating user questions (with history) and synthesizing the final answer using the context retrieved from the database.
    - CreBot supports **BYOK (Bring Your Own Key)**, allowing users to input their own Groq API key to bypass platform rate limits.

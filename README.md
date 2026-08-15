@@ -23,7 +23,7 @@
 
 ## ✨ Key Features
 
-* **⚡ Blazing Fast Responses:** Utilizes Groq's Llama 3 models for near-instant answer generation.
+* **⚡ Blazing Fast Responses:** Utilizes Groq's GPT models (`openai/gpt-oss-120b`) for near-instant answer generation.
 * **🧠 Context-Aware Retrieval:** Intelligent RAG (Retrieval-Augmented Generation) pipeline using local sentence-transformers and `pgvector` for accurate FAQ searching.
 * **🌐 Universal Embed Widget:** Lightweight, vanilla JavaScript widget that can be embedded on *any* HTML/JS website with a single `<script>` tag.
 * **🔐 Secure Authentication:** Seamless user onboarding, profile management, and workspace security powered by **Clerk**.
